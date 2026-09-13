@@ -47,6 +47,9 @@ impide construirlo sin la clave pública de Turnstile.
   intento se bloqueó correctamente porque Docker/Podman aún no está instalado.
 - [ ] Instalar HTTPS válido, redirección HTTP→HTTPS y verificar encabezados en el
   dominio definitivo.
+- [ ] Instalar `deploy/github-actions-quality.yml` como
+  `.github/workflows/quality.yml` usando una credencial GitHub con permiso de
+  workflows. La credencial actual rechazó correctamente ese cambio.
 - [ ] Aprobar la política de conservación y eliminación de datos personales.
 
 ## Riesgos residuales aceptables sólo con control

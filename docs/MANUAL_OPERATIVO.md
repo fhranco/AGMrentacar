@@ -36,8 +36,15 @@ versión fija para no depender de una instalación global.
 3. Hacer el cambio sólo en archivos fuente.
 4. Ejecutar `npm run verify`.
 5. Revisar que Git no incluya `.env`, respaldos, `dist/` ni datos personales.
-6. Subir la rama y exigir que el control “Calidad y seguridad” termine en verde.
+6. Subir la rama y exigir que el control “Verificación del proyecto” termine en
+   verde en Linux, Windows y macOS.
 7. Integrar mediante revisión. La rama `main` es la versión aprobada.
+
+La plantilla del control está en `deploy/github-actions-quality.yml`. Para
+activarla, copiarla a `.github/workflows/quality.yml` con una cuenta o token de
+GitHub que tenga permiso para modificar workflows. La credencial utilizada en la
+auditoría no tenía ese alcance; no se debe ampliar un token sin autorización del
+propietario.
 
 Los comandos Git y npm son iguales en Terminal, PowerShell y CMD. Las variables
 de entorno cambian:
