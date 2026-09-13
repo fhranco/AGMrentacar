@@ -784,9 +784,9 @@
                 </div>
                 <input
                   aria-hidden="true"
-                  autocomplete="off"
+                  autocomplete="new-password"
                   class="absolute -left-[9999px] h-px w-px opacity-0"
-                  id="companyWebsite"
+                  id="quoteGuard"
                   tabindex="-1"
                   type="text"
                 />
@@ -2171,7 +2171,7 @@
                       document.querySelector(
                         'input[name="cf-turnstile-response"]',
                       )?.value || "",
-                    website: document.getElementById("companyWebsite").value,
+                    website: document.getElementById("quoteGuard").value,
                   }),
                 });
                 const response = await httpResponse.json();
