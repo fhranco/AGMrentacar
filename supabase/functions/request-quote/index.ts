@@ -5,12 +5,14 @@ const ALLOWED_ORIGINS = new Set([
   "http://localhost:4173",
   "http://127.0.0.1:4173",
   "https://fhranco.github.io",
+  "https://orange-squid-480505.hostingersite.com",
   "https://agmrentacar.cl",
   "https://www.agmrentacar.cl",
 ]);
 const ALLOWED_TURNSTILE_HOSTNAMES = new Set([
   "agmrentacar.cl",
   "www.agmrentacar.cl",
+  "orange-squid-480505.hostingersite.com",
   "fhranco.github.io",
   "localhost",
   "127.0.0.1",
