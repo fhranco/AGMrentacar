@@ -19,6 +19,7 @@ const distPath = join(root, "dist");
 const tempPath = join(root, ".build-temp");
 const production = process.argv.includes("--production");
 const turnstileSiteKey = (process.env.TURNSTILE_SITE_KEY || "").trim();
+const releaseMarker = "<!-- BUILD_VERSION -->";
 
 if (production && !turnstileSiteKey) {
   console.error(
@@ -35,9 +36,42 @@ const configMatch = source.match(
 const appMatch = [...source.matchAll(/<script>\s*([\s\S]*?)\s*<\/script>/g)]
   .find((match) => match[1].includes('document.addEventListener("DOMContentLoaded"'));
 
-if (!styleMatch || !configMatch || !appMatch) {
+if (!styleMatch || !configMatch || !appMatch || !source.includes(releaseMarker)) {
   throw new Error("No se pudieron separar los estilos o el JavaScript de code.html.");
 }
+
+const commit = (() => {
+  try {
+    return execFileSync("git", ["rev-parse", "--short=12", "HEAD"], {
+      cwd: root,
+      encoding: "utf8",
+    }).trim();
+  } catch {
+    return "sin-git";
+  }
+})();
+const builtAt = new Date().toISOString();
+const release = {
+  commit,
+  profile: production ? "production" : "preview",
+  built_at: builtAt,
+};
+const visibleCommit = commit === "sin-git" ? commit : commit.slice(0, 7);
+const localBuildParts = Object.fromEntries(
+  new Intl.DateTimeFormat("es-CL", {
+    timeZone: "America/Punta_Arenas",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  })
+    .formatToParts(new Date(builtAt))
+    .map(({ type, value }) => [type, value]),
+);
+const visibleBuiltAt = `${localBuildParts.day}/${localBuildParts.month}/${localBuildParts.year} ${localBuildParts.hour}:${localBuildParts.minute}`;
+const visibleRelease = `Preview v0.1 · ${visibleCommit} · STAGING · ${visibleBuiltAt}`;
 
 rmSync(distPath, { recursive: true, force: true });
 rmSync(tempPath, { recursive: true, force: true });
@@ -111,6 +145,10 @@ let html = source
   .replace(
     "</body>",
     '    <script src="assets/app.js" defer></script>\n  </body>',
+  )
+  .replace(
+    releaseMarker,
+    `<p class="mt-space-md text-center font-body-sm text-[11px] tracking-wide text-slate-600" aria-label="Versión de la vista previa">${visibleRelease}</p>`,
   );
 
 if (turnstileSiteKey) {
@@ -132,28 +170,9 @@ cpSync(join(root, "assets", "images"), join(distPath, "assets", "images"), {
 });
 cpSync(join(root, "deploy", "apache.htaccess"), join(distPath, ".htaccess"));
 
-const commit = (() => {
-  try {
-    return execFileSync("git", ["rev-parse", "--short=12", "HEAD"], {
-      cwd: root,
-      encoding: "utf8",
-    }).trim();
-  } catch {
-    return "sin-git";
-  }
-})();
-
 writeFileSync(
   join(distPath, "release.json"),
-  JSON.stringify(
-    {
-      commit,
-      profile: production ? "production" : "preview",
-      built_at: new Date().toISOString(),
-    },
-    null,
-    2,
-  ) + "\n",
+  JSON.stringify(release, null, 2) + "\n",
 );
 
 const files = [];
