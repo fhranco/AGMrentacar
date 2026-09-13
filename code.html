@@ -3,6 +3,7 @@
 <html lang="es">
   <head>
     <meta charset="utf-8" />
+    <link rel="icon" href="assets/images/logo-agm.png" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>AGM Rent a Car | Arriendo de vehículos en Punta Arenas</title>
     <meta
@@ -46,6 +47,15 @@
       }
       ::-webkit-scrollbar {
         display: none;
+      }
+      .agm-hero-bg {
+        background-image: url("assets/images/hero-magallanes.jpg");
+      }
+      .agm-arrival-bg {
+        background-image: url("assets/images/delivery-magallanes.jpg");
+      }
+      .agm-work-bg {
+        background-image: url("assets/images/work-magallanes.jpg");
       }
     </style>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -327,7 +337,7 @@
             ><img
               alt="AGM Rent a Car"
               class="h-9 w-auto object-contain"
-              src="https://agmrentacar.cl/wp-content/themes/agmrentacar/img/logo/logo-blanco-min.png"
+              src="assets/images/logo-agm.png"
           /></a>
         </div>
         <nav
@@ -434,11 +444,8 @@
           <!-- AGM blue brand field with a Magallanes landscape accent -->
           <div class="absolute inset-0 z-0">
             <div
-              class="absolute inset-y-0 right-0 w-full lg:w-[62%] bg-cover bg-center opacity-25 lg:opacity-55 mix-blend-multiply scale-105 transform"
+              class="agm-hero-bg absolute inset-y-0 right-0 w-full lg:w-[62%] bg-cover bg-center opacity-25 lg:opacity-55 mix-blend-multiply scale-105 transform"
               data-alt="Vehículo AGM recorriendo los paisajes australes de Magallanes"
-              style="
-                background-image: url(&quot;https://agmrentacar.cl/wp-content/themes/agmrentacar/img/slider/slider-min.jpg&quot;);
-              "
             ></div>
             <div
               class="absolute inset-0 bg-gradient-to-r from-brand-blue-dark via-brand-blue/95 to-brand-blue/40"
@@ -893,11 +900,8 @@
                 class="group relative lg:col-span-7 lg:row-span-2 rounded-xl overflow-hidden bg-brand-blue-dark text-surface-white shadow-lg flex flex-col justify-between min-h-[520px] lg:min-h-[640px] p-6 lg:p-10"
               >
                 <div
-                  class="absolute inset-0 bg-cover bg-center opacity-30 group-hover:scale-105 transition-transform duration-500"
+                  class="agm-arrival-bg absolute inset-0 bg-cover bg-center opacity-30 group-hover:scale-105 transition-transform duration-500"
                   data-alt="Entrega de vehículo de arriendo AGM en Punta Arenas"
-                  style="
-                    background-image: url(&quot;https://agmrentacar.cl/wp-content/themes/agmrentacar/img/slider/2-min.jpg&quot;);
-                  "
                 ></div>
                 <div
                   class="absolute inset-0 bg-gradient-to-t from-brand-blue-dark via-brand-blue-dark/80 to-brand-blue/30"
@@ -1027,11 +1031,8 @@
                 class="group relative lg:col-span-5 rounded-xl overflow-hidden bg-brand-blue-dark text-surface-white shadow-md flex flex-col justify-between min-h-[300px] p-6 lg:p-7"
               >
                 <div
-                  class="absolute inset-0 bg-cover bg-center opacity-25 group-hover:scale-105 transition-transform duration-500"
+                  class="agm-work-bg absolute inset-0 bg-cover bg-center opacity-25 group-hover:scale-105 transition-transform duration-500"
                   data-alt="Camioneta AGM preparada para turismo, minería y faena en Magallanes"
-                  style="
-                    background-image: url(&quot;https://agmrentacar.cl/wp-content/themes/agmrentacar/img/slider/4-min.jpg&quot;);
-                  "
                 ></div>
                 <div
                   class="absolute inset-0 bg-gradient-to-t from-brand-blue-dark via-brand-blue-dark/85 to-brand-blue/35"
@@ -1215,7 +1216,7 @@
                     <img
                       class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                       alt="Hyundai Accent de AGM Rent a Car"
-                      src="https://agmrentacar.cl/wp-content/themes/agmrentacar/img/autos/accent-min.jpg"
+                      src="assets/images/hyundai-accent.jpg"
                     />
                   </div>
                   <!-- Specs Grid -->
@@ -1310,7 +1311,7 @@
                     <img
                       class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                       alt="Toyota RAV4 de AGM Rent a Car"
-                      src="https://agmrentacar.cl/wp-content/uploads/2017/11/98518.png"
+                      src="assets/images/toyota-rav4.png"
                     />
                   </div>
                   <div
@@ -1404,7 +1405,7 @@
                     <img
                       class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                       alt="Toyota 4Runner de AGM Rent a Car"
-                      src="https://agmrentacar.cl/wp-content/themes/agmrentacar/img/autos/Toyota-4-Runner-min.jpg"
+                      src="assets/images/toyota-4runner.jpg"
                     />
                   </div>
                   <div
@@ -1494,7 +1495,7 @@
                     <img
                       class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                       alt="Mazda BT-50 de AGM Rent a Car"
-                      src="https://agmrentacar.cl/wp-content/themes/agmrentacar/img/autos/Mazda-BT-50-min.jpg"
+                      src="assets/images/mazda-bt50.jpg"
                     />
                   </div>
                   <div
@@ -2166,6 +2167,10 @@
                     return_location_slug: returnLocation,
                     pickup_at: `${pickupDate}T${pickupTime}:00-03:00`,
                     return_at: `${returnDate}T${returnTime}:00-03:00`,
+                    turnstile_token:
+                      document.querySelector(
+                        'input[name="cf-turnstile-response"]',
+                      )?.value || "",
                     website: document.getElementById("companyWebsite").value,
                   }),
                 });

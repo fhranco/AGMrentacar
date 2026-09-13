@@ -1,0 +1,20 @@
+{
+  "name": "agm-rent-a-car",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sitio y operación de reservas de AGM Rent a Car",
+  "scripts": {
+    "build": "node scripts/build.mjs --production",
+    "build:preview": "node scripts/build.mjs",
+    "audit": "node scripts/audit.mjs",
+    "verify": "npm run build:preview && npm run audit",
+    "backup:supabase": "node scripts/backup-supabase.mjs"
+  },
+  "devDependencies": {
+    "tailwindcss": "3.4.19"
+  },
+  "engines": {
+    "node": ">=22 <25"
+  }
+}
+

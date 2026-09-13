@@ -4,5 +4,7 @@
 .env.*
 !.env.example
 node_modules/
+dist/
+.build-temp/
+backups/
 supabase/.temp/
-

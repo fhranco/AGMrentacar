@@ -8,6 +8,13 @@ const ALLOWED_ORIGINS = new Set([
   "https://agmrentacar.cl",
   "https://www.agmrentacar.cl",
 ]);
+const ALLOWED_TURNSTILE_HOSTNAMES = new Set([
+  "agmrentacar.cl",
+  "www.agmrentacar.cl",
+  "fhranco.github.io",
+  "localhost",
+  "127.0.0.1",
+]);
 
 type QuoteRequest = {
   full_name?: unknown;
@@ -21,6 +28,7 @@ type QuoteRequest = {
   pickup_at?: unknown;
   return_at?: unknown;
   customer_notes?: unknown;
+  turnstile_token?: unknown;
   website?: unknown;
 };
 
@@ -42,11 +50,46 @@ const corsHeaders = (req: Request) => {
 const json = (req: Request, body: unknown, status = 200) =>
   Response.json(body, { status, headers: corsHeaders(req) });
 
+const verifyTurnstile = async (token: string, remoteIp: string) => {
+  const secret = Deno.env.get("TURNSTILE_SECRET_KEY") || "";
+  const required = Deno.env.get("TURNSTILE_REQUIRED") === "true";
+
+  if (!secret || !token) return !required;
+
+  try {
+    const response = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          secret,
+          response: token,
+          remoteip: remoteIp || undefined,
+        }),
+      },
+    );
+    const result = await response.json();
+    return response.ok &&
+      result.success === true &&
+      result.action === "request_quote" &&
+      ALLOWED_TURNSTILE_HOSTNAMES.has(result.hostname);
+  } catch (error) {
+    console.error("Turnstile validation failed", error);
+    return false;
+  }
+};
+
 const handler = withSupabase(
   { auth: ["publishable"] },
   async (req, ctx) => {
     if (req.method !== "POST") {
       return json(req, { error: "Método no permitido." }, 405);
+    }
+
+    const contentLength = Number(req.headers.get("content-length") || "0");
+    if (contentLength > 20_000) {
+      return json(req, { error: "La solicitud es demasiado grande." }, 413);
     }
 
     let payload: QuoteRequest;
@@ -59,6 +102,15 @@ const handler = withSupabase(
     // Campo invisible para descartar bots sencillos sin guardar sus datos.
     if (textValue(payload.website, 200)) {
       return json(req, { received: true }, 202);
+    }
+
+    const turnstileToken = textValue(payload.turnstile_token, 2048);
+    const remoteIp = textValue(
+      req.headers.get("x-forwarded-for")?.split(",")[0],
+      64,
+    );
+    if (!(await verifyTurnstile(turnstileToken, remoteIp))) {
+      return json(req, { error: "No pudimos verificar la solicitud." }, 403);
     }
 
     const fullName = textValue(payload.full_name, 120);
@@ -118,22 +170,42 @@ const handler = withSupabase(
 
     const locationIds = new Map(locations.map((item) => [item.slug, item.id]));
 
-    const { data: customer, error: customerError } = await ctx.supabaseAdmin
+    let { data: customer, error: customerError } = await ctx.supabaseAdmin
       .from("customers")
-      .upsert(
-        {
+      .select("id")
+      .eq("email", email)
+      .maybeSingle();
+
+    if (!customerError && !customer) {
+      const createdCustomer = await ctx.supabaseAdmin
+        .from("customers")
+        .insert({
           full_name: fullName,
           email,
           phone,
           tax_id: companyTaxId,
-        },
-        { onConflict: "email" },
-      )
-      .select("id")
-      .single();
+        })
+        .select("id")
+        .single();
+      customer = createdCustomer.data;
+      customerError = createdCustomer.error;
+    }
+
+    // Una solicitud pública nunca sobrescribe los datos de un cliente existente.
+    // Si dos solicitudes crean el mismo correo a la vez, recuperamos el registro
+    // que ganó la restricción única en vez de devolver un error innecesario.
+    if (customerError && customerError.code === "23505") {
+      const existingCustomer = await ctx.supabaseAdmin
+        .from("customers")
+        .select("id")
+        .eq("email", email)
+        .single();
+      customer = existingCustomer.data;
+      customerError = existingCustomer.error;
+    }
 
     if (customerError || !customer) {
-      console.error("Customer upsert failed", customerError);
+      console.error("Customer lookup or insert failed", customerError);
       return json(req, { error: "No pudimos registrar tus datos." }, 500);
     }
 
@@ -220,6 +292,10 @@ const handler = withSupabase(
 
 export default {
   fetch(req: Request) {
+    const origin = req.headers.get("origin");
+    if (origin && !ALLOWED_ORIGINS.has(origin)) {
+      return Response.json({ error: "Origen no permitido." }, { status: 403 });
+    }
     if (req.method === "OPTIONS") {
       return new Response(null, { status: 204, headers: corsHeaders(req) });
     }

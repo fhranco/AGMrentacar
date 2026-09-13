@@ -3,18 +3,25 @@
 Sitio web de AGM Rent a Car para cotizaciones y arriendo de vehículos en
 Punta Arenas y la Región de Magallanes.
 
-## Sitio
+## Sitio y control de calidad
 
 La página principal está en `code.html`. `index.html` dirige automáticamente a
 esa página para permitir el despliegue desde la raíz del dominio.
 
-Para verla localmente:
+Para instalar y verificar el proyecto de forma reproducible:
 
 ```sh
-python3 -m http.server 4173 --bind 127.0.0.1
+npm ci
+npm run verify
 ```
 
-Luego abre `http://127.0.0.1:4173/`.
+El paquete de producción se genera únicamente con Turnstile configurado:
+
+```sh
+TURNSTILE_SITE_KEY="clave_publica" npm run build
+```
+
+Se despliega sólo el contenido de `dist/`, nunca la raíz del repositorio.
 
 ## Reservas
 
@@ -24,3 +31,10 @@ confirmaciones; WhatsApp se utiliza únicamente para soporte.
 
 La arquitectura y la secuencia operativa están documentadas en `SUPABASE.md`.
 
+## Documentación operativa
+
+- `docs/AUDITORIA_PREPRODUCCION.md`: dictamen, controles y bloqueadores.
+- `docs/MANUAL_OPERATIVO.md`: despliegue manual, respaldos, restauración,
+  cambios multiplataforma y reversión.
+- `AGENTS.md`: reglas canónicas para Codex, Antigravity y otras herramientas.
+- `SECURITY.md`: tratamiento de secretos e incidentes.
