@@ -71,7 +71,7 @@ const localBuildParts = Object.fromEntries(
     .map(({ type, value }) => [type, value]),
 );
 const visibleBuiltAt = `${localBuildParts.day}/${localBuildParts.month}/${localBuildParts.year} ${localBuildParts.hour}:${localBuildParts.minute}`;
-const visibleRelease = `Preview v0.1 · ${visibleCommit} · STAGING · ${visibleBuiltAt}`;
+const visibleRelease = `PREVIEW CLIENTE · v0.1 · ${visibleCommit} · STAGING · ${visibleBuiltAt}`;
 
 rmSync(distPath, { recursive: true, force: true });
 rmSync(tempPath, { recursive: true, force: true });
@@ -116,7 +116,40 @@ execFileSync(
 
 const compiledCssPath = join(distPath, "assets", "site.css");
 const compiledCss = readFileSync(compiledCssPath, "utf8")
-  .replaceAll("assets/images/", "images/");
+  .replaceAll("assets/images/", "images/")
+  .concat(`
+:root { --preview-banner-height: 2.75rem; }
+.agm-preview-banner {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 70;
+  min-height: var(--preview-banner-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-bottom: 3px solid #8ae600;
+  background: #052a40;
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(5, 42, 64, 0.28);
+  font-size: 0.75rem;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+body > header { top: var(--preview-banner-height) !important; }
+body > main { padding-top: calc(7rem + var(--preview-banner-height)) !important; }
+@media (max-width: 639px) {
+  :root { --preview-banner-height: 4rem; }
+  .agm-preview-banner {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.6875rem;
+    letter-spacing: 0.055em;
+  }
+}
+`);
 writeFileSync(compiledCssPath, compiledCss);
 
 const contentSecurityPolicy = [
@@ -148,7 +181,7 @@ let html = source
   )
   .replace(
     releaseMarker,
-    `<p class="mt-space-md text-center font-body-sm text-[11px] tracking-wide text-slate-600" aria-label="Versión de la vista previa">${visibleRelease}</p>`,
+    `<aside class="agm-preview-banner" aria-label="Entorno de revisión">${visibleRelease}</aside>`,
   );
 
 if (turnstileSiteKey) {
