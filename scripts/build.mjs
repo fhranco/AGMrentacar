@@ -156,6 +156,16 @@ body > main { padding-top: calc(7rem + var(--preview-banner-height)) !important;
     letter-spacing: 0.055em;
   }
 }
+.agm-turnstile-wrap {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  min-height: 4.0625rem;
+  padding: 0.25rem 0;
+}
+.agm-turnstile-wrap .cf-turnstile {
+  width: min(100%, 20rem);
+}
 `);
 writeFileSync(compiledCssPath, compiledCss);
 
@@ -193,14 +203,14 @@ let html = source
   .replace(
     turnstileMarker,
     turnstileSiteKey
-      ? `<div class="lg:col-span-12 flex flex-col items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"><div class="cf-turnstile" data-sitekey="${turnstileSiteKey}" data-action="request_quote"></div><p class="font-body-sm text-[12px] text-slate-500">Verificación de seguridad requerida para enviar la solicitud.</p></div>`
+      ? `<div class="agm-turnstile-wrap" aria-label="Verificación de seguridad"><div class="cf-turnstile" data-sitekey="${turnstileSiteKey}" data-action="request_quote" data-theme="light" data-size="flexible" data-appearance="always"></div></div>`
       : "",
   );
 
 if (turnstileSiteKey) {
   html = html.replace(
     "</head>",
-    '    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>\n  </head>',
+    '    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>\n  </head>',
   );
 }
 

@@ -2117,9 +2117,38 @@
           const quoteFormHome = quoteFormContainer?.parentNode;
           const quoteFormNextSibling = quoteFormContainer?.nextSibling;
           let lastQuoteTrigger = null;
+          let turnstileWidgetId = null;
+
+          const removeTurnstile = () => {
+            if (turnstileWidgetId === null || !window.turnstile) return;
+            window.turnstile.remove(turnstileWidgetId);
+            turnstileWidgetId = null;
+          };
+
+          const renderTurnstile = () => {
+            const container = document.querySelector(".cf-turnstile");
+            if (
+              !container ||
+              !window.turnstile ||
+              turnstileWidgetId !== null
+            ) {
+              return;
+            }
+            turnstileWidgetId = window.turnstile.render(container, {
+              sitekey: container.dataset.sitekey,
+              action: container.dataset.action,
+              theme: "light",
+              size: "flexible",
+              appearance: "always",
+            });
+          };
+
+          renderTurnstile();
+          window.addEventListener("load", renderTurnstile, { once: true });
 
           const restoreQuoteForm = () => {
             if (!quoteFormContainer || !quoteFormHome) return;
+            removeTurnstile();
             if (
               quoteFormNextSibling &&
               quoteFormNextSibling.parentNode === quoteFormHome
@@ -2133,6 +2162,7 @@
             }
             document.body.classList.remove("overflow-hidden");
             lastQuoteTrigger?.focus();
+            requestAnimationFrame(renderTurnstile);
           };
 
           const closeQuoteDialog = () => {
@@ -2159,10 +2189,12 @@
               quoteDialogContent &&
               typeof quoteDialog.showModal === "function"
             ) {
+              removeTurnstile();
               quoteDialogContent.append(quoteFormContainer);
               document.body.classList.add("overflow-hidden");
               quoteDialog.showModal();
               quoteDialogClose?.focus();
+              requestAnimationFrame(renderTurnstile);
               return;
             }
 
@@ -2295,6 +2327,9 @@
                 submitButton.disabled = false;
                 submitButton.classList.remove("opacity-70", "cursor-wait");
                 submitText.textContent = "Solicitar cotización";
+                if (turnstileWidgetId !== null && window.turnstile) {
+                  window.turnstile.reset(turnstileWidgetId);
+                }
               }
 
             });
