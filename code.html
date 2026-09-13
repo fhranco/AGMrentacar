@@ -718,6 +718,31 @@
                   </div>
                 </div>
                 <div
+                  class="lg:col-span-12 flex flex-col justify-center px-4 py-2.5 rounded-xl bg-brand-lime-subtle border border-brand-blue/20 focus-within:border-brand-lime focus-within:bg-surface-white"
+                >
+                  <label
+                    class="font-label-sm text-label-sm text-slate-600 uppercase tracking-wider mb-0.5 flex items-center gap-1"
+                    for="vehiclePreference"
+                  >
+                    <span
+                      class="material-symbols-outlined text-[15px] text-primary"
+                      >directions_car</span
+                    >
+                    Vehículo de interés
+                  </label>
+                  <select
+                    class="w-full bg-transparent font-title-md text-title-md font-bold text-slate-900 outline-none cursor-pointer py-0.5"
+                    id="vehiclePreference"
+                    required
+                  >
+                    <option value="recomendacion">Quiero que AGM me recomiende una opción</option>
+                    <option value="Hyundai Accent">Hyundai Accent</option>
+                    <option value="Toyota RAV4">Toyota RAV4</option>
+                    <option value="Toyota 4Runner">Toyota 4Runner</option>
+                    <option value="Mazda BT-50">Mazda BT-50</option>
+                  </select>
+                </div>
+                <div
                   class="lg:col-span-4 flex flex-col justify-center px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus-within:border-brand-lime focus-within:bg-surface-white"
                 >
                   <label class="font-label-sm text-label-sm text-slate-500 uppercase tracking-wider mb-0.5" for="customerName">Nombre completo</label>
@@ -782,6 +807,7 @@
                     <span id="quoteSubmitText">Solicitar cotización</span>
                   </button>
                 </div>
+                <!-- TURNSTILE_WIDGET -->
                 <input
                   aria-hidden="true"
                   autocomplete="new-password"
@@ -2080,6 +2106,70 @@
             });
           });
 
+          const quoteFormContainer = document.getElementById("cotizador");
+          const quoteDialog = document.getElementById("quoteDialog");
+          const quoteDialogContent =
+            document.getElementById("quoteDialogContent");
+          const quoteDialogTitle = document.getElementById("quoteDialogTitle");
+          const quoteDialogClose = document.getElementById("quoteDialogClose");
+          const vehiclePreference =
+            document.getElementById("vehiclePreference");
+          const quoteFormHome = quoteFormContainer?.parentNode;
+          const quoteFormNextSibling = quoteFormContainer?.nextSibling;
+          let lastQuoteTrigger = null;
+
+          const restoreQuoteForm = () => {
+            if (!quoteFormContainer || !quoteFormHome) return;
+            if (
+              quoteFormNextSibling &&
+              quoteFormNextSibling.parentNode === quoteFormHome
+            ) {
+              quoteFormHome.insertBefore(
+                quoteFormContainer,
+                quoteFormNextSibling,
+              );
+            } else {
+              quoteFormHome.append(quoteFormContainer);
+            }
+            document.body.classList.remove("overflow-hidden");
+            lastQuoteTrigger?.focus();
+          };
+
+          const closeQuoteDialog = () => {
+            if (quoteDialog?.open) quoteDialog.close();
+          };
+
+          quoteDialogClose?.addEventListener("click", closeQuoteDialog);
+          quoteDialog?.addEventListener("close", restoreQuoteForm);
+          quoteDialog?.addEventListener("click", (event) => {
+            if (event.target === quoteDialog) closeQuoteDialog();
+          });
+
+          const openVehicleQuote = (vehicle, trigger) => {
+            if (!quoteFormContainer || !vehiclePreference) return;
+            vehiclePreference.value = vehicle;
+            document.getElementById("quoteFormStatus")?.classList.add("hidden");
+            if (quoteDialogTitle) {
+              quoteDialogTitle.textContent = `Cotizar ${vehicle}`;
+            }
+            lastQuoteTrigger = trigger;
+
+            if (
+              quoteDialog &&
+              quoteDialogContent &&
+              typeof quoteDialog.showModal === "function"
+            ) {
+              quoteDialogContent.append(quoteFormContainer);
+              document.body.classList.add("overflow-hidden");
+              quoteDialog.showModal();
+              quoteDialogClose?.focus();
+              return;
+            }
+
+            quoteFormContainer.scrollIntoView({ behavior: "smooth" });
+            vehiclePreference.focus();
+          };
+
           const quoteForm = document.getElementById("quoteForm");
           if (quoteForm) {
             const quoteEndpoint =
@@ -2141,6 +2231,10 @@
               const returnLocation = useDifferentReturn
                 ? document.getElementById("returnLocation").value
                 : pickupLocation;
+              const selectedVehicle =
+                vehiclePreference.options[
+                  vehiclePreference.selectedIndex
+                ]?.textContent.trim() || "Sin preferencia";
 
               submitButton.disabled = true;
               submitButton.classList.add("opacity-70", "cursor-wait");
@@ -2167,6 +2261,7 @@
                     return_location_slug: returnLocation,
                     pickup_at: `${pickupDate}T${pickupTime}:00-03:00`,
                     return_at: `${returnDate}T${returnTime}:00-03:00`,
+                    customer_notes: `Vehículo de interés: ${selectedVehicle}`,
                     turnstile_token:
                       document.querySelector(
                         'input[name="cf-turnstile-response"]',
@@ -2207,21 +2302,55 @@
 
           document.querySelectorAll("#flota button").forEach((button) => {
             if (button.textContent.includes("Cotizar")) {
+              button.type = "button";
+              button.setAttribute("aria-haspopup", "dialog");
+              button.setAttribute("aria-controls", "quoteDialog");
               button.addEventListener("click", () => {
                 const vehicle = button
                   .closest(".group")
                   ?.querySelector("h3")
                   ?.textContent.trim();
-                const subject = `Cotización ${vehicle || "de vehículo"}`;
-                const message = `Hola AGM Rent a Car:\n\nQuisiera solicitar una cotización formal para ${vehicle || "un vehículo"}.\n\nQuedo atento/a a información de disponibilidad y tarifa.\nGracias.`;
-
-                window.location.href = `mailto:reservas@agmrentacar.cl?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+                if (vehicle) openVehicleQuote(vehicle, button);
               });
             }
           });
         });
       </script>
     </main>
+    <dialog
+      aria-labelledby="quoteDialogTitle"
+      class="m-auto w-[min(1120px,calc(100%-1rem))] max-h-[calc(100dvh-1rem)] overflow-y-auto rounded-2xl bg-surface-white p-0 shadow-2xl backdrop:bg-slate-950/75"
+      id="quoteDialog"
+    >
+      <div class="min-h-full bg-slate-100">
+        <div
+          class="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-slate-200 bg-surface-white px-4 py-3 sm:px-6"
+        >
+          <div>
+            <p
+              class="font-label-sm text-label-sm font-bold uppercase tracking-widest text-primary"
+            >
+              Cotización de vehículo
+            </p>
+            <h2
+              class="font-title-md text-title-md font-bold text-slate-950"
+              id="quoteDialogTitle"
+            >
+              Completa tu solicitud
+            </h2>
+          </div>
+          <button
+            aria-label="Cerrar formulario de cotización"
+            class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-700 transition-colors hover:bg-slate-200 hover:text-slate-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue"
+            id="quoteDialogClose"
+            type="button"
+          >
+            <span class="material-symbols-outlined" aria-hidden="true">close</span>
+          </button>
+        </div>
+        <div class="p-2 sm:p-5" id="quoteDialogContent"></div>
+      </div>
+    </dialog>
     <a
       aria-label="Abrir soporte de AGM por WhatsApp"
       class="fixed bottom-5 right-4 sm:bottom-6 sm:right-6 z-[60] inline-flex h-14 w-14 sm:w-auto items-center justify-center gap-3 rounded-full bg-[#25D366] px-0 sm:px-5 text-slate-950 shadow-[0_14px_35px_-10px_rgba(37,211,102,0.75)] ring-4 ring-white/80 transition-all hover:-translate-y-1 hover:bg-[#20BD5A] hover:shadow-[0_18px_40px_-10px_rgba(37,211,102,0.9)] focus:outline-none focus-visible:ring-brand-blue"

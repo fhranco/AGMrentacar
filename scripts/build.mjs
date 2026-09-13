@@ -20,6 +20,7 @@ const tempPath = join(root, ".build-temp");
 const production = process.argv.includes("--production");
 const turnstileSiteKey = (process.env.TURNSTILE_SITE_KEY || "").trim();
 const releaseMarker = "<!-- BUILD_VERSION -->";
+const turnstileMarker = "<!-- TURNSTILE_WIDGET -->";
 
 if (production && !turnstileSiteKey) {
   console.error(
@@ -36,7 +37,13 @@ const configMatch = source.match(
 const appMatch = [...source.matchAll(/<script>\s*([\s\S]*?)\s*<\/script>/g)]
   .find((match) => match[1].includes('document.addEventListener("DOMContentLoaded"'));
 
-if (!styleMatch || !configMatch || !appMatch || !source.includes(releaseMarker)) {
+if (
+  !styleMatch ||
+  !configMatch ||
+  !appMatch ||
+  !source.includes(releaseMarker) ||
+  !source.includes(turnstileMarker)
+) {
   throw new Error("No se pudieron separar los estilos o el JavaScript de code.html.");
 }
 
@@ -182,18 +189,19 @@ let html = source
   .replace(
     releaseMarker,
     `<aside class="agm-preview-banner" aria-label="Entorno de revisión">${visibleRelease}</aside>`,
+  )
+  .replace(
+    turnstileMarker,
+    turnstileSiteKey
+      ? `<div class="lg:col-span-12 flex flex-col items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3"><div class="cf-turnstile" data-sitekey="${turnstileSiteKey}" data-action="request_quote"></div><p class="font-body-sm text-[12px] text-slate-500">Verificación de seguridad requerida para enviar la solicitud.</p></div>`
+      : "",
   );
 
 if (turnstileSiteKey) {
-  html = html
-    .replace(
-      "</head>",
-      '    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>\n  </head>',
-    )
-    .replace(
-      '<div class="lg:col-span-12 flex items-center">',
-      `<div class="lg:col-span-12 flex justify-center py-2"><div class="cf-turnstile" data-sitekey="${turnstileSiteKey}" data-action="request_quote"></div></div>\n                <div class="lg:col-span-12 flex items-center">`,
-    );
+  html = html.replace(
+    "</head>",
+    '    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>\n  </head>',
+  );
 }
 
 writeFileSync(join(distPath, "index.html"), html);
