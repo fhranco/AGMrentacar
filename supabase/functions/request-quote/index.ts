@@ -4,6 +4,7 @@ import { withSupabase } from "@supabase/server";
 const ALLOWED_ORIGINS = new Set([
   "http://localhost:4173",
   "http://127.0.0.1:4173",
+  "https://fhranco.github.io",
   "https://agmrentacar.cl",
   "https://www.agmrentacar.cl",
 ]);
