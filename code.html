@@ -1,0 +1,2450 @@
+<!doctype html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AGM Rent a Car | Arriendo de vehículos en Punta Arenas</title>
+    <meta
+      name="description"
+      content="Arriendo de vehículos, SUV y camionetas 4x4 en Punta Arenas y Magallanes. Kilometraje libre, atención 24 horas y entrega sin costo en aeropuerto, hoteles y departamentos."
+    />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @layer base {
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+        }
+        body {
+          overscroll-behavior: none;
+        }
+        section[id],
+        div[id="cotizador"] {
+          scroll-margin-top: 7rem;
+        }
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-primary": "#84dd00",
+              "brand-lime-hover": "#76CC00",
+              "surface-container-highest": "#d3e4fe",
+              "outline-variant": "#c0caaf",
+              primary: "#0D5E8E",
+              "slate-900": "#111827",
+              surface: "#f8f9ff",
+              "on-primary-container": "#084D74",
+              "inverse-surface": "#213145",
+              "surface-variant": "#d3e4fe",
+              "on-error-container": "#93000a",
+              "on-primary-fixed": "#052A40",
+              "error-container": "#ffdad6",
+              "surface-white": "#FFFFFF",
+              "secondary-fixed": "#dce2f7",
+              "on-tertiary": "#ffffff",
+              error: "#DC2626",
+              "on-secondary-fixed-variant": "#404758",
+              "brand-lime-subtle": "#EAF6FB",
+              "slate-800": "#1E293B",
+              "on-primary-fixed-variant": "#0D5E8E",
+              "slate-200": "#E2E8F0",
+              "slate-300": "#CBD5E1",
+              "on-tertiary-fixed": "#00201d",
+              "on-secondary-fixed": "#141b2b",
+              "surface-container": "#e5eeff",
+              "surface-bright": "#f8f9ff",
+              success: "#16A34A",
+              outline: "#707b63",
+              "inverse-on-surface": "#eaf1ff",
+              "primary-fixed": "#9dfb29",
+              "secondary-fixed-dim": "#c0c6db",
+              "slate-500": "#64748B",
+              tertiary: "#006a63",
+              "primary-fixed-dim": "#84dd00",
+              "on-surface-variant": "#404a35",
+              "on-background": "#0b1c30",
+              "secondary-container": "#d9dff5",
+              "tertiary-container": "#88ded4",
+              "tertiary-fixed-dim": "#80d5cb",
+              "tertiary-fixed": "#9cf2e8",
+              "slate-950": "#0A0F1D",
+              "slate-100": "#F1F5F9",
+              "on-primary": "#ffffff",
+              "surface-dim": "#cbdbf5",
+              "on-tertiary-fixed-variant": "#00504a",
+              "surface-tint": "#1E80B7",
+              "surface-container-low": "#eff4ff",
+              "slate-700": "#334155",
+              "on-secondary": "#ffffff",
+              "brand-lime": "#8AE600",
+              "brand-blue": "#1E80B7",
+              "brand-blue-dark": "#0D5E8E",
+              "brand-blue-light": "#55ACD6",
+              "surface-bg": "#F8FAFC",
+              "surface-container-lowest": "#ffffff",
+              secondary: "#575e70",
+              "on-error": "#ffffff",
+              "on-tertiary-container": "#00635c",
+              background: "#f8f9ff",
+              warning: "#F59E0B",
+              "on-secondary-container": "#5c6274",
+              "surface-container-high": "#dce9ff",
+              "primary-container": "#8ae600",
+              "on-surface": "#0b1c30",
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+            spacing: {
+              "margin-sm": "1rem",
+              "margin-lg": "3rem",
+              "gutter-lg": "2rem",
+              "space-sm": "0.5rem",
+              "space-md": "1rem",
+              gutter: "1.5rem",
+              "space-lg": "1.5rem",
+              "gutter-sm": "1rem",
+              margin: "1.5rem",
+              "space-xl": "2.5rem",
+              "space-xs": "0.25rem",
+            },
+            fontFamily: {
+              "label-sm": ["Plus Jakarta Sans"],
+              "body-sm": ["Inter"],
+              "headline-md": ["Plus Jakarta Sans"],
+              "body-lg": ["Inter"],
+              "title-md": ["Plus Jakarta Sans"],
+              "body-md": ["Inter"],
+              "headline-sm": ["Plus Jakarta Sans"],
+              "headline-lg": ["Plus Jakarta Sans"],
+              "headline-lg-mobile": ["Plus Jakarta Sans"],
+              "headline-xl-mobile": ["Plus Jakarta Sans"],
+              "headline-xl": ["Plus Jakarta Sans"],
+              "label-md": ["Plus Jakarta Sans"],
+              "label-lg": ["Plus Jakarta Sans"],
+              "currency-display": ["Plus Jakarta Sans"],
+            },
+            fontSize: {
+              "label-sm": [
+                "11px",
+                {
+                  lineHeight: "14px",
+                  letterSpacing: "0.04em",
+                  fontWeight: "700",
+                },
+              ],
+              "body-sm": [
+                "13px",
+                {
+                  lineHeight: "18px",
+                  fontWeight: "400",
+                },
+              ],
+              "headline-md": [
+                "24px",
+                {
+                  lineHeight: "32px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "700",
+                },
+              ],
+              "body-lg": [
+                "18px",
+                {
+                  lineHeight: "28px",
+                  fontWeight: "400",
+                },
+              ],
+              "title-md": [
+                "18px",
+                {
+                  lineHeight: "24px",
+                  fontWeight: "600",
+                },
+              ],
+              "body-md": [
+                "15px",
+                {
+                  lineHeight: "22px",
+                  fontWeight: "400",
+                },
+              ],
+              "headline-sm": [
+                "20px",
+                {
+                  lineHeight: "28px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "600",
+                },
+              ],
+              "headline-lg": [
+                "36px",
+                {
+                  lineHeight: "44px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "700",
+                },
+              ],
+              "headline-lg-mobile": [
+                "26px",
+                {
+                  lineHeight: "32px",
+                  letterSpacing: "-0.015em",
+                  fontWeight: "700",
+                },
+              ],
+              "headline-xl-mobile": [
+                "34px",
+                {
+                  lineHeight: "40px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "800",
+                },
+              ],
+              "headline-xl": [
+                "48px",
+                {
+                  lineHeight: "56px",
+                  letterSpacing: "-0.025em",
+                  fontWeight: "800",
+                },
+              ],
+              "label-md": [
+                "13px",
+                {
+                  lineHeight: "18px",
+                  letterSpacing: "0.02em",
+                  fontWeight: "600",
+                },
+              ],
+              "label-lg": [
+                "15px",
+                {
+                  lineHeight: "20px",
+                  letterSpacing: "0.01em",
+                  fontWeight: "700",
+                },
+              ],
+              "currency-display": [
+                "28px",
+                {
+                  lineHeight: "32px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "800",
+                },
+              ],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-surface-bg font-body-md text-body-md text-on-surface antialiased selection:bg-brand-lime selection:text-slate-900"
+  >
+    <header
+      class="fixed top-0 left-0 right-0 z-50 bg-surface-white/95 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)]"
+    >
+      <div
+        class="bg-brand-blue-dark text-white/80 font-label-sm text-label-sm py-1.5"
+      >
+        <div
+          class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg flex flex-wrap items-center justify-between gap-y-1"
+        >
+          <div class="flex items-center gap-space-md">
+            <a
+              class="flex items-center gap-space-xs text-brand-lime"
+              href="tel:+56966571218"
+              ><span class="material-symbols-outlined text-[15px]">call</span
+              ><span class="text-slate-200">+56 9 6657 1218</span></a
+            ><span class="hidden sm:inline text-slate-700">|</span
+            ><a
+              class="hidden sm:flex items-center gap-space-xs hover:text-brand-lime transition-colors"
+              href="mailto:reservas@agmrentacar.cl"
+              ><span class="text-slate-300">reservas@agmrentacar.cl</span></a
+            ><span class="hidden md:inline text-slate-700">|</span
+            ><a
+              class="hidden md:flex items-center gap-space-xs text-brand-lime"
+              href="https://api.whatsapp.com/send?phone=56966571218"
+              ><span class="material-symbols-outlined text-[15px]">chat</span
+              ><span class="text-slate-200">Soporte por WhatsApp</span></a
+            >
+          </div>
+          <div class="hidden md:flex items-center gap-space-md">
+            <a class="hover:text-brand-lime transition-colors" href="#contacto"
+              >Atención al cliente</a
+            ><span class="text-slate-700">|</span
+            ><a class="hover:text-brand-lime transition-colors" href="#flota"
+              >Nuestra flota</a
+            ><span class="text-slate-700">|</span>
+            <div class="flex items-center gap-space-xs text-slate-100">
+              <span class="w-2 h-2 rounded-full bg-brand-lime"></span
+              ><span>Chile (CLP $)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="h-20 max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg flex items-center justify-between"
+      >
+        <div class="flex items-center gap-space-lg">
+          <a
+            class="flex items-center gap-space-sm rounded-xl bg-slate-950 px-3 py-2"
+            data-path="rent-a-car"
+            href="#inicio"
+            ><img
+              alt="AGM Rent a Car"
+              class="h-9 w-auto object-contain"
+              src="https://agmrentacar.cl/wp-content/themes/agmrentacar/img/logo/logo-blanco-min.png"
+          /></a>
+        </div>
+        <nav
+          class="hidden xl:flex items-center gap-space-xs"
+          data-active-classes="bg-brand-lime text-slate-900 font-label-md text-label-md rounded-lg shadow-sm"
+        >
+          <a
+            aria-current="page"
+            class="px-3 py-2 transition-all bg-brand-lime text-slate-900 font-label-md text-label-md rounded-lg shadow-sm"
+            data-path="inicio"
+            href="#inicio"
+            >Inicio</a
+          ><a
+            class="px-3 py-2 rounded-lg font-label-md text-label-md text-slate-700 hover:text-slate-950 hover:bg-slate-100 transition-all"
+            data-path="vehiculos"
+            href="#flota"
+            >Vehículos</a
+          ><a
+            class="px-3 py-2 rounded-lg font-label-md text-label-md text-slate-700 hover:text-slate-950 hover:bg-slate-100 transition-all"
+            data-path="servicios"
+            href="#servicios"
+            >Servicios</a
+          ><a
+            class="px-3 py-2 rounded-lg font-label-md text-label-md text-slate-700 hover:text-slate-950 hover:bg-slate-100 transition-all"
+            data-path="turismo"
+            href="#beneficios"
+            >Turismo en Magallanes</a
+          ><a
+            class="px-3 py-2 rounded-lg font-label-md text-label-md text-slate-700 hover:text-slate-950 hover:bg-slate-100 transition-all"
+            data-path="empresa"
+            href="#servicios"
+            >Empresas y Faenas</a
+          ><a
+            class="px-3 py-2 rounded-lg font-label-md text-label-md text-slate-700 hover:text-slate-950 hover:bg-slate-100 transition-all"
+            data-path="contacto"
+            href="#contacto"
+            >Contacto</a
+          >
+        </nav>
+        <div class="flex items-center gap-space-md">
+          <div class="relative hidden sm:block" id="quoteMenuContainer">
+            <button
+              aria-controls="quoteMenu"
+              aria-expanded="false"
+              class="flex items-center gap-space-sm px-4 py-2.5 rounded-lg bg-brand-lime hover:bg-brand-lime-hover text-slate-950 font-label-md text-label-md font-bold shadow-sm transition-all"
+              id="quoteMenuButton"
+              type="button"
+            >
+              <span class="material-symbols-outlined text-[20px] text-slate-900"
+                >request_quote</span
+              ><span>Solicitar cotización</span
+              ><span
+                class="material-symbols-outlined text-[18px] transition-transform"
+                id="quoteMenuChevron"
+                >expand_more</span
+              >
+            </button>
+            <div
+              class="absolute right-0 mt-2 w-56 bg-surface-white rounded-xl border border-brand-blue/10 shadow-[0_20px_30px_-10px_rgba(17,24,39,0.18)] p-space-xs hidden z-50"
+              id="quoteMenu"
+              role="menu"
+            >
+              <a
+                class="flex items-center gap-space-sm px-space-md py-2.5 rounded-lg text-slate-800 hover:bg-brand-lime-subtle hover:text-primary font-body-sm text-body-sm transition-colors"
+                data-path="login-personal"
+                href="mailto:reservas@agmrentacar.cl?subject=Cotizaci%C3%B3n%20de%20arriendo"
+                ><span class="material-symbols-outlined text-[18px]"
+                  >person</span
+                ><span>Arriendo turismo</span></a
+              ><a
+                class="flex items-center gap-space-sm px-space-md py-2.5 rounded-lg text-slate-800 hover:bg-brand-lime-subtle hover:text-primary font-body-sm text-body-sm transition-colors"
+                data-path="login-empresa"
+                href="mailto:reservas@agmrentacar.cl?subject=Cotizaci%C3%B3n%20para%20empresa%20o%20faena"
+                ><span class="material-symbols-outlined text-[18px]"
+                  >domain</span
+                ><span>Arriendo empresas</span></a
+              >
+            </div>
+          </div>
+          <div
+            class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"
+          >
+            <span class="material-symbols-outlined text-on-primary text-[18px]"
+              >directions_car</span
+            >
+          </div>
+          <button
+            aria-label="Abrir menú de navegación"
+            class="xl:hidden p-2 rounded-lg text-slate-700 hover:bg-slate-100"
+            type="button"
+          >
+            <span class="material-symbols-outlined">menu</span>
+          </button>
+        </div>
+      </div>
+    </header>
+    <main class="w-full pt-28 bg-surface-bg min-h-screen">
+      <div class="flex flex-col w-full">
+        <!-- HERO BANNER WITH INTEGRATED BOOKING CONSOLE -->
+        <section
+          id="inicio"
+          class="relative w-full overflow-hidden bg-brand-blue text-surface-white"
+        >
+          <!-- AGM blue brand field with a Magallanes landscape accent -->
+          <div class="absolute inset-0 z-0">
+            <div
+              class="absolute inset-y-0 right-0 w-full lg:w-[62%] bg-cover bg-center opacity-25 lg:opacity-55 mix-blend-multiply scale-105 transform"
+              data-alt="Vehículo AGM recorriendo los paisajes australes de Magallanes"
+              style="
+                background-image: url(&quot;https://agmrentacar.cl/wp-content/themes/agmrentacar/img/slider/slider-min.jpg&quot;);
+              "
+            ></div>
+            <div
+              class="absolute inset-0 bg-gradient-to-r from-brand-blue-dark via-brand-blue/95 to-brand-blue/40"
+            ></div>
+            <div
+              class="absolute -top-40 -left-28 w-[34rem] h-[34rem] rounded-full border-[90px] border-white/5 pointer-events-none"
+            ></div>
+            <div
+              class="absolute -bottom-40 right-[8%] w-96 h-96 rounded-full bg-brand-lime/20 blur-3xl pointer-events-none"
+            ></div>
+          </div>
+          <!-- Hero Content Container -->
+          <div
+            class="relative z-10 max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg pt-12 lg:pt-16 pb-16 lg:pb-24"
+          >
+            <!-- Top Tagline & Chilean Spirit Notice -->
+            <div
+              class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-8"
+            >
+              <div
+                class="inline-flex w-fit items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20"
+              >
+                <span
+                  class="w-2 h-2 rounded-full bg-brand-lime animate-pulse"
+                ></span>
+                <span
+                  class="font-label-sm text-label-sm uppercase tracking-wider text-brand-lime"
+                  >AGM Rent a Car • Punta Arenas</span
+                >
+                <span class="text-white/30">|</span>
+                <span class="font-body-sm text-body-sm text-white/85"
+                  >Especialistas en Magallanes</span
+                >
+              </div>
+              <!-- Weekend Promo Pill Callout -->
+              <div
+                class="inline-flex w-fit items-center gap-3 px-4 py-2 rounded-xl bg-white/10 backdrop-blur border border-white/20"
+              >
+                <span
+                  class="material-symbols-outlined text-brand-lime text-[18px]"
+                  >local_offer</span
+                >
+                <p class="font-body-sm text-body-sm text-white/90">
+                  <strong class="text-surface-white font-bold"
+                    >Entrega sin costo:</strong
+                  >
+                  Aeropuerto, hoteles y departamentos
+                  <span
+                    class="text-brand-lime font-bold underline decoration-brand-lime underline-offset-4"
+                    >las 24 horas</span
+                  >
+                </p>
+              </div>
+            </div>
+            <!-- Hero Headline with Typographic Depth -->
+            <div class="max-w-3xl mb-10">
+              <h1
+                class="font-headline-xl text-headline-xl-mobile lg:text-headline-xl text-surface-white tracking-tight leading-tight mb-4"
+              >
+                Tu ruta por Magallanes comienza con
+                <span class="text-brand-lime">AGM.</span>
+              </h1>
+              <p class="font-body-lg text-body-lg text-white/85 max-w-2xl">
+                SUV y camionetas para recorrer Punta Arenas y Magallanes con
+                <strong class="text-surface-white">kilometraje libre</strong>,
+                asistencia total y atención 24 horas.
+              </p>
+              <div class="flex flex-col sm:flex-row gap-3 mt-7">
+                <a
+                  class="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-brand-lime px-6 py-3 font-label-lg text-label-lg font-bold text-slate-950 shadow-[0_14px_30px_-12px_rgba(138,230,0,0.8)] transition-all hover:-translate-y-0.5 hover:bg-brand-lime-hover hover:shadow-[0_18px_36px_-12px_rgba(138,230,0,0.9)]"
+                  href="#cotizador"
+                >
+                  <span class="material-symbols-outlined text-[20px]"
+                    >request_quote</span
+                  >
+                  Cotizar ahora
+                </a>
+                <a
+                  class="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/50 bg-white/10 px-6 py-3 font-label-lg text-label-lg font-bold text-white backdrop-blur transition-all hover:bg-white hover:text-brand-blue-dark"
+                  href="#flota"
+                >
+                  Ver nuestra flota
+                  <span class="material-symbols-outlined text-[20px]"
+                    >arrow_forward</span
+                  >
+                </a>
+              </div>
+              <div
+                class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 font-body-sm text-body-sm text-white/85"
+              >
+                <span class="inline-flex items-center gap-1.5">
+                  <span
+                    class="material-symbols-outlined text-[17px] text-brand-lime"
+                    >check_circle</span
+                  >Kilometraje libre
+                </span>
+                <span class="inline-flex items-center gap-1.5">
+                  <span
+                    class="material-symbols-outlined text-[17px] text-brand-lime"
+                    >check_circle</span
+                  >Entrega coordinada
+                </span>
+                <span class="inline-flex items-center gap-1.5">
+                  <span
+                    class="material-symbols-outlined text-[17px] text-brand-lime"
+                    >check_circle</span
+                  >Atención 24 horas
+                </span>
+              </div>
+            </div>
+            <!-- MAIN BOOKING ENGINE CONSOLE (Elevated Level 3 Card) -->
+            <div
+              id="cotizador"
+              class="w-full scroll-mt-28 bg-surface-white text-slate-900 rounded-2xl shadow-[0_20px_40px_-15px_rgba(0,0,0,0.45)] p-space-md lg:p-space-lg relative border border-slate-200/40"
+            >
+              <!-- Booking Tabs: Persona vs Empresa -->
+              <div
+                class="flex items-center justify-between flex-wrap gap-4 pb-4 mb-5 border-b border-slate-100"
+              >
+                <div
+                  class="inline-flex p-1 rounded-xl bg-slate-100 font-label-md text-label-md"
+                  id="bookingTabContainer"
+                >
+                  <button
+                    class="px-5 py-2 rounded-lg bg-surface-white shadow-sm text-slate-900 font-bold transition-all"
+                    id="tabPersonaBtn"
+                    type="button"
+                  >
+                    Turismo / Particular
+                  </button>
+                  <button
+                    class="px-5 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-all flex items-center gap-1.5"
+                    id="tabEmpresaBtn"
+                    type="button"
+                  >
+                    <span>Empresas / Faenas</span>
+                    <span
+                      class="text-[10px] uppercase font-bold bg-brand-lime/25 text-slate-900 px-1.5 py-0.5 rounded"
+                      >RUT</span
+                    >
+                  </button>
+                </div>
+                <!-- Secondary Shortcuts -->
+                <div
+                  class="flex items-center gap-4 text-slate-600 font-label-sm text-label-sm"
+                >
+                  <a
+                    class="flex items-center gap-1.5 hover:text-primary transition-colors"
+                    href="https://api.whatsapp.com/send?phone=56966571218"
+                  >
+                    <span
+                      class="material-symbols-outlined text-[16px] text-brand-lime"
+                      >calendar_clock</span
+                    >
+                    <span>Soporte por WhatsApp</span>
+                  </a>
+                  <span class="text-slate-300">|</span>
+                  <a
+                    class="flex items-center gap-1.5 hover:text-primary transition-colors"
+                    href="tel:+56966571218"
+                  >
+                    <span
+                      class="material-symbols-outlined text-[16px] text-brand-lime"
+                      >speed</span
+                    >
+                    <span>Atención 24 horas</span>
+                  </a>
+                </div>
+              </div>
+              <!-- Booking Fields Layout Grid -->
+              <form
+                class="grid grid-cols-1 lg:grid-cols-12 gap-3"
+                id="quoteForm"
+              >
+                <!-- Retiro Branch Selector -->
+                <div
+                  class="lg:col-span-4 flex flex-col justify-center px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 transition-colors border border-slate-200 focus-within:border-brand-lime focus-within:bg-surface-white"
+                >
+                  <label
+                    class="font-label-sm text-label-sm text-slate-500 uppercase tracking-wider mb-0.5 flex items-center gap-1"
+                  >
+                    <span
+                      class="material-symbols-outlined text-[14px] text-slate-400"
+                      >near_me</span
+                    >
+                    Sucursal de Retiro
+                  </label>
+                  <div class="flex items-center gap-2">
+                    <select
+                      aria-label="Lugar de retiro"
+                      class="w-full bg-transparent font-title-md text-title-md font-bold text-slate-900 outline-none cursor-pointer py-0.5"
+                      id="pickupLocation"
+                      required
+                    >
+                      <option value="aeropuerto-punta-arenas" selected="">Aeropuerto de Punta Arenas</option>
+                      <option value="hotel-punta-arenas">Hotel en Punta Arenas</option>
+                      <option value="departamento-punta-arenas">Departamento en Punta Arenas</option>
+                      <option value="oficina-agm">Oficina AGM - Punta Arenas</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- Fecha y Hora Retiro -->
+                <div
+                  class="lg:col-span-4 flex flex-col justify-center px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 transition-colors border border-slate-200 focus-within:border-brand-lime focus-within:bg-surface-white"
+                >
+                  <label
+                    class="font-label-sm text-label-sm text-slate-500 uppercase tracking-wider mb-0.5 flex items-center gap-1"
+                  >
+                    <span
+                      class="material-symbols-outlined text-[14px] text-slate-400"
+                      >calendar_today</span
+                    >
+                    Fecha y Hora Retiro
+                  </label>
+                  <div class="flex items-center gap-2">
+                    <input
+                      aria-label="Fecha de retiro"
+                      class="bg-transparent font-title-md text-title-md font-bold text-slate-900 outline-none w-full cursor-pointer"
+                      id="pickupDate"
+                      required
+                      type="date"
+                      value="2026-09-15"
+                    />
+                    <select
+                      aria-label="Hora de retiro"
+                      class="bg-transparent font-body-sm text-body-sm font-semibold text-slate-700 outline-none cursor-pointer border-l border-slate-200 pl-2"
+                      id="pickupTime"
+                    >
+                      <option>09:00</option>
+                      <option selected="">10:30</option>
+                      <option>12:00</option>
+                      <option>16:00</option>
+                      <option>19:30</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- Fecha y Hora Devolución -->
+                <div
+                  class="lg:col-span-4 flex flex-col justify-center px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 transition-colors border border-slate-200 focus-within:border-brand-lime focus-within:bg-surface-white"
+                >
+                  <label
+                    class="font-label-sm text-label-sm text-slate-500 uppercase tracking-wider mb-0.5 flex items-center gap-1"
+                  >
+                    <span
+                      class="material-symbols-outlined text-[14px] text-slate-400"
+                      >event_repeat</span
+                    >
+                    Fecha y Hora Devolución
+                  </label>
+                  <div class="flex items-center gap-2">
+                    <input
+                      aria-label="Fecha de devolución"
+                      class="bg-transparent font-title-md text-title-md font-bold text-slate-900 outline-none w-full cursor-pointer"
+                      id="returnDate"
+                      required
+                      type="date"
+                      value="2026-09-18"
+                    />
+                    <select
+                      aria-label="Hora de devolución"
+                      class="bg-transparent font-body-sm text-body-sm font-semibold text-slate-700 outline-none cursor-pointer border-l border-slate-200 pl-2"
+                      id="returnTime"
+                    >
+                      <option>09:00</option>
+                      <option selected="">10:30</option>
+                      <option>14:00</option>
+                      <option>18:00</option>
+                      <option>22:00</option>
+                    </select>
+                  </div>
+                </div>
+                <div
+                  class="lg:col-span-4 flex flex-col justify-center px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus-within:border-brand-lime focus-within:bg-surface-white"
+                >
+                  <label class="font-label-sm text-label-sm text-slate-500 uppercase tracking-wider mb-0.5" for="customerName">Nombre completo</label>
+                  <input
+                    autocomplete="name"
+                    class="bg-transparent font-title-md text-title-md font-bold text-slate-900 outline-none w-full"
+                    id="customerName"
+                    maxlength="120"
+                    placeholder="Nombre y apellido"
+                    required
+                    type="text"
+                  />
+                </div>
+                <div
+                  class="lg:col-span-4 flex flex-col justify-center px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus-within:border-brand-lime focus-within:bg-surface-white"
+                >
+                  <label class="font-label-sm text-label-sm text-slate-500 uppercase tracking-wider mb-0.5" for="customerEmail">Correo de contacto</label>
+                  <input
+                    autocomplete="email"
+                    class="bg-transparent font-title-md text-title-md font-bold text-slate-900 outline-none w-full"
+                    id="customerEmail"
+                    maxlength="254"
+                    placeholder="nombre@correo.cl"
+                    required
+                    type="email"
+                  />
+                </div>
+                <div
+                  class="lg:col-span-4 flex flex-col justify-center px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus-within:border-brand-lime focus-within:bg-surface-white"
+                >
+                  <label class="font-label-sm text-label-sm text-slate-500 uppercase tracking-wider mb-0.5" for="customerPhone">Teléfono</label>
+                  <input
+                    autocomplete="tel"
+                    class="bg-transparent font-title-md text-title-md font-bold text-slate-900 outline-none w-full"
+                    id="customerPhone"
+                    maxlength="40"
+                    placeholder="+56 9 1234 5678"
+                    type="tel"
+                  />
+                </div>
+                <div
+                  class="hidden lg:col-span-12 grid-cols-1 md:grid-cols-2 gap-3"
+                  id="businessFields"
+                >
+                  <div class="flex flex-col justify-center px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus-within:border-brand-lime focus-within:bg-surface-white">
+                    <label class="font-label-sm text-label-sm text-slate-500 uppercase tracking-wider mb-0.5" for="companyName">Razón social</label>
+                    <input class="bg-transparent font-title-md text-title-md font-bold text-slate-900 outline-none w-full" id="companyName" maxlength="160" type="text" />
+                  </div>
+                  <div class="flex flex-col justify-center px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus-within:border-brand-lime focus-within:bg-surface-white">
+                    <label class="font-label-sm text-label-sm text-slate-500 uppercase tracking-wider mb-0.5" for="companyTaxId">RUT empresa</label>
+                    <input class="bg-transparent font-title-md text-title-md font-bold text-slate-900 outline-none w-full" id="companyTaxId" maxlength="30" placeholder="76.123.456-7" type="text" />
+                  </div>
+                </div>
+                <div class="lg:col-span-12 flex items-center">
+                  <button
+                    aria-label="Enviar solicitud de cotización"
+                    class="w-full min-h-[58px] bg-brand-lime hover:bg-brand-lime-hover active:scale-[0.99] text-slate-950 font-label-lg text-label-lg rounded-xl flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all"
+                    id="quoteSubmitButton"
+                    type="submit"
+                  >
+                    <span class="material-symbols-outlined text-[22px]">send</span>
+                    <span id="quoteSubmitText">Solicitar cotización</span>
+                  </button>
+                </div>
+                <input
+                  aria-hidden="true"
+                  autocomplete="off"
+                  class="absolute -left-[9999px] h-px w-px opacity-0"
+                  id="companyWebsite"
+                  tabindex="-1"
+                  type="text"
+                />
+                <p
+                  aria-live="polite"
+                  class="hidden lg:col-span-12 rounded-xl px-4 py-3 font-body-sm text-body-sm"
+                  id="quoteFormStatus"
+                  role="status"
+                ></p>
+                <!-- Optional Dropdown for Devolver en otra sucursal Toggle -->
+                <div
+                  class="lg:col-span-12 pt-2 flex flex-wrap items-center justify-between gap-3 text-slate-600 font-body-sm text-body-sm"
+                >
+                  <label
+                    class="inline-flex items-center gap-2 cursor-pointer select-none"
+                  >
+                    <input
+                      class="w-4 h-4 rounded text-primary accent-brand-lime cursor-pointer"
+                      id="dropoffToggle"
+                      type="checkbox"
+                    />
+                    <span
+                      class="text-slate-700 hover:text-slate-900 font-medium"
+                      >Devolver en una ubicación distinta</span
+                    >
+                  </label>
+                  <!-- Arriendo Mensual Direct Link -->
+                  <a
+                    class="inline-flex items-center gap-1 text-primary hover:text-on-primary-fixed-variant font-bold transition-colors"
+                    href="mailto:reservas@agmrentacar.cl?subject=Cotizaci%C3%B3n%20especial%20de%20arriendo"
+                  >
+                    <span class="material-symbols-outlined text-[18px]"
+                      >calendar_month</span
+                    >
+                    <span
+                      >¿Necesitas una cotización especial? Escríbenos por
+                      correo</span
+                    >
+                    <span class="material-symbols-outlined text-[16px]"
+                      >arrow_forward</span
+                    >
+                  </a>
+                </div>
+                <!-- Dropdown hidden panel for different return branch -->
+                <div
+                  class="hidden lg:col-span-12 p-3 bg-slate-50 rounded-xl border border-slate-200 flex flex-col md:flex-row items-center gap-3"
+                  id="dropoffContainer"
+                >
+                  <span
+                    class="font-label-sm text-label-sm text-slate-500 uppercase tracking-wider"
+                    >Sucursal de Devolución:</span
+                  >
+                  <select
+                    class="bg-surface-white px-3 py-1.5 rounded-lg border border-slate-300 font-body-md text-body-md text-slate-800 flex-1 outline-none"
+                    id="returnLocation"
+                  >
+                    <option value="aeropuerto-punta-arenas">Aeropuerto de Punta Arenas</option>
+                    <option value="hotel-punta-arenas">Hotel en Punta Arenas</option>
+                    <option value="departamento-punta-arenas">Departamento en Punta Arenas</option>
+                    <option value="oficina-agm">Oficina AGM - Punta Arenas</option>
+                  </select>
+                  <span class="text-slate-400 font-label-sm text-label-sm"
+                    >* Coordinación previa según lugar y horario.</span
+                  >
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+        <!-- SERVICIOS DESTACADOS AGM -->
+        <section
+          id="servicios"
+          class="w-full py-20 bg-brand-lime-subtle/40 scroll-mt-28"
+        >
+          <div class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg">
+            <div
+              class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-end mb-12"
+            >
+              <div class="lg:col-span-7">
+                <span
+                  class="font-mono text-[11px] uppercase tracking-[0.2em] text-primary font-bold"
+                  >Ruta 01 / Servicios AGM</span
+                >
+                <h2
+                  class="font-headline-xl text-headline-lg-mobile lg:text-headline-xl text-slate-950 tracking-tight mt-2 max-w-3xl"
+                >
+                  Del aterrizaje al camino,
+                  <span class="text-brand-blue">seguimos tu ruta.</span>
+                </h2>
+              </div>
+              <div
+                class="lg:col-span-5 lg:border-l lg:border-brand-blue/20 lg:pl-8"
+              >
+                <p class="font-body-md text-body-md text-slate-600 max-w-md">
+                  Un servicio local diseñado alrededor de cómo realmente se
+                  viaja y trabaja en la Patagonia austral.
+                </p>
+                <p
+                  class="mt-3 font-mono text-[11px] uppercase tracking-[0.16em] text-primary"
+                >
+                  Punta Arenas · 53°09′S 70°55′O
+                </p>
+              </div>
+            </div>
+            <!-- Asymmetric route narrative -->
+            <div
+              class="grid grid-cols-1 lg:grid-cols-12 lg:grid-rows-2 gap-4 lg:gap-5"
+            >
+              <!-- CARD 1: Entrega flexible -->
+              <div
+                class="group relative lg:col-span-7 lg:row-span-2 rounded-xl overflow-hidden bg-brand-blue-dark text-surface-white shadow-lg flex flex-col justify-between min-h-[520px] lg:min-h-[640px] p-6 lg:p-10"
+              >
+                <div
+                  class="absolute inset-0 bg-cover bg-center opacity-30 group-hover:scale-105 transition-transform duration-500"
+                  data-alt="Entrega de vehículo de arriendo AGM en Punta Arenas"
+                  style="
+                    background-image: url(&quot;https://agmrentacar.cl/wp-content/themes/agmrentacar/img/slider/2-min.jpg&quot;);
+                  "
+                ></div>
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-brand-blue-dark via-brand-blue-dark/80 to-brand-blue/30"
+                ></div>
+                <div class="relative z-10 flex items-center justify-between">
+                  <div
+                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-lime/20 border border-brand-lime/40 text-brand-lime font-label-sm text-label-sm"
+                  >
+                    <span class="material-symbols-outlined text-[16px]"
+                      >flight_land</span
+                    >
+                    <span>01 · Llegada</span>
+                  </div>
+                  <span
+                    class="material-symbols-outlined text-slate-400 group-hover:text-brand-lime transition-colors"
+                    >east</span
+                  >
+                </div>
+                <div class="relative z-10 mt-auto pt-8">
+                  <div class="flex items-center gap-2 mb-2">
+                    <span
+                      class="text-brand-lime font-headline-md text-headline-md font-extrabold tracking-tight"
+                      >Tu viaje empieza al llegar</span
+                    >
+                    <span class="w-2 h-2 rounded-full bg-brand-lime"></span>
+                  </div>
+                  <h3
+                    class="font-title-md text-title-md text-surface-white font-bold mb-2"
+                  >
+                    Aeropuerto, hotel o departamento: llegamos hasta ti.
+                  </h3>
+                  <p
+                    class="font-body-sm text-body-sm text-slate-300 mb-6 leading-relaxed"
+                  >
+                    Coordinamos la entrega y devolución sin costo en el
+                    Aeropuerto de Punta Arenas, hoteles o departamentos, las 24
+                    horas del día.
+                  </p>
+                  <a
+                    class="inline-flex items-center gap-2 font-label-md text-label-md text-slate-950 bg-brand-lime hover:bg-brand-lime-hover px-4 py-2.5 rounded-lg font-bold transition-all shadow-sm"
+                    href="mailto:reservas@agmrentacar.cl?subject=Coordinaci%C3%B3n%20de%20entrega"
+                  >
+                    <span>Coordinar mi entrega</span>
+                    <span class="material-symbols-outlined text-[18px]"
+                      >bolt</span
+                    >
+                  </a>
+                </div>
+              </div>
+              <!-- CARD 2: Beneficios incluidos -->
+              <div
+                class="group relative lg:col-span-5 rounded-xl overflow-hidden bg-surface-white border border-brand-blue/15 shadow-sm flex flex-col justify-between min-h-[300px] p-6 lg:p-7"
+              >
+                <div class="flex items-center justify-between">
+                  <span
+                    class="px-3 py-1 rounded-full bg-slate-100 text-slate-700 font-label-sm text-label-sm uppercase font-bold tracking-wider"
+                  >
+                    02 · En ruta
+                  </span>
+                  <div
+                    class="w-9 h-9 rounded-full bg-brand-lime-subtle text-primary flex items-center justify-center"
+                  >
+                    <span class="material-symbols-outlined text-[20px]"
+                      >verified</span
+                    >
+                  </div>
+                </div>
+                <div class="my-auto py-4 space-y-4">
+                  <!-- Kilometraje libre -->
+                  <div
+                    class="p-4 rounded-xl bg-slate-50 hover:bg-brand-lime-subtle/50 transition-colors border border-slate-100"
+                  >
+                    <div class="flex items-center justify-between mb-1">
+                      <span
+                        class="font-label-md text-label-md font-bold text-slate-900"
+                        >Kilometraje libre</span
+                      >
+                      <span
+                        class="px-2 py-0.5 rounded bg-success/10 text-success font-label-sm text-label-sm font-bold"
+                        >SIN LÍMITES</span
+                      >
+                    </div>
+                    <p class="font-body-sm text-body-sm text-slate-600">
+                      Recorre Magallanes a tu ritmo, sin restricciones de
+                      kilometraje ni cargos inesperados por distancia.
+                    </p>
+                  </div>
+                  <!-- Asistencia total -->
+                  <div
+                    class="p-4 rounded-xl bg-slate-50 hover:bg-brand-lime-subtle/50 transition-colors border border-slate-100"
+                  >
+                    <div class="flex items-center justify-between mb-1">
+                      <span
+                        class="font-label-md text-label-md font-bold text-slate-900"
+                        >Asistencia total</span
+                      >
+                      <span
+                        class="px-2 py-0.5 rounded bg-warning/10 text-slate-900 font-label-sm text-label-sm font-bold"
+                        >24 HORAS</span
+                      >
+                    </div>
+                    <p class="font-body-sm text-body-sm text-slate-600">
+                      Acompañamiento permanente durante tu arriendo y atención
+                      directa cuando la necesites.
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="pt-2 border-t border-slate-100 flex items-center justify-between"
+                >
+                  <span class="font-body-sm text-body-sm text-slate-500"
+                    >¿Tienes dudas sobre tu viaje?</span
+                  >
+                  <a
+                    class="font-label-md text-label-md text-primary hover:text-brand-lime-hover font-bold flex items-center gap-1 transition-colors"
+                    href="tel:+56966571218"
+                  >
+                    <span>Llámanos</span>
+                    <span class="material-symbols-outlined text-[16px]"
+                      >chevron_right</span
+                    >
+                  </a>
+                </div>
+              </div>
+              <!-- CARD 3: Turismo y empresas -->
+              <div
+                class="group relative lg:col-span-5 rounded-xl overflow-hidden bg-brand-blue-dark text-surface-white shadow-md flex flex-col justify-between min-h-[300px] p-6 lg:p-7"
+              >
+                <div
+                  class="absolute inset-0 bg-cover bg-center opacity-25 group-hover:scale-105 transition-transform duration-500"
+                  data-alt="Camioneta AGM preparada para turismo, minería y faena en Magallanes"
+                  style="
+                    background-image: url(&quot;https://agmrentacar.cl/wp-content/themes/agmrentacar/img/slider/4-min.jpg&quot;);
+                  "
+                ></div>
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-brand-blue-dark via-brand-blue-dark/85 to-brand-blue/35"
+                ></div>
+                <div class="relative z-10 flex items-center justify-between">
+                  <span
+                    class="px-3 py-1 rounded-full bg-white/10 border border-white/15 text-brand-lime font-label-sm text-label-sm uppercase font-bold tracking-wider"
+                  >
+                    03 · Trabajo y aventura
+                  </span>
+                  <span
+                    class="material-symbols-outlined text-brand-lime text-[22px]"
+                    >terrain</span
+                  >
+                </div>
+                <div class="relative z-10 mt-auto pt-6">
+                  <h3
+                    class="font-headline-md text-headline-md text-surface-white font-extrabold mb-2"
+                  >
+                    Vehículos para rutas australes y faenas
+                  </h3>
+                  <p
+                    class="font-body-sm text-body-sm text-slate-300 mb-5 leading-relaxed"
+                  >
+                    SUV y camionetas 4x4 para turismo, empresas y minería.
+                    Operadores bilingües y atención personalizada desde Punta
+                    Arenas.
+                  </p>
+                  <div class="flex items-center gap-3">
+                    <a
+                      class="font-label-md text-label-md bg-brand-lime hover:bg-brand-lime-hover text-slate-950 px-4 py-2.5 rounded-lg font-bold transition-colors"
+                      href="mailto:reservas@agmrentacar.cl?subject=Cotizaci%C3%B3n%20de%20veh%C3%ADculo"
+                    >
+                      Cotizar vehículo
+                    </a>
+                    <a
+                      class="font-label-md text-label-md text-slate-300 hover:text-surface-white underline underline-offset-4 px-2 py-2 transition-colors"
+                      href="#flota"
+                    >
+                      Ver flota
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- FLOTA DESTACADA AGM -->
+        <section
+          id="flota"
+          class="w-full py-20 bg-surface-white scroll-mt-28 overflow-hidden"
+        >
+          <div class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg">
+            <!-- Section Header -->
+            <div
+              class="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-10 items-end mb-8"
+            >
+              <div class="lg:col-span-8">
+                <div
+                  class="inline-flex items-center gap-2 text-primary font-mono text-[11px] font-bold uppercase tracking-[0.2em] mb-2"
+                >
+                  <span class="material-symbols-outlined text-[16px]"
+                    >directions_car</span
+                  >
+                  <span>Catálogo 02 / Flota AGM</span>
+                </div>
+                <h2
+                  class="font-headline-lg text-headline-lg text-slate-950 font-bold tracking-tight"
+                >
+                  Máquinas preparadas para el sur.
+                </h2>
+              </div>
+              <div
+                class="lg:col-span-4 lg:border-l lg:border-brand-blue/20 lg:pl-8"
+              >
+                <p class="font-body-md text-body-md text-slate-600">
+                  Compara capacidades y elige según tu ruta, número de pasajeros
+                  o tipo de operación.
+                </p>
+              </div>
+              <p class="sr-only" id="fleetFilterStatus" aria-live="polite">
+                Mostrando todos los vehículos.
+              </p>
+            </div>
+            <!-- Category filters belong to this fleet and stay next to the results -->
+            <div class="mb-8 border-y border-brand-blue/15 py-4">
+              <div
+                class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1"
+                aria-label="Filtrar flota por categoría"
+              >
+                <span
+                  class="font-label-sm text-label-sm text-slate-400 uppercase tracking-widest whitespace-nowrap pr-2"
+                  >Categorías:</span
+                >
+                <button
+                  aria-pressed="true"
+                  class="px-4 py-2 rounded-full bg-brand-blue-dark text-white font-label-md text-label-md whitespace-nowrap shadow-sm"
+                  data-category-filter="all"
+                  type="button"
+                >
+                  Todos los vehículos
+                </button>
+                <button
+                  aria-pressed="false"
+                  class="px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-label-md text-label-md whitespace-nowrap transition-colors"
+                  data-category-filter="sedan"
+                  type="button"
+                >
+                  Sedán
+                </button>
+                <button
+                  aria-pressed="false"
+                  class="px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-label-md text-label-md whitespace-nowrap transition-colors"
+                  data-category-filter="suv-4x4"
+                  type="button"
+                >
+                  SUV 4x4
+                </button>
+                <button
+                  aria-pressed="false"
+                  class="px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-label-md text-label-md whitespace-nowrap transition-colors"
+                  data-category-filter="camioneta-4x4"
+                  type="button"
+                >
+                  Camionetas 4x4
+                </button>
+                <button
+                  aria-pressed="false"
+                  class="px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-label-md text-label-md whitespace-nowrap transition-colors"
+                  data-category-filter="suv-familiar"
+                  type="button"
+                >
+                  SUV familiar
+                </button>
+                <button
+                  aria-pressed="false"
+                  class="px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-label-md text-label-md whitespace-nowrap transition-colors"
+                  data-category-filter="mineria"
+                  type="button"
+                >
+                  Camionetas para minería
+                </button>
+              </div>
+            </div>
+            <!-- Asymmetric automotive catalogue -->
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 lg:gap-5"
+              id="fleetGrid"
+            >
+              <!-- CAR 1: Económico Compacto -->
+              <div
+                class="lg:col-span-7 bg-surface-white rounded-xl border border-brand-blue/15 p-5 lg:p-7 hover:border-brand-blue/50 hover:shadow-xl transition-all flex flex-col justify-between group"
+                data-vehicle-category="sedan"
+              >
+                <div>
+                  <div class="flex items-center justify-between mb-3">
+                    <span
+                      class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 font-label-sm text-label-sm font-bold"
+                    >
+                      Turismo • Sedán
+                    </span>
+                    <span
+                      class="flex items-center gap-1 text-[12px] font-bold text-success"
+                    >
+                      <span class="w-2 h-2 rounded-full bg-success"></span>
+                      Disponible
+                    </span>
+                  </div>
+                  <h3
+                    class="font-title-md text-title-md font-bold text-slate-900 mb-1 group-hover:text-primary transition-colors"
+                  >
+                    Hyundai Accent
+                  </h3>
+                  <p class="font-body-sm text-body-sm text-slate-500 mb-4">
+                    Cómodo y eficiente para recorrer Punta Arenas.
+                  </p>
+                  <!-- Vehicle Image Container -->
+                  <div
+                    class="relative h-52 lg:h-64 w-full flex items-center justify-center bg-gradient-to-b from-brand-lime-subtle to-surface-white rounded-lg overflow-hidden mb-4 p-2"
+                  >
+                    <img
+                      class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                      alt="Hyundai Accent de AGM Rent a Car"
+                      src="https://agmrentacar.cl/wp-content/themes/agmrentacar/img/autos/accent-min.jpg"
+                    />
+                  </div>
+                  <!-- Specs Grid -->
+                  <div
+                    class="grid grid-cols-4 gap-1 py-3 border-t border-b border-slate-100 text-center font-label-sm text-label-sm text-slate-600 mb-4"
+                  >
+                    <div class="flex flex-col items-center">
+                      <span
+                        class="material-symbols-outlined text-[18px] text-slate-500"
+                        >group</span
+                      >
+                      <span>5 Pers.</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <span
+                        class="material-symbols-outlined text-[18px] text-slate-500"
+                        >luggage</span
+                      >
+                      <span>2 Maletas</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <span
+                        class="material-symbols-outlined text-[18px] text-slate-500"
+                        >settings</span
+                      >
+                      <span>Manual</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <span
+                        class="material-symbols-outlined text-[18px] text-slate-500"
+                        >ac_unit</span
+                      >
+                      <span>A/C</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Price and Action -->
+                <div class="pt-2">
+                  <div class="flex items-baseline justify-between mb-3">
+                    <span class="font-body-sm text-body-sm text-slate-500"
+                      >Tarifa</span
+                    >
+                    <div class="text-right">
+                      <span
+                        class="font-currency-display text-currency-display text-slate-950 font-extrabold"
+                        >A consultar</span
+                      >
+                    </div>
+                  </div>
+                  <button
+                    class="w-full py-2.5 rounded-lg bg-brand-blue-dark hover:bg-brand-blue text-surface-white group-hover:bg-brand-lime group-hover:text-slate-950 font-label-md text-label-md font-bold transition-all flex items-center justify-center gap-1.5"
+                  >
+                    <span>Cotizar</span>
+                    <span class="material-symbols-outlined text-[18px]"
+                      >check</span
+                    >
+                  </button>
+                </div>
+              </div>
+              <!-- CAR 2: SUV Compacta Familiar -->
+              <div
+                class="lg:col-span-5 bg-surface-white rounded-xl border border-brand-blue/15 p-5 lg:p-7 hover:border-brand-blue/50 hover:shadow-xl transition-all flex flex-col justify-between group"
+                data-vehicle-category="suv-4x4"
+              >
+                <div>
+                  <div class="flex items-center justify-between mb-3">
+                    <span
+                      class="px-2.5 py-1 rounded-md bg-brand-lime/20 text-slate-900 font-label-sm text-label-sm font-bold"
+                    >
+                      SUV 4x4 • Automático
+                    </span>
+                    <span
+                      class="flex items-center gap-1 text-[12px] font-bold text-primary"
+                    >
+                      <span class="material-symbols-outlined text-[14px]"
+                        >local_fire_department</span
+                      >
+                      Popular
+                    </span>
+                  </div>
+                  <h3
+                    class="font-title-md text-title-md font-bold text-slate-900 mb-1 group-hover:text-primary transition-colors"
+                  >
+                    Toyota RAV4
+                  </h3>
+                  <p class="font-body-sm text-body-sm text-slate-500 mb-4">
+                    Versátil, segura y preparada para rutas australes.
+                  </p>
+                  <div
+                    class="relative h-52 lg:h-64 w-full flex items-center justify-center bg-gradient-to-b from-brand-lime-subtle to-surface-white rounded-lg overflow-hidden mb-4 p-2"
+                  >
+                    <img
+                      class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                      alt="Toyota RAV4 de AGM Rent a Car"
+                      src="https://agmrentacar.cl/wp-content/uploads/2017/11/98518.png"
+                    />
+                  </div>
+                  <div
+                    class="grid grid-cols-4 gap-1 py-3 border-t border-b border-slate-100 text-center font-label-sm text-label-sm text-slate-600 mb-4"
+                  >
+                    <div class="flex flex-col items-center">
+                      <span
+                        class="material-symbols-outlined text-[18px] text-slate-500"
+                        >group</span
+                      >
+                      <span>5 Pers.</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <span
+                        class="material-symbols-outlined text-[18px] text-slate-500"
+                        >luggage</span
+                      >
+                      <span>3 Maletas</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <span
+                        class="material-symbols-outlined text-[18px] text-slate-500"
+                        >settings</span
+                      >
+                      <span>Automático</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <span
+                        class="material-symbols-outlined text-[18px] text-slate-500"
+                        >ac_unit</span
+                      >
+                      <span>A/C</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="pt-2">
+                  <div class="flex items-baseline justify-between mb-3">
+                    <span class="font-body-sm text-body-sm text-slate-500"
+                      >Tarifa</span
+                    >
+                    <div class="text-right">
+                      <span
+                        class="font-currency-display text-currency-display text-slate-950 font-extrabold"
+                        >A consultar</span
+                      >
+                    </div>
+                  </div>
+                  <button
+                    class="w-full py-2.5 rounded-lg bg-brand-blue-dark hover:bg-brand-blue text-surface-white group-hover:bg-brand-lime group-hover:text-slate-950 font-label-md text-label-md font-bold transition-all flex items-center justify-center gap-1.5"
+                  >
+                    <span>Cotizar</span>
+                    <span class="material-symbols-outlined text-[18px]"
+                      >check</span
+                    >
+                  </button>
+                </div>
+              </div>
+              <!-- CAR 3: Camioneta 4x4 Minería y Faena -->
+              <div
+                class="lg:col-span-5 bg-surface-white rounded-xl border border-brand-blue/15 p-5 lg:p-7 hover:border-brand-blue/50 hover:shadow-xl transition-all flex flex-col justify-between group"
+                data-vehicle-category="suv-4x4 suv-familiar"
+              >
+                <div>
+                  <div class="flex items-center justify-between mb-3">
+                    <span
+                      class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 font-label-sm text-label-sm font-bold"
+                    >
+                      SUV Familiar • 7 pasajeros
+                    </span>
+                    <span
+                      class="flex items-center gap-1 text-[12px] font-bold text-slate-700"
+                    >
+                      <span
+                        class="material-symbols-outlined text-[14px] text-brand-lime"
+                        >verified</span
+                      >
+                      Porta equipaje
+                    </span>
+                  </div>
+                  <h3
+                    class="font-title-md text-title-md font-bold text-slate-900 mb-1 group-hover:text-primary transition-colors"
+                  >
+                    Toyota 4Runner
+                  </h3>
+                  <p class="font-body-sm text-body-sm text-slate-500 mb-4">
+                    Potencia, espacio y confort para viajar en familia.
+                  </p>
+                  <div
+                    class="relative h-52 lg:h-64 w-full flex items-center justify-center bg-gradient-to-b from-brand-lime-subtle to-surface-white rounded-lg overflow-hidden mb-4 p-2"
+                  >
+                    <img
+                      class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                      alt="Toyota 4Runner de AGM Rent a Car"
+                      src="https://agmrentacar.cl/wp-content/themes/agmrentacar/img/autos/Toyota-4-Runner-min.jpg"
+                    />
+                  </div>
+                  <div
+                    class="grid grid-cols-4 gap-1 py-3 border-t border-b border-slate-100 text-center font-label-sm text-label-sm text-slate-600 mb-4"
+                  >
+                    <div class="flex flex-col items-center">
+                      <span
+                        class="material-symbols-outlined text-[18px] text-slate-500"
+                        >group</span
+                      >
+                      <span>7 Pers.</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <span
+                        class="material-symbols-outlined text-[18px] text-slate-500"
+                        >terrain</span
+                      >
+                      <span>4x4 Doble</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <span
+                        class="material-symbols-outlined text-[18px] text-slate-500"
+                        >settings</span
+                      >
+                      <span>Automático</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <span
+                        class="material-symbols-outlined text-[18px] text-slate-500"
+                        >ac_unit</span
+                      >
+                      <span>A/C</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="pt-2">
+                  <div class="flex items-baseline justify-between mb-3">
+                    <span class="font-body-sm text-body-sm text-slate-500"
+                      >Tarifa</span
+                    >
+                    <div class="text-right">
+                      <span
+                        class="font-currency-display text-currency-display text-slate-950 font-extrabold"
+                        >A consultar</span
+                      >
+                    </div>
+                  </div>
+                  <button
+                    class="w-full py-2.5 rounded-lg bg-brand-blue-dark hover:bg-brand-blue text-surface-white group-hover:bg-brand-lime group-hover:text-slate-950 font-label-md text-label-md font-bold transition-all flex items-center justify-center gap-1.5"
+                  >
+                    <span>Cotizar</span>
+                    <span class="material-symbols-outlined text-[18px]"
+                      >check</span
+                    >
+                  </button>
+                </div>
+              </div>
+              <!-- CAR 4: SUV Grande / 7 Pasajeros -->
+              <div
+                class="lg:col-span-7 bg-surface-white rounded-xl border border-brand-blue/15 p-5 lg:p-7 hover:border-brand-blue/50 hover:shadow-xl transition-all flex flex-col justify-between group"
+                data-vehicle-category="camioneta-4x4 mineria"
+              >
+                <div>
+                  <div class="flex items-center justify-between mb-3">
+                    <span
+                      class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 font-label-sm text-label-sm font-bold"
+                    >
+                      Camioneta • 4x4
+                    </span>
+                    <span
+                      class="flex items-center gap-1 text-[12px] font-bold text-primary"
+                    >
+                      Turbo diésel
+                    </span>
+                  </div>
+                  <h3
+                    class="font-title-md text-title-md font-bold text-slate-900 mb-1 group-hover:text-primary transition-colors"
+                  >
+                    Mazda BT-50
+                  </h3>
+                  <p class="font-body-sm text-body-sm text-slate-500 mb-4">
+                    Robusta y confiable para aventura, trabajo o faena.
+                  </p>
+                  <div
+                    class="relative h-52 lg:h-64 w-full flex items-center justify-center bg-gradient-to-b from-brand-lime-subtle to-surface-white rounded-lg overflow-hidden mb-4 p-2"
+                  >
+                    <img
+                      class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                      alt="Mazda BT-50 de AGM Rent a Car"
+                      src="https://agmrentacar.cl/wp-content/themes/agmrentacar/img/autos/Mazda-BT-50-min.jpg"
+                    />
+                  </div>
+                  <div
+                    class="grid grid-cols-4 gap-1 py-3 border-t border-b border-slate-100 text-center font-label-sm text-label-sm text-slate-600 mb-4"
+                  >
+                    <div class="flex flex-col items-center">
+                      <span
+                        class="material-symbols-outlined text-[18px] text-slate-500"
+                        >airline_seat_recline_extra</span
+                      >
+                      <span>5 Pers.</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <span
+                        class="material-symbols-outlined text-[18px] text-slate-500"
+                        >luggage</span
+                      >
+                      <span>Pick-up</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <span
+                        class="material-symbols-outlined text-[18px] text-slate-500"
+                        >settings</span
+                      >
+                      <span>Manual</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <span
+                        class="material-symbols-outlined text-[18px] text-slate-500"
+                        >ac_unit</span
+                      >
+                      <span>A/C</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="pt-2">
+                  <div class="flex items-baseline justify-between mb-3">
+                    <span class="font-body-sm text-body-sm text-slate-500"
+                      >Tarifa</span
+                    >
+                    <div class="text-right">
+                      <span
+                        class="font-currency-display text-currency-display text-slate-950 font-extrabold"
+                        >A consultar</span
+                      >
+                    </div>
+                  </div>
+                  <button
+                    class="w-full py-2.5 rounded-lg bg-brand-blue-dark hover:bg-brand-blue text-surface-white group-hover:bg-brand-lime group-hover:text-slate-950 font-label-md text-label-md font-bold transition-all flex items-center justify-center gap-1.5"
+                  >
+                    <span>Cotizar</span>
+                    <span class="material-symbols-outlined text-[18px]"
+                      >check</span
+                    >
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- BENEFICIOS AGM -->
+        <section
+          id="beneficios"
+          class="w-full py-20 bg-brand-lime-subtle/50 border-t border-brand-blue/10"
+        >
+          <div class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+              <span
+                class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold"
+                >Confianza y Experiencia</span
+              >
+              <h2
+                class="font-headline-xl text-headline-lg-mobile lg:text-headline-xl text-slate-950 font-extrabold tracking-tight mt-1 mb-3"
+              >
+                ¿Por qué arrendar en
+                <span
+                  class="text-primary underline decoration-brand-lime underline-offset-8"
+                  >AGM Rent a Car</span
+                >?
+              </h2>
+              <p class="font-body-md text-body-md text-slate-600">
+                Un servicio local y flexible para que recorras Magallanes con
+                respaldo desde el primer kilómetro.
+              </p>
+            </div>
+            <!-- 7 Interactive Pillars Mosaic / Circle Cards inspired by original site -->
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+              <!-- Pillar 1: Mejor Tarifa -->
+              <div
+                class="p-5 rounded-2xl bg-surface-white border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all flex flex-col items-center text-center group"
+              >
+                <div
+                  class="w-14 h-14 rounded-full bg-brand-lime-subtle text-primary group-hover:bg-brand-lime group-hover:text-slate-950 flex items-center justify-center transition-colors mb-3"
+                >
+                  <span class="material-symbols-outlined text-[28px]"
+                    >payments</span
+                  >
+                </div>
+                <h4
+                  class="font-label-md text-label-md font-bold text-slate-900 mb-1"
+                >
+                  Kilometraje Libre
+                </h4>
+                <p
+                  class="font-body-sm text-body-sm text-slate-500 text-[12px] leading-snug"
+                >
+                  Viaja sin restricciones ni cobros por distancia.
+                </p>
+              </div>
+              <!-- Pillar 2: El Mejor Servicio -->
+              <div
+                class="p-5 rounded-2xl bg-surface-white border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all flex flex-col items-center text-center group"
+              >
+                <div
+                  class="w-14 h-14 rounded-full bg-brand-lime-subtle text-primary group-hover:bg-brand-lime group-hover:text-slate-950 flex items-center justify-center transition-colors mb-3"
+                >
+                  <span class="material-symbols-outlined text-[28px]"
+                    >support_agent</span
+                  >
+                </div>
+                <h4
+                  class="font-label-md text-label-md font-bold text-slate-900 mb-1"
+                >
+                  Atención 24 Horas
+                </h4>
+                <p
+                  class="font-body-sm text-body-sm text-slate-500 text-[12px] leading-snug"
+                >
+                  Coordinación y soporte durante todo tu arriendo.
+                </p>
+              </div>
+              <!-- Pillar 3: La Mejor Flota -->
+              <div
+                class="p-5 rounded-2xl bg-surface-white border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all flex flex-col items-center text-center group"
+              >
+                <div
+                  class="w-14 h-14 rounded-full bg-brand-lime-subtle text-primary group-hover:bg-brand-lime group-hover:text-slate-950 flex items-center justify-center transition-colors mb-3"
+                >
+                  <span class="material-symbols-outlined text-[28px]"
+                    >directions_car</span
+                  >
+                </div>
+                <h4
+                  class="font-label-md text-label-md font-bold text-slate-900 mb-1"
+                >
+                  Asistencia Total
+                </h4>
+                <p
+                  class="font-body-sm text-body-sm text-slate-500 text-[12px] leading-snug"
+                >
+                  Respaldo directo para resolver cualquier imprevisto.
+                </p>
+              </div>
+              <!-- Pillar 4: Entrega en aeropuerto -->
+              <div
+                class="p-5 rounded-2xl bg-surface-white border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all flex flex-col items-center text-center group"
+              >
+                <div
+                  class="w-14 h-14 rounded-full bg-brand-lime-subtle text-primary group-hover:bg-brand-lime group-hover:text-slate-950 flex items-center justify-center transition-colors mb-3"
+                >
+                  <span class="material-symbols-outlined text-[28px]"
+                    >pin_drop</span
+                  >
+                </div>
+                <h4
+                  class="font-label-md text-label-md font-bold text-slate-900 mb-1"
+                >
+                  Entrega en Aeropuerto
+                </h4>
+                <p
+                  class="font-body-sm text-body-sm text-slate-500 text-[12px] leading-snug"
+                >
+                  Recibe y devuelve tu vehículo sin costo adicional.
+                </p>
+              </div>
+              <!-- Pillar 5: Entrega en alojamiento -->
+              <div
+                class="p-5 rounded-2xl bg-surface-white border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all flex flex-col items-center text-center group"
+              >
+                <div
+                  class="w-14 h-14 rounded-full bg-brand-lime-subtle text-primary group-hover:bg-brand-lime group-hover:text-slate-950 flex items-center justify-center transition-colors mb-3"
+                >
+                  <span class="material-symbols-outlined text-[28px]"
+                    >hotel</span
+                  >
+                </div>
+                <h4
+                  class="font-label-md text-label-md font-bold text-slate-900 mb-1"
+                >
+                  Entrega en tu Alojamiento
+                </h4>
+                <p
+                  class="font-body-sm text-body-sm text-slate-500 text-[12px] leading-snug"
+                >
+                  Llegamos a tu hotel o departamento en Punta Arenas.
+                </p>
+              </div>
+              <!-- Pillar 6: Atención bilingüe -->
+              <div
+                class="p-5 rounded-2xl bg-surface-white border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all flex flex-col items-center text-center group"
+              >
+                <div
+                  class="w-14 h-14 rounded-full bg-brand-lime-subtle text-primary group-hover:bg-brand-lime group-hover:text-slate-950 flex items-center justify-center transition-colors mb-3"
+                >
+                  <span class="material-symbols-outlined text-[28px]"
+                    >translate</span
+                  >
+                </div>
+                <h4
+                  class="font-label-md text-label-md font-bold text-slate-900 mb-1"
+                >
+                  Operadores Bilingües
+                </h4>
+                <p
+                  class="font-body-sm text-body-sm text-slate-500 text-[12px] leading-snug"
+                >
+                  Atención en español e inglés para viajeros.
+                </p>
+              </div>
+              <!-- Pillar 7: Flota preparada -->
+              <div
+                class="p-5 rounded-2xl bg-surface-white border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all flex flex-col items-center text-center group col-span-2 md:col-span-2 lg:col-span-1"
+              >
+                <div
+                  class="w-14 h-14 rounded-full bg-brand-lime-subtle text-primary group-hover:bg-brand-lime group-hover:text-slate-950 flex items-center justify-center transition-colors mb-3"
+                >
+                  <span class="material-symbols-outlined text-[28px]"
+                    >verified_user</span
+                  >
+                </div>
+                <h4
+                  class="font-label-md text-label-md font-bold text-slate-900 mb-1"
+                >
+                  Flota Preparada
+                </h4>
+                <p
+                  class="font-body-sm text-body-sm text-slate-500 text-[12px] leading-snug"
+                >
+                  Vehículos seleccionados para las rutas australes.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- PUNTO DE OPERACIÓN AGM -->
+        <section id="contacto" class="w-full py-16 bg-surface-white">
+          <div class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              <!-- Left Text: Aeropuertos y Atención -->
+              <div class="lg:col-span-5 space-y-5">
+                <span
+                  class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold"
+                  >AGM Rent a Car • Magallanes</span
+                >
+                <h2
+                  class="font-headline-lg text-headline-lg text-slate-950 font-bold tracking-tight"
+                >
+                  Comienza tu ruta desde Punta Arenas
+                </h2>
+                <p class="font-body-md text-body-md text-slate-600">
+                  Coordinamos personalmente la entrega de tu vehículo para que
+                  puedas comenzar el viaje apenas llegues a la región.
+                </p>
+                <!-- Branch Fast List -->
+                <div class="space-y-3 pt-2">
+                  <div
+                    class="flex items-start gap-3 p-3 rounded-xl bg-brand-lime-subtle border border-brand-blue/10"
+                  >
+                    <span
+                      class="material-symbols-outlined text-primary text-[24px]"
+                      >flight_takeoff</span
+                    >
+                    <div>
+                      <strong
+                        class="font-label-md text-label-md text-slate-900 block"
+                        >Aeropuerto de Punta Arenas</strong
+                      >
+                      <span class="font-body-sm text-body-sm text-slate-500"
+                        >Entrega y devolución sin costo, las 24 horas del
+                        día.</span
+                      >
+                    </div>
+                  </div>
+                  <div
+                    class="flex items-start gap-3 p-3 rounded-xl bg-brand-lime-subtle border border-brand-blue/10"
+                  >
+                    <span
+                      class="material-symbols-outlined text-primary text-[24px]"
+                      >hotel</span
+                    >
+                    <div>
+                      <strong
+                        class="font-label-md text-label-md text-slate-900 block"
+                        >Hoteles y departamentos</strong
+                      >
+                      <span class="font-body-sm text-body-sm text-slate-500"
+                        >Coordinación gratuita dentro de Punta Arenas.</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="pt-2 flex items-center gap-4">
+                  <a
+                    class="px-5 py-2.5 rounded-lg bg-brand-blue-dark text-surface-white hover:bg-brand-blue font-label-md text-label-md font-bold transition-all"
+                    href="https://goo.gl/maps/6kCMyr35Fzw"
+                  >
+                    Ver ubicación
+                  </a>
+                  <span class="font-body-sm text-body-sm text-slate-500"
+                    >Reservas: <strong>+56 9 6657 1218</strong></span
+                  >
+                </div>
+              </div>
+              <!-- Right: Map visual component -->
+              <div class="lg:col-span-7">
+                <div
+                  class="relative w-full h-[400px] rounded-2xl overflow-hidden shadow-md border border-slate-200"
+                >
+                  <iframe
+                    class="w-full h-full border-0"
+                    title="Mapa de Punta Arenas, Chile"
+                    loading="lazy"
+                    src="https://www.openstreetmap.org/export/embed.html?bbox=-71.05%2C-53.23%2C-70.78%2C-53.08&amp;layer=mapnik&amp;marker=-53.1638%2C-70.9171"
+                  ></iframe>
+                  <!-- Map Floating Badge Overlay -->
+                  <div
+                    class="absolute bottom-4 left-4 right-4 sm:right-auto bg-surface-white/95 backdrop-blur-md p-4 rounded-xl shadow-lg border border-slate-200 max-w-sm"
+                  >
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-10 h-10 rounded-full bg-brand-lime text-slate-950 flex items-center justify-center font-bold"
+                      >
+                        <span class="material-symbols-outlined text-[20px]"
+                          >pin_drop</span
+                        >
+                      </div>
+                      <div>
+                        <span
+                          class="font-label-md text-label-md text-slate-900 font-bold block"
+                          >AGM Rent a Car</span
+                        >
+                        <span
+                          class="font-body-sm text-body-sm text-slate-600 block"
+                          >Punta Arenas, Región de Magallanes.</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- CONTACTO DIRECTO -->
+        <section
+          class="w-full bg-gradient-to-r from-brand-blue-dark via-brand-blue to-brand-blue-dark text-surface-white py-12"
+        >
+          <div
+            class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg flex flex-col md:flex-row items-center justify-between gap-6"
+          >
+            <div class="flex items-center gap-5">
+              <div
+                class="w-14 h-14 rounded-2xl bg-brand-lime/10 border border-brand-lime/30 flex items-center justify-center text-brand-lime"
+              >
+                <span class="material-symbols-outlined text-[32px]">mail</span>
+              </div>
+              <div>
+                <h3
+                  class="font-title-md text-title-md font-bold text-surface-white"
+                >
+                  Solicita una cotización formal
+                </h3>
+                <p class="font-body-sm text-body-sm text-white/75">
+                  Envíanos tus fechas y tipo de viaje por correo. Te
+                  responderemos con disponibilidad y condiciones del arriendo.
+                </p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <a
+                class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition-colors flex items-center gap-3 border border-white/20"
+                href="mailto:reservas@agmrentacar.cl?subject=Solicitud%20de%20cotizaci%C3%B3n"
+              >
+                <span
+                  class="material-symbols-outlined text-brand-lime text-[24px]"
+                  >mail</span
+                >
+                <div class="text-left">
+                  <span
+                    class="block text-[10px] text-slate-400 uppercase font-semibold"
+                    >Cotiza por</span
+                  >
+                  <span
+                    class="block font-label-md text-label-md font-bold text-surface-white"
+                    >Correo</span
+                  >
+                </div>
+              </a>
+              <a
+                class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition-colors flex items-center gap-3 border border-white/20"
+                href="https://api.whatsapp.com/send?phone=56966571218"
+              >
+                <span
+                  class="material-symbols-outlined text-brand-lime text-[24px]"
+                  >support_agent</span
+                >
+                <div class="text-left">
+                  <span
+                    class="block text-[10px] text-slate-400 uppercase font-semibold"
+                    >Soporte por</span
+                  >
+                  <span
+                    class="block font-label-md text-label-md font-bold text-surface-white"
+                    >WhatsApp</span
+                  >
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+      </div>
+      <script>
+        // Interacciones del cotizador y las pestañas de reserva
+        document.addEventListener("DOMContentLoaded", () => {
+          const quoteMenuContainer =
+            document.getElementById("quoteMenuContainer");
+          const quoteMenuButton = document.getElementById("quoteMenuButton");
+          const quoteMenu = document.getElementById("quoteMenu");
+          const quoteMenuChevron = document.getElementById("quoteMenuChevron");
+
+          const setQuoteMenuOpen = (isOpen) => {
+            quoteMenu?.classList.toggle("hidden", !isOpen);
+            quoteMenuButton?.setAttribute("aria-expanded", String(isOpen));
+            quoteMenuChevron?.classList.toggle("rotate-180", isOpen);
+          };
+
+          quoteMenuButton?.addEventListener("click", (event) => {
+            event.stopPropagation();
+            const isOpen =
+              quoteMenuButton.getAttribute("aria-expanded") === "true";
+            setQuoteMenuOpen(!isOpen);
+          });
+
+          quoteMenu?.querySelectorAll("a").forEach((option) => {
+            option.addEventListener("click", () => setQuoteMenuOpen(false));
+          });
+
+          document.addEventListener("click", (event) => {
+            if (!quoteMenuContainer?.contains(event.target)) {
+              setQuoteMenuOpen(false);
+            }
+          });
+
+          document.addEventListener("keydown", (event) => {
+            if (
+              event.key === "Escape" &&
+              quoteMenuButton?.getAttribute("aria-expanded") === "true"
+            ) {
+              setQuoteMenuOpen(false);
+              quoteMenuButton.focus();
+            }
+          });
+
+          const dropoffToggle = document.getElementById("dropoffToggle");
+          const dropoffContainer = document.getElementById("dropoffContainer");
+
+          if (dropoffToggle && dropoffContainer) {
+            dropoffToggle.addEventListener("change", (e) => {
+              if (e.target.checked) {
+                dropoffContainer.classList.remove("hidden");
+              } else {
+                dropoffContainer.classList.add("hidden");
+              }
+            });
+          }
+
+          const tabPersonaBtn = document.getElementById("tabPersonaBtn");
+          const tabEmpresaBtn = document.getElementById("tabEmpresaBtn");
+          const businessFields = document.getElementById("businessFields");
+          const companyNameInput = document.getElementById("companyName");
+          const companyTaxIdInput = document.getElementById("companyTaxId");
+          let customerType = "tourism";
+
+          const setCustomerType = (type) => {
+            customerType = type;
+            const isBusiness = type === "business";
+            businessFields?.classList.toggle("hidden", !isBusiness);
+            businessFields?.classList.toggle("grid", isBusiness);
+            if (companyNameInput) companyNameInput.required = isBusiness;
+            if (companyTaxIdInput) companyTaxIdInput.required = isBusiness;
+          };
+
+          if (tabPersonaBtn && tabEmpresaBtn) {
+            tabPersonaBtn.addEventListener("click", () => {
+              setCustomerType("tourism");
+              tabPersonaBtn.className =
+                "px-5 py-2 rounded-lg bg-surface-white shadow-sm text-slate-900 font-bold transition-all";
+              tabEmpresaBtn.className =
+                "px-5 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-all flex items-center gap-1.5";
+            });
+
+            tabEmpresaBtn.addEventListener("click", () => {
+              setCustomerType("business");
+              tabEmpresaBtn.className =
+                "px-5 py-2 rounded-lg bg-surface-white shadow-sm text-slate-900 font-bold transition-all flex items-center gap-1.5";
+              tabPersonaBtn.className =
+                "px-5 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition-all";
+            });
+          }
+
+          const categoryButtons = document.querySelectorAll(
+            "[data-category-filter]",
+          );
+          const vehicleCards = document.querySelectorAll(
+            "[data-vehicle-category]",
+          );
+          vehicleCards.forEach((card) => {
+            card.dataset.baseSpan = [...card.classList].find((className) =>
+              ["lg:col-span-5", "lg:col-span-7"].includes(className),
+            );
+          });
+          const fleetFilterStatus =
+            document.getElementById("fleetFilterStatus");
+
+          const activeCategoryClasses =
+            "px-4 py-2 rounded-full bg-brand-blue-dark text-white font-label-md text-label-md whitespace-nowrap shadow-sm transition-colors";
+          const inactiveCategoryClasses =
+            "px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-label-md text-label-md whitespace-nowrap transition-colors";
+
+          const applyFleetFilter = (filter) => {
+            let visibleCount = 0;
+
+            vehicleCards.forEach((card) => {
+              const categories = card.dataset.vehicleCategory.split(" ");
+              const shouldShow =
+                filter === "all" || categories.includes(filter);
+              card.classList.toggle("hidden", !shouldShow);
+              if (shouldShow) visibleCount += 1;
+            });
+
+            const visibleCards = [...vehicleCards].filter(
+              (card) => !card.classList.contains("hidden"),
+            );
+            visibleCards.forEach((card) => {
+              card.classList.remove(
+                "lg:col-span-5",
+                "lg:col-span-6",
+                "lg:col-span-7",
+                "lg:col-span-12",
+              );
+              card.classList.add(
+                visibleCards.length === 1
+                  ? "lg:col-span-12"
+                  : visibleCards.length === 2
+                    ? "lg:col-span-6"
+                    : card.dataset.baseSpan,
+              );
+            });
+
+            categoryButtons.forEach((button) => {
+              const isActive = button.dataset.categoryFilter === filter;
+              button.className = isActive
+                ? activeCategoryClasses
+                : inactiveCategoryClasses;
+              button.setAttribute("aria-pressed", String(isActive));
+            });
+
+            const activeLabel = [...categoryButtons]
+              .find((button) => button.dataset.categoryFilter === filter)
+              ?.textContent.trim();
+
+            if (fleetFilterStatus) {
+              fleetFilterStatus.textContent = `Mostrando ${visibleCount} ${
+                visibleCount === 1 ? "vehículo" : "vehículos"
+              } en ${activeLabel || "todas las categorías"}.`;
+            }
+          };
+
+          categoryButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+              applyFleetFilter(button.dataset.categoryFilter);
+            });
+          });
+
+          const quoteForm = document.getElementById("quoteForm");
+          if (quoteForm) {
+            const quoteEndpoint =
+              "https://pteogwhauodbxudywsdm.supabase.co/functions/v1/request-quote";
+            const supabasePublishableKey =
+              "sb_publishable_L0IKXS54ynXQotuFBiyB7w_30I6gF1l";
+            const pickupDateInput = document.getElementById("pickupDate");
+            const returnDateInput = document.getElementById("returnDate");
+            const submitButton = document.getElementById("quoteSubmitButton");
+            const submitText = document.getElementById("quoteSubmitText");
+            const formStatus = document.getElementById("quoteFormStatus");
+
+            const localDate = (date) => {
+              const year = date.getFullYear();
+              const month = String(date.getMonth() + 1).padStart(2, "0");
+              const day = String(date.getDate()).padStart(2, "0");
+              return `${year}-${month}-${day}`;
+            };
+
+            const today = localDate(new Date());
+            pickupDateInput.min = today;
+            returnDateInput.min = today;
+            if (!pickupDateInput.value || pickupDateInput.value < today) {
+              const tomorrow = new Date();
+              tomorrow.setDate(tomorrow.getDate() + 1);
+              pickupDateInput.value = localDate(tomorrow);
+            }
+            if (
+              !returnDateInput.value ||
+              returnDateInput.value <= pickupDateInput.value
+            ) {
+              const suggestedReturn = new Date(
+                `${pickupDateInput.value}T12:00:00`,
+              );
+              suggestedReturn.setDate(suggestedReturn.getDate() + 3);
+              returnDateInput.value = localDate(suggestedReturn);
+            }
+            returnDateInput.min = pickupDateInput.value;
+
+            pickupDateInput.addEventListener("change", () => {
+              returnDateInput.min = pickupDateInput.value;
+              if (returnDateInput.value <= pickupDateInput.value) {
+                const nextDay = new Date(`${pickupDateInput.value}T12:00:00`);
+                nextDay.setDate(nextDay.getDate() + 1);
+                returnDateInput.value = localDate(nextDay);
+              }
+            });
+
+            quoteForm.addEventListener("submit", async (event) => {
+              event.preventDefault();
+              const pickupLocation =
+                document.getElementById("pickupLocation").value;
+              const pickupDate = document.getElementById("pickupDate").value;
+              const pickupTime = document.getElementById("pickupTime").value;
+              const returnDate = document.getElementById("returnDate").value;
+              const returnTime = document.getElementById("returnTime").value;
+              const useDifferentReturn =
+                document.getElementById("dropoffToggle").checked;
+              const returnLocation = useDifferentReturn
+                ? document.getElementById("returnLocation").value
+                : pickupLocation;
+
+              submitButton.disabled = true;
+              submitButton.classList.add("opacity-70", "cursor-wait");
+              submitText.textContent = "Enviando…";
+              formStatus.className =
+                "lg:col-span-12 rounded-xl px-4 py-3 font-body-sm text-body-sm bg-blue-50 text-brand-blue-dark";
+              formStatus.textContent = "Estamos registrando tu solicitud…";
+
+              try {
+                const response = await fetch(quoteEndpoint, {
+                  method: "POST",
+                  headers: {
+                    apikey: supabasePublishableKey,
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    full_name: document.getElementById("customerName").value,
+                    email: document.getElementById("customerEmail").value,
+                    phone: document.getElementById("customerPhone").value,
+                    customer_type: customerType,
+                    company_name: companyNameInput?.value || "",
+                    company_tax_id: companyTaxIdInput?.value || "",
+                    pickup_location_slug: pickupLocation,
+                    return_location_slug: returnLocation,
+                    pickup_at: `${pickupDate}T${pickupTime}:00-03:00`,
+                    return_at: `${returnDate}T${returnTime}:00-03:00`,
+                    website: document.getElementById("companyWebsite").value,
+                  }),
+                });
+                const result = await response.json();
+                if (!response.ok) {
+                  throw new Error(result.error || "No pudimos enviar la solicitud.");
+                }
+
+                formStatus.className =
+                  "lg:col-span-12 rounded-xl px-4 py-3 font-body-sm text-body-sm bg-emerald-50 text-emerald-800 border border-emerald-200";
+                formStatus.textContent = `Solicitud recibida. Tu código es ${result.reference_code}. AGM responderá formalmente a tu correo.`;
+              } catch (error) {
+                formStatus.className =
+                  "lg:col-span-12 rounded-xl px-4 py-3 font-body-sm text-body-sm bg-red-50 text-red-800 border border-red-200";
+                formStatus.textContent =
+                  error.message || "No pudimos enviar la solicitud. Intenta nuevamente.";
+              } finally {
+                submitButton.disabled = false;
+                submitButton.classList.remove("opacity-70", "cursor-wait");
+                submitText.textContent = "Solicitar cotización";
+              }
+
+            });
+          }
+
+          document.querySelectorAll("#flota button").forEach((button) => {
+            if (button.textContent.includes("Cotizar")) {
+              button.addEventListener("click", () => {
+                const vehicle = button
+                  .closest(".group")
+                  ?.querySelector("h3")
+                  ?.textContent.trim();
+                const subject = `Cotización ${vehicle || "de vehículo"}`;
+                const message = `Hola AGM Rent a Car:\n\nQuisiera solicitar una cotización formal para ${vehicle || "un vehículo"}.\n\nQuedo atento/a a información de disponibilidad y tarifa.\nGracias.`;
+
+                window.location.href = `mailto:reservas@agmrentacar.cl?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+              });
+            }
+          });
+        });
+      </script>
+    </main>
+    <a
+      aria-label="Abrir soporte de AGM por WhatsApp"
+      class="fixed bottom-5 right-4 sm:bottom-6 sm:right-6 z-[60] inline-flex h-14 w-14 sm:w-auto items-center justify-center gap-3 rounded-full bg-[#25D366] px-0 sm:px-5 text-slate-950 shadow-[0_14px_35px_-10px_rgba(37,211,102,0.75)] ring-4 ring-white/80 transition-all hover:-translate-y-1 hover:bg-[#20BD5A] hover:shadow-[0_18px_40px_-10px_rgba(37,211,102,0.9)] focus:outline-none focus-visible:ring-brand-blue"
+      href="https://api.whatsapp.com/send?phone=56966571218&amp;text=Hola%20AGM%20Rent%20a%20Car%2C%20necesito%20soporte%20con%20mi%20arriendo."
+      id="floatingWhatsApp"
+      rel="noopener noreferrer"
+      target="_blank"
+      title="Soporte por WhatsApp"
+    >
+      <span class="material-symbols-outlined text-[27px]" aria-hidden="true"
+        >chat</span
+      >
+      <span class="hidden sm:block text-left leading-tight">
+        <span class="block text-[10px] font-bold uppercase tracking-wider"
+          >¿Necesitas ayuda?</span
+        >
+        <span class="block font-label-md text-label-md font-extrabold"
+          >Soporte WhatsApp</span
+        >
+      </span>
+    </a>
+    <footer class="w-full bg-brand-blue-dark text-white/75">
+      <div class="bg-brand-blue py-space-lg">
+        <div
+          class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg flex flex-wrap items-center justify-between gap-space-lg"
+        >
+          <div class="flex items-center gap-space-md">
+            <div
+              class="w-10 h-10 rounded-full bg-brand-lime/10 flex items-center justify-center"
+            >
+              <span
+                class="material-symbols-outlined text-brand-lime text-[24px]"
+                >support_agent</span
+              >
+            </div>
+            <div>
+              <p
+                class="font-title-md text-title-md text-surface-white font-bold"
+              >
+                Atención directa AGM
+              </p>
+              <p class="font-body-sm text-body-sm text-slate-400">
+                Reservas por correo y asistencia operativa cuando la necesites
+              </p>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-space-sm">
+            <a
+              class="px-4 py-2 rounded-lg bg-brand-blue-dark hover:bg-slate-950 text-surface-white font-label-md text-label-md transition-colors flex items-center gap-space-xs"
+              data-path="email"
+              href="mailto:reservas@agmrentacar.cl?subject=Solicitud%20de%20cotizaci%C3%B3n"
+              ><span
+                class="material-symbols-outlined text-[18px] text-brand-lime"
+                >mail</span
+              ><span>Solicitar por correo</span></a
+            ><a
+              class="px-4 py-2 rounded-lg bg-brand-blue-dark hover:bg-slate-950 text-surface-white font-label-md text-label-md transition-colors flex items-center gap-space-xs"
+              data-path="telefono"
+              href="tel:+56966571218"
+              ><span
+                class="material-symbols-outlined text-[18px] text-brand-lime"
+                >call</span
+              ><span>Llamar ahora</span></a
+            ><a
+              class="px-4 py-2 rounded-lg bg-brand-blue-dark hover:bg-slate-950 text-surface-white font-label-md text-label-md transition-colors flex items-center gap-space-xs"
+              data-path="whatsapp"
+              href="https://api.whatsapp.com/send?phone=56966571218"
+              ><span
+                class="material-symbols-outlined text-[18px] text-brand-lime"
+                >support_agent</span
+              ><span>Soporte WhatsApp</span></a
+            >
+          </div>
+        </div>
+      </div>
+      <div
+        class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg py-space-xl"
+      >
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-gutter-lg"
+        >
+          <div class="lg:col-span-2 space-y-space-md">
+            <div class="flex items-center gap-space-sm">
+              <span
+                class="font-headline-sm text-headline-sm font-bold text-surface-white tracking-tight"
+                >AGM Rent a Car</span
+              ><span
+                class="px-2 py-0.5 rounded text-slate-900 bg-brand-lime font-label-sm text-label-sm font-bold"
+                >MAGALLANES</span
+              >
+            </div>
+            <p class="font-body-md text-body-md text-slate-400 max-w-sm">
+              Arriendo de vehículos en Punta Arenas para turismo, empresas y
+              faenas. Recorre la Patagonia con kilometraje libre y atención
+              personalizada.
+            </p>
+            <div class="space-y-space-xs pt-space-xs font-body-sm text-body-sm">
+              <p class="text-slate-300">
+                <strong class="text-surface-white">Ubicación:</strong> Punta
+                Arenas, Región de Magallanes
+              </p>
+              <p class="text-slate-300">
+                <strong class="text-surface-white">Reservas:</strong> +56 9 6657
+                1218
+              </p>
+              <p class="text-slate-300">
+                <strong class="text-surface-white">Correo:</strong>
+                reservas@agmrentacar.cl
+              </p>
+            </div>
+          </div>
+          <div>
+            <p
+              class="font-label-lg text-label-lg text-surface-white mb-space-md uppercase tracking-wider"
+            >
+              Navegación
+            </p>
+            <ul class="space-y-space-sm font-body-sm text-body-sm">
+              <li
+                class="text-slate-400 hover:text-brand-lime transition-colors"
+              >
+                <a data-path="inicio" href="#inicio">Inicio</a>
+              </li>
+              <li
+                class="text-slate-400 hover:text-brand-lime transition-colors"
+              >
+                <a data-path="vehiculos" href="#flota">Vehículos</a>
+              </li>
+              <li
+                class="text-slate-400 hover:text-brand-lime transition-colors"
+              >
+                <a data-path="servicios" href="#servicios">Servicios</a>
+              </li>
+              <li
+                class="text-slate-400 hover:text-brand-lime transition-colors"
+              >
+                <a data-path="beneficios" href="#beneficios">Beneficios</a>
+              </li>
+              <li
+                class="text-slate-400 hover:text-brand-lime transition-colors"
+              >
+                <a data-path="empresas" href="#servicios">Empresas y Faenas</a>
+              </li>
+              <li
+                class="text-slate-400 hover:text-brand-lime transition-colors"
+              >
+                <a data-path="contacto" href="#contacto">Contacto</a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <p
+              class="font-label-lg text-label-lg text-surface-white mb-space-md uppercase tracking-wider"
+            >
+              Servicios en Punta Arenas
+            </p>
+            <ul
+              class="space-y-space-sm font-body-sm text-body-sm text-slate-400"
+            >
+              <li>Entrega en aeropuerto</li>
+              <li>Entrega en hoteles</li>
+              <li>Entrega en departamentos</li>
+              <li>Kilometraje libre</li>
+              <li>Atención 24 horas</li>
+              <li>Operadores bilingües</li>
+            </ul>
+          </div>
+          <div>
+            <p
+              class="font-label-lg text-label-lg text-surface-white mb-space-md uppercase tracking-wider"
+            >
+              Contacto
+            </p>
+            <p class="font-body-sm text-body-sm text-slate-400 mb-space-sm">
+              Te ayudamos a elegir el vehículo adecuado para tu viaje por
+              Magallanes.
+            </p>
+            <div class="space-y-space-xs">
+              <a
+                class="px-3 py-2 rounded-lg bg-white/5 border border-white/10 flex items-center gap-space-sm hover:bg-white/10 cursor-pointer"
+                href="mailto:reservas@agmrentacar.cl?subject=Solicitud%20de%20cotizaci%C3%B3n"
+              >
+                <span class="material-symbols-outlined text-brand-lime"
+                  >mail</span
+                >
+                <div>
+                  <div class="text-[10px] text-slate-400 uppercase font-bold">
+                    Canal formal de
+                  </div>
+                  <div class="font-label-md text-label-md text-surface-white">
+                    Reservas
+                  </div>
+                </div>
+              </a>
+              <a
+                class="px-3 py-2 rounded-lg bg-white/5 border border-white/10 flex items-center gap-space-sm hover:bg-white/10 cursor-pointer"
+                href="https://api.whatsapp.com/send?phone=56966571218"
+              >
+                <span class="material-symbols-outlined text-brand-lime"
+                  >support_agent</span
+                >
+                <div>
+                  <div class="text-[10px] text-slate-400 uppercase font-bold">
+                    Soporte por
+                  </div>
+                  <div class="font-label-md text-label-md text-surface-white">
+                    WhatsApp
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="mt-space-xl pt-space-lg flex flex-col sm:flex-row items-center justify-between gap-space-md font-body-sm text-body-sm text-slate-500"
+        >
+          <p>© 2026 AGM Rent a Car. Todos los derechos reservados.</p>
+          <div class="flex items-center gap-space-md">
+            <a
+              class="hover:text-slate-300 transition-colors"
+              data-path="terminos-y-condiciones"
+              href="#"
+              >Términos y Condiciones</a
+            ><a
+              class="hover:text-slate-300 transition-colors"
+              data-path="politicas-de-privacidad"
+              href="#"
+              >Políticas de Privacidad</a
+            ><a
+              class="hover:text-slate-300 transition-colors"
+              data-path="coberturas-y-seguros"
+              href="#"
+              >Coberturas y Seguros</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
