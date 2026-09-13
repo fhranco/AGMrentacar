@@ -2150,7 +2150,7 @@
               formStatus.textContent = "Estamos registrando tu solicitud…";
 
               try {
-                const response = await fetch(quoteEndpoint, {
+                const httpResponse = await fetch(quoteEndpoint, {
                   method: "POST",
                   headers: {
                     apikey: supabasePublishableKey,
@@ -2174,14 +2174,23 @@
                     website: document.getElementById("companyWebsite").value,
                   }),
                 });
-                const result = await response.json();
-                if (!response.ok) {
-                  throw new Error(result.error || "No pudimos enviar la solicitud.");
+                const response = await httpResponse.json();
+                if (!httpResponse.ok) {
+                  throw new Error(response.error || "No pudimos enviar la solicitud.");
+                }
+                if (
+                  httpResponse.status !== 201 ||
+                  typeof response.reference_code !== "string" ||
+                  !response.reference_code.trim()
+                ) {
+                  throw new Error(
+                    "No pudimos confirmar el registro. Intenta nuevamente o escríbenos por correo.",
+                  );
                 }
 
                 formStatus.className =
                   "lg:col-span-12 rounded-xl px-4 py-3 font-body-sm text-body-sm bg-emerald-50 text-emerald-800 border border-emerald-200";
-                formStatus.textContent = `Solicitud recibida. Tu código es ${result.reference_code}. AGM responderá formalmente a tu correo.`;
+                formStatus.textContent = `Solicitud recibida. Tu código es ${response.reference_code}. AGM responderá formalmente a tu correo.`;
               } catch (error) {
                 formStatus.className =
                   "lg:col-span-12 rounded-xl px-4 py-3 font-body-sm text-body-sm bg-red-50 text-red-800 border border-red-200";
