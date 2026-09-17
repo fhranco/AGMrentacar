@@ -174,11 +174,11 @@ const contentSecurityPolicy = [
   "base-uri 'self'",
   "object-src 'none'",
   "form-action 'self'",
-  "script-src 'self' https://challenges.cloudflare.com",
+  "script-src 'self' https://challenges.cloudflare.com https://www.googletagmanager.com",
   "style-src 'self' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com data:",
-  "img-src 'self' data:",
-  "connect-src 'self' https://pteogwhauodbxudywsdm.supabase.co https://challenges.cloudflare.com",
+  "img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com",
+  "connect-src 'self' https://pteogwhauodbxudywsdm.supabase.co https://challenges.cloudflare.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com",
   "frame-src https://www.openstreetmap.org https://challenges.cloudflare.com",
   "upgrade-insecure-requests",
 ].join("; ");
@@ -190,11 +190,11 @@ let html = source
   .replace(appMatch[0], "")
   .replace(
     "</head>",
-    `    <meta http-equiv="Content-Security-Policy" content="${contentSecurityPolicy}" />\n    <link rel="stylesheet" href="assets/site.css" />\n  </head>`,
+    `    <meta http-equiv="Content-Security-Policy" content="${contentSecurityPolicy}" />\n    <link rel="stylesheet" href="assets/site.css?v=${visibleCommit}" />\n  </head>`,
   )
   .replace(
     "</body>",
-    '    <script src="assets/app.js" defer></script>\n  </body>',
+    `    <script src="assets/app.js?v=${visibleCommit}" defer></script>\n  </body>`,
   )
   .replace(
     releaseMarker,

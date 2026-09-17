@@ -30,6 +30,8 @@ type QuoteRequest = {
   pickup_at?: unknown;
   return_at?: unknown;
   customer_notes?: unknown;
+  privacy_consent?: unknown;
+  privacy_policy_version?: unknown;
   turnstile_token?: unknown;
   website?: unknown;
 };
@@ -129,6 +131,14 @@ const handler = withSupabase(
 
     const validCustomerTypes = new Set(["tourism", "business", "mining"]);
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (payload.privacy_consent !== true) {
+      return json(
+        req,
+        { error: "Debes aceptar la Política de Tratamiento de Datos Personales para continuar (Ley N° 21.719)." },
+        422,
+      );
+    }
 
     if (fullName.length < 3 || !emailPattern.test(email) || !pickupSlug) {
       return json(req, { error: "Revisa tu nombre, correo y lugar de retiro." }, 422);
@@ -243,6 +253,9 @@ const handler = withSupabase(
         company_name: companyName,
         company_tax_id: companyTaxId,
         customer_notes: notes,
+        privacy_consent: true,
+        privacy_consent_at: new Date().toISOString(),
+        privacy_policy_version: textValue(payload.privacy_policy_version, 40) || "2026-v1",
         source: "web",
         status: "requested",
       })
