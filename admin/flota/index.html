@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestión de Flota | Panel Administrativo AGM</title>
+    <link rel="stylesheet" href="../css/admin.css" />
+  </head>
+  <body>
+    <!-- Barra superior -->
+    <header class="admin-navbar">
+      <div class="admin-nav-brand">
+        <span class="admin-nav-brand-title">AGM Rent a Car</span>
+        <span class="admin-nav-badge">Admin</span>
+      </div>
+      <div class="admin-nav-actions">
+        <span class="admin-nav-user">
+          <span id="navUserEmail">Cargando...</span>
+          <span id="navUserRole" class="admin-nav-role">staff</span>
+        </span>
+        <button type="button" id="logoutBtn" class="btn btn-sm btn-outline">
+          Cerrar sesión
+        </button>
+      </div>
+    </header>
+
+    <!-- Contenedor principal -->
+    <main class="admin-container">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Gestión de Flota</h1>
+          <p class="page-subtitle">
+            Administración del catálogo de vehículos y contenido multilingüe.
+          </p>
+        </div>
+        <div class="metric-badges">
+          <div class="metric-badge" id="activeCount">6 Activos</div>
+          <div class="metric-badge" id="inactiveCount">1 Inactivos</div>
+        </div>
+      </div>
+
+      <div id="fleetAlert" class="alert" role="alert"></div>
+
+      <!-- Grid de vehículos -->
+      <div class="fleet-grid" id="fleetGrid">
+        <!-- Renderizado dinámico desde flota.js -->
+      </div>
+    </main>
+
+    <!-- Modal de Edición de Vehículo -->
+    <dialog id="editModal">
+      <div class="modal-header">
+        <h3 id="modalTitle">Editar Modelo de Vehículo</h3>
+        <button type="button" id="closeModalBtn" class="btn btn-sm btn-outline" aria-label="Cerrar modal">✕</button>
+      </div>
+      <form id="editVehicleForm" novalidate>
+        <div class="modal-body">
+          <input type="hidden" id="editVehicleId" />
+
+          <!-- SECCIÓN 1: DATOS TÉCNICOS -->
+          <div class="form-section">
+            <h4 class="form-section-title">1. Datos Técnicos</h4>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="editMake" class="form-label">Marca</label>
+                <input type="text" id="editMake" class="form-input" required />
+              </div>
+              <div class="form-group">
+                <label for="editModel" class="form-label">Modelo</label>
+                <input type="text" id="editModel" class="form-input" required />
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="editCategory" class="form-label">Categoría Técnica</label>
+                <select id="editCategory" class="form-select" required></select>
+              </div>
+              <div class="form-group">
+                <label for="editSeats" class="form-label">Pasajeros</label>
+                <input type="number" id="editSeats" class="form-input" min="1" max="12" required />
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="editLuggage" class="form-label">Capacidad de Equipaje (maletas)</label>
+                <input type="number" id="editLuggage" class="form-input" min="0" max="12" required />
+              </div>
+              <div class="form-group">
+                <label for="editTransmission" class="form-label">Transmisión</label>
+                <select id="editTransmission" class="form-select" required>
+                  <option value="automatic">Automática</option>
+                  <option value="manual">Manual</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="editDrivetrain" class="form-label">Tracción</label>
+                <select id="editDrivetrain" class="form-select">
+                  <option value="">— Sin confirmar —</option>
+                  <option value="4x2">4x2</option>
+                  <option value="4x4">4x4</option>
+                  <option value="awd">AWD</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="editFuelType" class="form-label">Combustible</label>
+                <select id="editFuelType" class="form-select">
+                  <option value="">— Sin confirmar —</option>
+                  <option value="gasoline">Gasolina</option>
+                  <option value="diesel">Diésel</option>
+                  <option value="hybrid">Híbrido</option>
+                  <option value="electric">Eléctrico</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-checkbox-label">
+                  <input type="checkbox" id="editAirConditioning" />
+                  <span>Aire Acondicionado (A/C)</span>
+                </label>
+              </div>
+              <div class="form-group">
+                <label for="editSortOrder" class="form-label">Orden de Visualización</label>
+                <input type="number" id="editSortOrder" class="form-input" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-checkbox-label">
+                <input type="checkbox" id="editActive" />
+                <span>Modelo Activo en Flota</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- SECCIÓN 2: CONTENIDO MAESTRO EN ESPAÑOL -->
+          <div class="form-section">
+            <h4 class="form-section-title">2. Contenido en Español (Maestro)</h4>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="editDisplayName" class="form-label">Nombre Visible (ES)</label>
+                <input type="text" id="editDisplayName" class="form-input" required />
+              </div>
+              <div class="form-group">
+                <label for="editCategoryName" class="form-label">Categoría Visible (ES)</label>
+                <input type="text" id="editCategoryName" class="form-input" placeholder="Ej: SUV • Crossover" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="editShortDescription" class="form-label">Descripción Corta</label>
+              <input type="text" id="editShortDescription" class="form-input" placeholder="Breve resumen para tarjetas" />
+            </div>
+
+            <div class="form-group">
+              <label for="editDescription" class="form-label">Descripción Completa (ES)</label>
+              <textarea id="editDescription" class="form-textarea" rows="3"></textarea>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="editSeoTitle" class="form-label">Título SEO</label>
+                <input type="text" id="editSeoTitle" class="form-input" />
+              </div>
+              <div class="form-group">
+                <label for="editMetaDescription" class="form-label">Meta Descripción</label>
+                <textarea id="editMetaDescription" class="form-textarea" rows="2"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECCIÓN 3: ESTADO DE TRADUCCIONES -->
+          <div class="form-section">
+            <h4 class="form-section-title">3. Estado de Traducciones</h4>
+            <div class="translation-statuses">
+              <span id="statusEsText" class="trans-tag trans-original">ES ✓ Original</span>
+              <span id="statusEnText" class="trans-tag trans-pending">EN: pending</span>
+              <span id="statusPtText" class="trans-tag trans-pending">PT: pending</span>
+            </div>
+            <p class="form-label">
+              Al guardar cambios en el contenido en español, las traducciones en inglés y portugués pasarán automáticamente al estado <em>stale</em> (desactualizado).
+            </p>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="cancelEditBtn" class="btn btn-outline">Cancelar</button>
+          <button type="submit" id="saveVehicleBtn" class="btn btn-primary">Guardar Cambios</button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- Modal de Confirmación de Desactivación -->
+    <dialog id="deactivateModal">
+      <div class="modal-header">
+        <h3>Confirmar Desactivación</h3>
+      </div>
+      <div class="modal-body">
+        <p>
+          ¿Estás seguro de que deseas desactivar el modelo <strong id="deactivateModelName"></strong>?
+        </p>
+        <p class="page-subtitle modal-notice">
+          El modelo no se borrará de la base de datos y conservará todas sus relaciones, reservas e historial. Dejará de mostrarse en el catálogo público activo.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="cancelDeactivateBtn" class="btn btn-outline">Cancelar</button>
+        <button type="button" id="confirmDeactivateBtn" class="btn btn-danger-outline">Confirmar Desactivación</button>
+      </div>
+    </dialog>
+
+    <!-- Scripts locales (sin CDN externo, conforme a CSP) -->
+    <script src="../vendor/supabase.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/flota.js" defer></script>
+  </body>
+</html>

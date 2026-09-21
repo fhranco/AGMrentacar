@@ -220,6 +220,9 @@ cpSync(join(root, "assets", "images"), join(distPath, "assets", "images"), {
   recursive: true,
 });
 cpSync(join(root, "deploy", "apache.htaccess"), join(distPath, ".htaccess"));
+if (existsSync(join(root, "admin"))) {
+  cpSync(join(root, "admin"), join(distPath, "admin"), { recursive: true });
+}
 
 writeFileSync(
   join(distPath, "release.json"),
