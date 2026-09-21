@@ -34,25 +34,67 @@
 
   const KNOWN_BLOG_METADATA = {
     "torres-del-paine": {
-      category: "Rutas Australes",
-      readTime: "5 min de lectura",
-      route: "Ruta 9 Norte",
-      recommendedVehicle: "Toyota RAV4",
       image: "assets/images/blog-torres-del-paine.jpg",
+      recommendedVehicle: "Toyota RAV4",
+      locale: {
+        es: {
+          category: "Rutas Australes",
+          readTime: "5 min de lectura",
+          route: "Ruta 9 Norte",
+        },
+        en: {
+          category: "Southern Routes",
+          readTime: "5 min read",
+          route: "Route 9 North",
+        },
+        pt: {
+          category: "Rotas Austrais",
+          readTime: "5 min de leitura",
+          route: "Rota 9 Norte",
+        },
+      },
     },
     "cruce-argentina": {
-      category: "Frontera y Trámites",
-      readTime: "6 min de lectura",
-      route: "El Calafate / Ushuaia",
-      recommendedVehicle: "Toyota 4Runner",
       image: "assets/images/blog-cruce-argentina.jpg",
+      recommendedVehicle: "Toyota 4Runner",
+      locale: {
+        es: {
+          category: "Frontera y Trámites",
+          readTime: "6 min de lectura",
+          route: "El Calafate / Ushuaia",
+        },
+        en: {
+          category: "Border & Customs",
+          readTime: "6 min read",
+          route: "El Calafate / Ushuaia",
+        },
+        pt: {
+          category: "Fronteira e Trâmites",
+          readTime: "6 min de leitura",
+          route: "El Calafate / Ushuaia",
+        },
+      },
     },
     "conduccion-patagonia": {
-      category: "Seguridad y Clima",
-      readTime: "4 min de lectura",
-      route: "Consejos de Manejo",
-      recommendedVehicle: "Mazda CX-5",
       image: "assets/images/blog-conduccion-patagonia.jpg",
+      recommendedVehicle: "Mazda CX-5",
+      locale: {
+        es: {
+          category: "Seguridad y Clima",
+          readTime: "4 min de lectura",
+          route: "Consejos de Manejo",
+        },
+        en: {
+          category: "Safety & Weather",
+          readTime: "4 min read",
+          route: "Driving Tips",
+        },
+        pt: {
+          category: "Segurança e Clima",
+          readTime: "4 min de leitura",
+          route: "Dicas de Direção",
+        },
+      },
     },
   };
 
@@ -63,6 +105,7 @@
       luggage: (n, slug) =>
         slug === "mazda-bt-50" || n === 0 ? "Faenas" : `${n} Maletas`,
       ac: (val) => (val ? "A/C" : "Sin A/C"),
+      // Reservado para especificaciones futuras (el diseño público actual mantiene 4 specs: pasajeros, equipaje, transmisión, A/C)
       drivetrain: {
         "4x4": "4x4",
         "4x2": "4x2",
@@ -85,6 +128,7 @@
       defaultBlogCategory: "Guía de viaje",
       defaultRouteTag: "Patagonia",
       readingTime: (m) => `${m} min de lectura`,
+      emptyBlog: "No hay guías publicadas disponibles.",
     },
     en: {
       transmission: { automatic: "Automatic", manual: "Manual" },
@@ -92,6 +136,7 @@
       luggage: (n, slug) =>
         slug === "mazda-bt-50" || n === 0 ? "Work/Cargo" : `${n} Bags`,
       ac: (val) => (val ? "A/C" : "No A/C"),
+      // Reserved for future technical specifications
       drivetrain: {
         "4x4": "4x4",
         "4x2": "4x2",
@@ -114,6 +159,7 @@
       defaultBlogCategory: "Travel guide",
       defaultRouteTag: "Patagonia",
       readingTime: (m) => `${m} min read`,
+      emptyBlog: "No travel guides are available in this language yet.",
     },
     pt: {
       transmission: { automatic: "Automática", manual: "Manual" },
@@ -121,6 +167,7 @@
       luggage: (n, slug) =>
         slug === "mazda-bt-50" || n === 0 ? "Trabalho/Carga" : `${n} Malas`,
       ac: (val) => (val ? "A/C" : "Sem A/C"),
+      // Reservado para especificações futuras
       drivetrain: {
         "4x4": "4x4",
         "4x2": "4x2",
@@ -143,6 +190,7 @@
       defaultBlogCategory: "Guia de viagem",
       defaultRouteTag: "Patagônia",
       readingTime: (m) => `${m} min de leitura`,
+      emptyBlog: "Ainda não há guias disponíveis neste idioma.",
     },
   };
 
@@ -486,9 +534,9 @@
 
       quoteBtn.addEventListener("click", () => {
         if (typeof window.openVehicleQuote === "function") {
-          window.openVehicleQuote(trans.displayName, quoteBtn);
+          window.openVehicleQuote(model.slug, quoteBtn);
         } else if (window.AGM_APP?.openVehicleQuote) {
-          window.AGM_APP.openVehicleQuote(trans.displayName, quoteBtn);
+          window.AGM_APP.openVehicleQuote(model.slug, quoteBtn);
         }
       });
 
@@ -542,6 +590,7 @@
 
       if (trans && trans.title && trans.content) {
         const legacy = KNOWN_BLOG_METADATA[post.slug] || {};
+        const legacyMeta = legacy.locale?.[locale] || {};
         validArticles.push({
           id: post.id,
           slug: post.slug,
@@ -549,9 +598,18 @@
           excerpt: trans.excerpt || "",
           content: trans.content,
           image: getSafeBlogImage(post),
-          category: legacy.category || I18N[locale]?.defaultBlogCategory || "Guía",
-          readTime: legacy.readTime || I18N[locale]?.readingTime(5) || "5 min",
-          route: legacy.route || I18N[locale]?.defaultRouteTag || "Patagonia",
+          category:
+            legacyMeta.category ||
+            I18N[locale]?.defaultBlogCategory ||
+            "Guía",
+          readTime:
+            legacyMeta.readTime ||
+            I18N[locale]?.readingTime(5) ||
+            "5 min",
+          route:
+            legacyMeta.route ||
+            I18N[locale]?.defaultRouteTag ||
+            "Patagonia",
           recommendedVehicle: legacy.recommendedVehicle || "",
         });
       }
@@ -645,9 +703,29 @@
     const blogGrid = document.getElementById("blogGrid");
     if (!blogGrid) return;
 
+    // Caso A: No hay posts CMS publicados en la base de datos o falló la consulta
+    if (!cmsData.posts || cmsData.posts.length === 0) {
+      // Mantener el fallback estático actual en el HTML
+      return;
+    }
+
+    // Caso B: Existen posts publicados en Supabase. Las reglas del CMS gobiernan el Blog.
     const validArticles = getValidBlogArticles(locale);
-    // Si no hay artículos publicados válidos, mantener el fallback estático
-    if (validArticles.length === 0) return;
+    const dict = I18N[locale] || I18N.es;
+
+    if (validArticles.length === 0) {
+      // No hay artículos publicados válidos para este idioma.
+      // Limpiar el grid y mostrar estado vacío seguro y localizado (nunca mostrar contenido en español).
+      const emptyCard = document.createElement("div");
+      emptyCard.className =
+        "col-span-full py-12 px-6 text-center rounded-2xl bg-surface-white border border-slate-200/80 shadow-sm";
+      const emptyText = document.createElement("p");
+      emptyText.className = "font-body-md text-body-md text-slate-500";
+      emptyText.textContent = dict.emptyBlog;
+      emptyCard.appendChild(emptyText);
+      blogGrid.replaceChildren(emptyCard);
+      return;
+    }
 
     const dict = I18N[locale] || I18N.es;
     const fragment = document.createDocumentFragment();

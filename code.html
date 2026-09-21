@@ -799,12 +799,12 @@
                     required
                   >
                     <option value="recomendacion" data-i18n="opt_vehicle_recom">Quiero que AGM me recomiende una opción</option>
-                    <option value="Nissan Kicks" data-i18n="opt_veh_kicks">Nissan Kicks (SUV Crossover)</option>
-                    <option value="Ford Territory" data-i18n="opt_veh_territory">Ford Territory (SUV Familiar)</option>
-                    <option value="Mazda CX-5" data-i18n="opt_veh_cx5">Mazda CX-5 (SUV Premium)</option>
-                    <option value="Toyota RAV4" data-i18n="opt_veh_rav4">Toyota RAV4 (SUV 4x4)</option>
-                    <option value="Toyota 4Runner" data-i18n="opt_veh_4runner">Toyota 4Runner (SUV 4x4 · 7 Pasajeros)</option>
-                    <option value="Mazda BT-50" data-i18n="opt_veh_bt50">Mazda BT-50 (Camioneta 4x4 Faenas)</option>
+                    <option value="Nissan Kicks" data-vehicle-slug="nissan-kicks" data-i18n="opt_veh_kicks">Nissan Kicks (SUV Crossover)</option>
+                    <option value="Ford Territory" data-vehicle-slug="ford-territory" data-i18n="opt_veh_territory">Ford Territory (SUV Familiar)</option>
+                    <option value="Mazda CX-5" data-vehicle-slug="mazda-cx-5" data-i18n="opt_veh_cx5">Mazda CX-5 (SUV Premium)</option>
+                    <option value="Toyota RAV4" data-vehicle-slug="toyota-rav4" data-i18n="opt_veh_rav4">Toyota RAV4 (SUV 4x4)</option>
+                    <option value="Toyota 4Runner" data-vehicle-slug="toyota-4runner" data-i18n="opt_veh_4runner">Toyota 4Runner (SUV 4x4 · 7 Pasajeros)</option>
+                    <option value="Mazda BT-50" data-vehicle-slug="mazda-bt-50" data-i18n="opt_veh_bt50">Mazda BT-50 (Camioneta 4x4 Faenas)</option>
                   </select>
                 </div>
                 <div
@@ -2440,16 +2440,25 @@
 
           const openVehicleQuote = (vehicle, trigger) => {
             if (!quoteFormContainer || !vehiclePreference) return;
-            const matchOpt = [...vehiclePreference.options].find((opt) => {
-              if (opt.value === vehicle) return true;
-              if (opt.dataset.slug && opt.dataset.slug === vehicle) return true;
-              const slugVal = opt.value.toLowerCase().replace(/[^a-z0-9]/g, "-");
-              const vehicleSlug = vehicle.toLowerCase().replace(/[^a-z0-9]/g, "-");
-              return (
-                slugVal === vehicleSlug ||
-                opt.textContent.toLowerCase().includes(vehicle.toLowerCase())
+            // 1. Resolver prioritariamente por data-vehicle-slug
+            let matchOpt = [...vehiclePreference.options].find(
+              (opt) =>
+                opt.dataset.vehicleSlug === vehicle ||
+                opt.dataset.slug === vehicle,
+            );
+            // 2. Coincidencia por value exacto
+            if (!matchOpt) {
+              matchOpt = [...vehiclePreference.options].find(
+                (opt) => opt.value === vehicle,
               );
-            });
+            }
+            // 3. Legacy text match
+            if (!matchOpt) {
+              matchOpt = [...vehiclePreference.options].find((opt) =>
+                opt.textContent.toLowerCase().includes(vehicle.toLowerCase()),
+              );
+            }
+
             if (matchOpt) {
               vehiclePreference.value = matchOpt.value;
             } else {
@@ -2457,7 +2466,9 @@
             }
             document.getElementById("quoteFormStatus")?.classList.add("hidden");
             if (quoteDialogTitle) {
-              quoteDialogTitle.textContent = `Cotizar ${matchOpt?.value || vehicle}`;
+              const displayName =
+                trigger?.dataset?.vehicleName || matchOpt?.value || vehicle;
+              quoteDialogTitle.textContent = `Cotizar ${displayName}`;
             }
             lastQuoteTrigger = trigger;
 
