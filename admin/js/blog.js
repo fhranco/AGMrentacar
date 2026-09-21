@@ -1,5 +1,6 @@
 // Lógica del panel administrativo de blog (/admin/blog)
 // Hardening XSS: toda la creación de nodos usa createElement y textContent
+// Hotfix 3.1: Dirty tracking, metadata editable solo en ES y archivado sin tocar contenido
 
 document.addEventListener("DOMContentLoaded", async () => {
   const auth = window.AGM_AUTH;
@@ -43,12 +44,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   const cancelBlogBtn = document.getElementById("cancelBlogBtn");
   const saveBlogBtn = document.getElementById("saveBlogBtn");
 
-  // Inputs del Modal
+  // Inputs del Modal (Datos generales)
   const editBlogId = document.getElementById("editBlogId");
   const editSlug = document.getElementById("editSlug");
   const editStatus = document.getElementById("editStatus");
   const editFeaturedImagePath = document.getElementById("editFeaturedImagePath");
+  const metaHelpText = document.getElementById("metaHelpText");
 
+  const metaInputs = [editSlug, editStatus, editFeaturedImagePath];
+
+  // Inputs del Modal (Contenido multilingüe)
   const editBlogTitle = document.getElementById("editBlogTitle");
   const editBlogExcerpt = document.getElementById("editBlogExcerpt");
   const editBlogContent = document.getElementById("editBlogContent");
@@ -71,9 +76,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   const cancelArchiveBtn = document.getElementById("cancelArchiveBtn");
   const confirmArchiveBtn = document.getElementById("confirmArchiveBtn");
 
+  // Modal de Descarte de Cambios
+  const discardModal = document.getElementById("discardModal");
+  const keepEditingBtn = document.getElementById("keepEditingBtn");
+  const confirmDiscardBtn = document.getElementById("confirmDiscardBtn");
+
   let blogPosts = [];
   let currentEditingPost = null;
   let currentLocale = "es";
+  let isDirty = false;
   let postToArchive = null;
   let isSlugManuallyEdited = false;
 
@@ -312,10 +323,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (labelLocaleBlogExcerpt) labelLocaleBlogExcerpt.textContent = tagText;
     if (labelLocaleBlogContent) labelLocaleBlogContent.textContent = tagText;
 
-    if (blogLocaleHelpText) {
-      if (locale === "es") {
+    // Regla Hotfix 3.1: Metadata general solo editable en ES
+    if (locale === "es") {
+      metaInputs.forEach((el) => {
+        if (el) el.disabled = false;
+      });
+      if (metaHelpText) metaHelpText.textContent = "";
+      if (blogLocaleHelpText) {
         blogLocaleHelpText.textContent = "El contenido en español es la fuente maestra. Al guardarlo, las versiones en inglés y portugués pasarán automáticamente al estado stale (desactualizado).";
-      } else {
+      }
+    } else {
+      metaInputs.forEach((el) => {
+        if (el) el.disabled = true;
+      });
+      if (metaHelpText) {
+        metaHelpText.textContent = "Los datos generales del artículo se administran desde la pestaña Español.";
+      }
+      if (blogLocaleHelpText) {
         blogLocaleHelpText.textContent = "Traducción manual. Para marcarla como revisada (reviewed) debe tener al menos Título y Contenido. Si se vacía por completo volverá al estado pending.";
       }
     }
@@ -342,6 +366,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const openNewPostModal = () => {
     currentEditingPost = null;
     isSlugManuallyEdited = false;
+    isDirty = false;
 
     modalTitle.textContent = "Nuevo Artículo del Blog";
     editBlogId.value = "";
@@ -363,7 +388,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!post) return;
 
     currentEditingPost = post;
-    isSlugManuallyEdited = true; // Para posts existentes no sobreescribir el slug automáticamente
+    isSlugManuallyEdited = true;
+    isDirty = false;
 
     modalTitle.textContent = "Editar Artículo del Blog";
     editBlogId.value = post.id;
@@ -390,10 +416,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     isSlugManuallyEdited = true;
   });
 
-  // Switch de tabs
+  // Dirty tracking en formulario
+  blogForm.addEventListener("input", () => {
+    isDirty = true;
+  });
+  blogForm.addEventListener("change", () => {
+    isDirty = true;
+  });
+
+  // Switch de tabs con protección de dirty state
   tabBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
       const locale = btn.dataset.locale;
+      if (locale === currentLocale) return;
+
+      if (isDirty) {
+        showAlert("Tienes cambios sin guardar. Guarda o descarta los cambios antes de cambiar de idioma.", "danger");
+        return;
+      }
       populateLocaleFields(locale);
     });
   });
@@ -429,6 +469,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
         if (error) throw error;
+        isDirty = false;
         showAlert("Artículo y contenido maestro en español guardados con éxito.");
 
         await loadBlogPosts();
@@ -453,6 +494,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
         if (error) throw error;
+        isDirty = false;
         showAlert(`Traducción en ${currentLocale.toUpperCase()} guardada con éxito.`);
 
         await loadBlogPosts();
@@ -476,10 +518,36 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (blogModal.open) blogModal.close();
     currentEditingPost = null;
     isSlugManuallyEdited = false;
+    isDirty = false;
   };
 
-  closeModalBtn.addEventListener("click", closeBlogModal);
-  cancelBlogBtn.addEventListener("click", closeBlogModal);
+  const requestCloseModal = () => {
+    if (isDirty) {
+      if (typeof discardModal.showModal === "function") {
+        discardModal.showModal();
+      }
+      return;
+    }
+    closeBlogModal();
+  };
+
+  closeModalBtn.addEventListener("click", requestCloseModal);
+  cancelBlogBtn.addEventListener("click", requestCloseModal);
+
+  if (keepEditingBtn) {
+    keepEditingBtn.addEventListener("click", () => {
+      discardModal.close();
+    });
+  }
+
+  if (confirmDiscardBtn) {
+    confirmDiscardBtn.addEventListener("click", () => {
+      isDirty = false;
+      discardModal.close();
+      closeBlogModal();
+    });
+  }
+
   if (newPostBtn) newPostBtn.addEventListener("click", openNewPostModal);
 
   // Modal de Archivado
@@ -492,22 +560,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   };
 
+  // Hotfix 3.1: Archivado mediante RPC admin_set_blog_status sin tocar contenido ni traducciones
   confirmArchiveBtn.addEventListener("click", async () => {
     if (!postToArchive) return;
 
     confirmArchiveBtn.disabled = true;
     try {
-      const esTrans = postToArchive.translations["es"] || {};
-      const { error } = await client.rpc("admin_save_blog_post", {
+      const { error } = await client.rpc("admin_set_blog_status", {
         p_blog_post_id: postToArchive.id,
-        p_slug: postToArchive.slug,
         p_status: "archived",
-        p_featured_image_path: postToArchive.featured_image_path || null,
-        p_title: esTrans.title || postToArchive.slug,
-        p_excerpt: esTrans.excerpt || null,
-        p_content: esTrans.content || "Contenido archivado.",
-        p_seo_title: esTrans.seo_title || null,
-        p_meta_description: esTrans.meta_description || null,
       });
 
       if (error) throw error;

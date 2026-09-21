@@ -1,5 +1,6 @@
 // Lógica del panel administrativo de flota (/admin/flota)
 // Hardening XSS: toda la creación de nodos usa createElement y textContent
+// Hotfix 3.1: Dirty tracking y campos técnicos editables solo en pestaña Español
 
 document.addEventListener("DOMContentLoaded", async () => {
   const auth = window.AGM_AUTH;
@@ -49,8 +50,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const labelLocaleTagShortDesc = document.getElementById("labelLocaleTagShortDesc");
   const labelLocaleTagDesc = document.getElementById("labelLocaleTagDesc");
   const localeHelpText = document.getElementById("localeHelpText");
+  const techHelpText = document.getElementById("techHelpText");
 
-  // Inputs del Modal
+  // Inputs del Modal (Técnicos)
   const editVehicleId = document.getElementById("editVehicleId");
   const editMake = document.getElementById("editMake");
   const editModel = document.getElementById("editModel");
@@ -64,6 +66,21 @@ document.addEventListener("DOMContentLoaded", async () => {
   const editSortOrder = document.getElementById("editSortOrder");
   const editActive = document.getElementById("editActive");
 
+  const techInputs = [
+    editMake,
+    editModel,
+    editCategory,
+    editSeats,
+    editLuggage,
+    editTransmission,
+    editDrivetrain,
+    editFuelType,
+    editAirConditioning,
+    editSortOrder,
+    editActive,
+  ];
+
+  // Inputs del Modal (Contenido multilingüe)
   const editDisplayName = document.getElementById("editDisplayName");
   const editCategoryName = document.getElementById("editCategoryName");
   const editShortDescription = document.getElementById("editShortDescription");
@@ -77,10 +94,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   const cancelDeactivateBtn = document.getElementById("cancelDeactivateBtn");
   const confirmDeactivateBtn = document.getElementById("confirmDeactivateBtn");
 
+  // Modal de Descarte de Cambios
+  const discardModal = document.getElementById("discardModal");
+  const keepEditingBtn = document.getElementById("keepEditingBtn");
+  const confirmDiscardBtn = document.getElementById("confirmDiscardBtn");
+
   let categories = [];
   let fleetModels = [];
   let currentEditingVehicle = null;
   let currentLocale = "es";
+  let isDirty = false;
   let vehicleToDeactivate = null;
 
   const showAlert = (msg, type = "success") => {
@@ -357,10 +380,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (labelLocaleTagShortDesc) labelLocaleTagShortDesc.textContent = tagText;
     if (labelLocaleTagDesc) labelLocaleTagDesc.textContent = tagText;
 
-    if (localeHelpText) {
-      if (locale === "es") {
+    // Regla Hotfix 3.1: Datos técnicos solo editables en ES
+    if (locale === "es") {
+      techInputs.forEach((el) => {
+        if (el) el.disabled = false;
+      });
+      if (techHelpText) techHelpText.textContent = "";
+      if (localeHelpText) {
         localeHelpText.textContent = "El contenido en español es la fuente maestra. Al guardarlo, las traducciones en inglés y portugués pasarán automáticamente al estado stale (desactualizado).";
-      } else {
+      }
+    } else {
+      techInputs.forEach((el) => {
+        if (el) el.disabled = true;
+      });
+      if (techHelpText) {
+        techHelpText.textContent = "Los datos técnicos se administran desde la pestaña Español.";
+      }
+      if (localeHelpText) {
         localeHelpText.textContent = "Traducción manual. Para marcarla como revisada (reviewed) debe tener al menos Nombre y Descripción. Si se vacía por completo volverá al estado pending.";
       }
     }
@@ -385,6 +421,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!vm) return;
 
     currentEditingVehicle = vm;
+    isDirty = false;
     editVehicleId.value = vm.id;
 
     // Sección 1: Datos Técnicos
@@ -409,10 +446,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   };
 
-  // Event listeners para tabs de idioma
+  // Dirty tracking en formulario
+  editForm.addEventListener("input", () => {
+    isDirty = true;
+  });
+  editForm.addEventListener("change", () => {
+    isDirty = true;
+  });
+
+  // Event listeners para tabs de idioma con protección de dirty state
   tabBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
       const locale = btn.dataset.locale;
+      if (locale === currentLocale) return;
+
+      if (isDirty) {
+        showAlert("Tienes cambios sin guardar. Guarda o descarta los cambios antes de cambiar de idioma.", "danger");
+        return;
+      }
       populateLocaleFields(locale);
     });
   });
@@ -448,6 +499,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
         if (error) throw error;
+        isDirty = false;
         showAlert("Datos técnicos y contenido maestro en español guardados con éxito.");
       } else {
         // Guardar traducción manual (EN o PT) mediante RPC admin_save_vehicle_translation
@@ -463,6 +515,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
         if (error) throw error;
+        isDirty = false;
         showAlert(`Traducción en ${currentLocale.toUpperCase()} guardada con éxito.`);
       }
 
@@ -487,10 +540,36 @@ document.addEventListener("DOMContentLoaded", async () => {
   const closeModal = () => {
     if (editModal.open) editModal.close();
     currentEditingVehicle = null;
+    isDirty = false;
   };
 
-  closeModalBtn.addEventListener("click", closeModal);
-  cancelEditBtn.addEventListener("click", closeModal);
+  // Solicitar cierre de modal con confirmación si hay cambios sin guardar
+  const requestCloseModal = () => {
+    if (isDirty) {
+      if (typeof discardModal.showModal === "function") {
+        discardModal.showModal();
+      }
+      return;
+    }
+    closeModal();
+  };
+
+  closeModalBtn.addEventListener("click", requestCloseModal);
+  cancelEditBtn.addEventListener("click", requestCloseModal);
+
+  if (keepEditingBtn) {
+    keepEditingBtn.addEventListener("click", () => {
+      discardModal.close();
+    });
+  }
+
+  if (confirmDiscardBtn) {
+    confirmDiscardBtn.addEventListener("click", () => {
+      isDirty = false;
+      discardModal.close();
+      closeModal();
+    });
+  }
 
   // Desactivar / Activar vehículo
   const handleToggleActive = async (vm) => {

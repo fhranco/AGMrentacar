@@ -143,6 +143,7 @@
                 <span>Modelo Activo en Flota</span>
               </label>
             </div>
+            <p class="form-help" id="techHelpText"></p>
           </div>
 
           <!-- SECCIÓN 2: CONTENIDO MULTILINGÜE -->
@@ -235,6 +236,20 @@
       <div class="modal-footer">
         <button type="button" id="cancelDeactivateBtn" class="btn btn-outline">Cancelar</button>
         <button type="button" id="confirmDeactivateBtn" class="btn btn-danger-outline">Confirmar Desactivación</button>
+      </div>
+    </dialog>
+
+    <!-- Modal de Confirmación de Descarte de Cambios -->
+    <dialog id="discardModal">
+      <div class="modal-header">
+        <h3>Cambios sin guardar</h3>
+      </div>
+      <div class="modal-body">
+        <p>Hay cambios sin guardar. ¿Deseas descartarlos?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="keepEditingBtn" class="btn btn-outline">Seguir editando</button>
+        <button type="button" id="confirmDiscardBtn" class="btn btn-danger">Descartar cambios</button>
       </div>
     </dialog>
 
