@@ -8,3 +8,4 @@ dist/
 .build-temp/
 backups/
 supabase/.temp/
+*.docx
