@@ -1877,7 +1877,7 @@
             </div>
 
             <!-- Grid de Artículos del Blog -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="blogGrid">
               <!-- Artículo 1: Torres del Paine -->
               <article class="bg-surface-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
                 <div>
@@ -2287,20 +2287,7 @@
           const categoryButtons = document.querySelectorAll(
             "[data-category-filter]",
           );
-          const vehicleCards = document.querySelectorAll(
-            "[data-vehicle-category]",
-          );
-          vehicleCards.forEach((card) => {
-            card.dataset.baseSpan =
-              [...card.classList].find((className) =>
-                [
-                  "lg:col-span-4",
-                  "lg:col-span-5",
-                  "lg:col-span-6",
-                  "lg:col-span-7",
-                ].includes(className),
-              ) || "lg:col-span-4";
-          });
+          let activeFleetFilter = "all";
           const fleetFilterStatus =
             document.getElementById("fleetFilterStatus");
 
@@ -2310,17 +2297,32 @@
             "px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-label-md text-label-md whitespace-nowrap transition-colors";
 
           const applyFleetFilter = (filter) => {
+            activeFleetFilter = filter;
             let visibleCount = 0;
+            const currentCards = document.querySelectorAll(
+              "#fleetGrid [data-vehicle-category]",
+            );
 
-            vehicleCards.forEach((card) => {
-              const categories = card.dataset.vehicleCategory.split(" ");
+            currentCards.forEach((card) => {
+              if (!card.dataset.baseSpan) {
+                card.dataset.baseSpan =
+                  [...card.classList].find((className) =>
+                    [
+                      "lg:col-span-4",
+                      "lg:col-span-5",
+                      "lg:col-span-6",
+                      "lg:col-span-7",
+                    ].includes(className),
+                  ) || "lg:col-span-4";
+              }
+              const categories = (card.dataset.vehicleCategory || "").split(" ");
               const shouldShow =
                 filter === "all" || categories.includes(filter);
               card.classList.toggle("hidden", !shouldShow);
               if (shouldShow) visibleCount += 1;
             });
 
-            const visibleCards = [...vehicleCards].filter(
+            const visibleCards = [...currentCards].filter(
               (card) => !card.classList.contains("hidden"),
             );
             visibleCards.forEach((card) => {
@@ -2364,6 +2366,8 @@
               applyFleetFilter(button.dataset.categoryFilter);
             });
           });
+
+          window.applyFleetFilter = applyFleetFilter;
 
           const quoteFormContainer = document.getElementById("cotizador");
           const quoteDialog = document.getElementById("quoteDialog");
@@ -2436,10 +2440,24 @@
 
           const openVehicleQuote = (vehicle, trigger) => {
             if (!quoteFormContainer || !vehiclePreference) return;
-            vehiclePreference.value = vehicle;
+            const matchOpt = [...vehiclePreference.options].find((opt) => {
+              if (opt.value === vehicle) return true;
+              if (opt.dataset.slug && opt.dataset.slug === vehicle) return true;
+              const slugVal = opt.value.toLowerCase().replace(/[^a-z0-9]/g, "-");
+              const vehicleSlug = vehicle.toLowerCase().replace(/[^a-z0-9]/g, "-");
+              return (
+                slugVal === vehicleSlug ||
+                opt.textContent.toLowerCase().includes(vehicle.toLowerCase())
+              );
+            });
+            if (matchOpt) {
+              vehiclePreference.value = matchOpt.value;
+            } else {
+              vehiclePreference.value = vehicle;
+            }
             document.getElementById("quoteFormStatus")?.classList.add("hidden");
             if (quoteDialogTitle) {
-              quoteDialogTitle.textContent = `Cotizar ${vehicle}`;
+              quoteDialogTitle.textContent = `Cotizar ${matchOpt?.value || vehicle}`;
             }
             lastQuoteTrigger = trigger;
 
@@ -2840,11 +2858,15 @@
           };
 
           const openBlogModal = (articleId) => {
+            if (window.AGM_PUBLIC_CMS?.getArticle(articleId)) {
+              window.AGM_PUBLIC_CMS.openModal(articleId);
+              return;
+            }
             const article = blogArticles[articleId];
             if (!article || !blogDialog) return;
             blogDialogImage.src = article.image;
             blogDialogCategory.textContent = article.category;
-            blogDialogReadTime.innerHTML = `<span class="material-symbols-outlined text-[16px]">schedule</span> \${article.readTime}`;
+            blogDialogReadTime.innerHTML = `<span class="material-symbols-outlined text-[16px]">schedule</span> ${article.readTime}`;
             blogDialogTitle.textContent = article.title;
             blogDialogBody.innerHTML = article.content;
             blogDialogCta.dataset.recommendedVehicle = article.recommendedVehicle || "";
@@ -3778,6 +3800,9 @@
               localStorage.setItem("agm_lang", lang);
               document.documentElement.lang = lang;
               applyTranslations(lang);
+              window.dispatchEvent(
+                new CustomEvent("agm:languageChange", { detail: { lang } }),
+              );
               if (notify && (lang === "en" || lang === "pt")) {
                 const msg =
                   lang === "en"
@@ -3797,6 +3822,13 @@
             });
             setLanguage(currentLang, false);
           }
+
+          window.openVehicleQuote = openVehicleQuote;
+          window.AGM_APP = Object.assign(window.AGM_APP || {}, {
+            openVehicleQuote,
+            applyFleetFilter,
+            getActiveFilter: () => activeFleetFilter,
+          });
         });
       </script>
     </main>
@@ -4592,5 +4624,6 @@
         <!-- BUILD_VERSION -->
       </div>
     </footer>
+    <script src="assets/public-cms.js" defer></script>
   </body>
 </html>

@@ -193,8 +193,8 @@ let html = source
     `    <meta http-equiv="Content-Security-Policy" content="${contentSecurityPolicy}" />\n    <link rel="stylesheet" href="assets/site.css?v=${visibleCommit}" />\n  </head>`,
   )
   .replace(
-    "</body>",
-    `    <script src="assets/app.js?v=${visibleCommit}" defer></script>\n  </body>`,
+    '<script src="assets/public-cms.js" defer></script>\n  </body>',
+    `    <script src="assets/app.js?v=${visibleCommit}" defer></script>\n    <script src="assets/public-cms.js?v=${visibleCommit}" defer></script>\n  </body>`,
   )
   .replace(
     releaseMarker,
@@ -216,6 +216,12 @@ if (turnstileSiteKey) {
 
 writeFileSync(join(distPath, "index.html"), html);
 writeFileSync(join(distPath, "assets", "app.js"), `${appMatch[1]}\n`);
+if (existsSync(join(root, "assets", "public-cms.js"))) {
+  cpSync(
+    join(root, "assets", "public-cms.js"),
+    join(distPath, "assets", "public-cms.js"),
+  );
+}
 cpSync(join(root, "assets", "images"), join(distPath, "assets", "images"), {
   recursive: true,
 });
