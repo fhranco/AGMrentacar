@@ -9,9 +9,15 @@
   <body>
     <!-- Barra superior -->
     <header class="admin-navbar">
-      <div class="admin-nav-brand">
-        <span class="admin-nav-brand-title">AGM Rent a Car</span>
-        <span class="admin-nav-badge">Admin</span>
+      <div class="admin-nav-left">
+        <a href="./" class="admin-nav-brand">
+          <span class="admin-nav-brand-title">AGM Rent a Car</span>
+          <span class="admin-nav-badge">Admin</span>
+        </a>
+        <nav class="admin-nav-links" aria-label="Navegación principal">
+          <a href="../flota/" class="admin-nav-link active">Flota</a>
+          <a href="../blog/" class="admin-nav-link">Blog</a>
+        </nav>
       </div>
       <div class="admin-nav-actions">
         <span class="admin-nav-user">
@@ -30,7 +36,7 @@
         <div>
           <h1 class="page-title">Gestión de Flota</h1>
           <p class="page-subtitle">
-            Administración del catálogo de vehículos y contenido multilingüe.
+            Administración del catálogo de vehículos y contenido multilingüe (ES / EN / PT).
           </p>
         </div>
         <div class="metric-badges">
@@ -43,7 +49,7 @@
 
       <!-- Grid de vehículos -->
       <div class="fleet-grid" id="fleetGrid">
-        <!-- Renderizado dinámico desde flota.js -->
+        <!-- Renderizado dinámico seguro desde flota.js -->
       </div>
     </main>
 
@@ -139,27 +145,53 @@
             </div>
           </div>
 
-          <!-- SECCIÓN 2: CONTENIDO MAESTRO EN ESPAÑOL -->
+          <!-- SECCIÓN 2: CONTENIDO MULTILINGÜE -->
           <div class="form-section">
-            <h4 class="form-section-title">2. Contenido en Español (Maestro)</h4>
+            <h4 class="form-section-title">2. Contenido Multilingüe</h4>
+
+            <!-- Pestañas de idioma -->
+            <div class="lang-tabs" role="tablist">
+              <button type="button" class="lang-tab active" data-locale="es" id="tabBtnEs" role="tab" aria-selected="true">
+                <span>Español</span>
+                <span class="lang-tab-badge" id="tabBadgeEs">Original</span>
+              </button>
+              <button type="button" class="lang-tab" data-locale="en" id="tabBtnEn" role="tab" aria-selected="false">
+                <span>English</span>
+                <span class="lang-tab-badge" id="tabBadgeEn">Pendiente</span>
+              </button>
+              <button type="button" class="lang-tab" data-locale="pt" id="tabBtnPt" role="tab" aria-selected="false">
+                <span>Português</span>
+                <span class="lang-tab-badge" id="tabBadgePt">Pendiente</span>
+              </button>
+            </div>
+
+            <!-- Campos de texto del idioma seleccionado -->
             <div class="form-grid-2">
               <div class="form-group">
-                <label for="editDisplayName" class="form-label">Nombre Visible (ES)</label>
+                <label for="editDisplayName" class="form-label">
+                  Nombre Visible <span id="labelLocaleTagDisplayName">(ES)</span>
+                </label>
                 <input type="text" id="editDisplayName" class="form-input" required />
               </div>
               <div class="form-group">
-                <label for="editCategoryName" class="form-label">Categoría Visible (ES)</label>
+                <label for="editCategoryName" class="form-label">
+                  Categoría Visible <span id="labelLocaleTagCategoryName">(ES)</span>
+                </label>
                 <input type="text" id="editCategoryName" class="form-input" placeholder="Ej: SUV • Crossover" />
               </div>
             </div>
 
             <div class="form-group">
-              <label for="editShortDescription" class="form-label">Descripción Corta</label>
+              <label for="editShortDescription" class="form-label">
+                Descripción Corta <span id="labelLocaleTagShortDesc">(ES)</span>
+              </label>
               <input type="text" id="editShortDescription" class="form-input" placeholder="Breve resumen para tarjetas" />
             </div>
 
             <div class="form-group">
-              <label for="editDescription" class="form-label">Descripción Completa (ES)</label>
+              <label for="editDescription" class="form-label">
+                Descripción Completa <span id="labelLocaleTagDesc">(ES)</span>
+              </label>
               <textarea id="editDescription" class="form-textarea" rows="3"></textarea>
             </div>
 
@@ -173,18 +205,9 @@
                 <textarea id="editMetaDescription" class="form-textarea" rows="2"></textarea>
               </div>
             </div>
-          </div>
 
-          <!-- SECCIÓN 3: ESTADO DE TRADUCCIONES -->
-          <div class="form-section">
-            <h4 class="form-section-title">3. Estado de Traducciones</h4>
-            <div class="translation-statuses">
-              <span id="statusEsText" class="trans-tag trans-original">ES ✓ Original</span>
-              <span id="statusEnText" class="trans-tag trans-pending">EN: pending</span>
-              <span id="statusPtText" class="trans-tag trans-pending">PT: pending</span>
-            </div>
-            <p class="form-label">
-              Al guardar cambios en el contenido en español, las traducciones en inglés y portugués pasarán automáticamente al estado <em>stale</em> (desactualizado).
+            <p class="form-help" id="localeHelpText">
+              El contenido en español es la fuente maestra. Al guardarlo, las traducciones en inglés y portugués pasarán automáticamente al estado <em>stale</em> (desactualizado).
             </p>
           </div>
         </div>

@@ -1,4 +1,5 @@
 // Lógica del panel administrativo de flota (/admin/flota)
+// Hardening XSS: toda la creación de nodos usa createElement y textContent
 
 document.addEventListener("DOMContentLoaded", async () => {
   const auth = window.AGM_AUTH;
@@ -12,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const user = staffInfo.user;
   const profile = staffInfo.profile;
 
-  // Renderizar información del usuario en navbar
+  // Renderizar información del usuario en navbar de forma segura
   const navUserEl = document.getElementById("navUserEmail");
   const navRoleEl = document.getElementById("navUserRole");
   if (navUserEl) navUserEl.textContent = profile?.full_name || user.email;
@@ -38,7 +39,39 @@ document.addEventListener("DOMContentLoaded", async () => {
   const cancelEditBtn = document.getElementById("cancelEditBtn");
   const saveBtn = document.getElementById("saveVehicleBtn");
 
-  // Elementos del Modal de Desactivación
+  // Pestañas de idioma en Modal
+  const tabBtns = document.querySelectorAll(".lang-tab");
+  const tabBadgeEs = document.getElementById("tabBadgeEs");
+  const tabBadgeEn = document.getElementById("tabBadgeEn");
+  const tabBadgePt = document.getElementById("tabBadgePt");
+  const labelLocaleTagDisplayName = document.getElementById("labelLocaleTagDisplayName");
+  const labelLocaleTagCategoryName = document.getElementById("labelLocaleTagCategoryName");
+  const labelLocaleTagShortDesc = document.getElementById("labelLocaleTagShortDesc");
+  const labelLocaleTagDesc = document.getElementById("labelLocaleTagDesc");
+  const localeHelpText = document.getElementById("localeHelpText");
+
+  // Inputs del Modal
+  const editVehicleId = document.getElementById("editVehicleId");
+  const editMake = document.getElementById("editMake");
+  const editModel = document.getElementById("editModel");
+  const editCategory = document.getElementById("editCategory");
+  const editSeats = document.getElementById("editSeats");
+  const editLuggage = document.getElementById("editLuggage");
+  const editTransmission = document.getElementById("editTransmission");
+  const editDrivetrain = document.getElementById("editDrivetrain");
+  const editFuelType = document.getElementById("editFuelType");
+  const editAirConditioning = document.getElementById("editAirConditioning");
+  const editSortOrder = document.getElementById("editSortOrder");
+  const editActive = document.getElementById("editActive");
+
+  const editDisplayName = document.getElementById("editDisplayName");
+  const editCategoryName = document.getElementById("editCategoryName");
+  const editShortDescription = document.getElementById("editShortDescription");
+  const editDescription = document.getElementById("editDescription");
+  const editSeoTitle = document.getElementById("editSeoTitle");
+  const editMetaDescription = document.getElementById("editMetaDescription");
+
+  // Modal de Desactivación
   const deactivateModal = document.getElementById("deactivateModal");
   const deactivateModelName = document.getElementById("deactivateModelName");
   const cancelDeactivateBtn = document.getElementById("cancelDeactivateBtn");
@@ -46,6 +79,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   let categories = [];
   let fleetModels = [];
+  let currentEditingVehicle = null;
+  let currentLocale = "es";
   let vehicleToDeactivate = null;
 
   const showAlert = (msg, type = "success") => {
@@ -57,7 +92,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     }, 4500);
   };
 
-  // Cargar categorías de la base de datos
+  // Helper para textos y estilos de estado de traducción
+  const getTransBadgeInfo = (status) => {
+    if (status === "original") return { label: "✓ Original", css: "trans-original" };
+    if (status === "reviewed") return { label: "✓ Revisado", css: "trans-reviewed" };
+    if (status === "translated") return { label: "✓ Traducido", css: "trans-translated" };
+    if (status === "stale") return { label: "⚠ Desactualizado", css: "trans-stale" };
+    if (status === "failed") return { label: "✕ Error", css: "trans-failed" };
+    return { label: "○ Pendiente", css: "trans-pending" };
+  };
+
+  // Cargar categorías
   const loadCategories = async () => {
     const { data, error } = await client
       .from("vehicle_categories")
@@ -70,19 +115,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     categories = data || [];
 
-    const categorySelect = document.getElementById("editCategory");
-    if (categorySelect) {
-      categorySelect.innerHTML = categories
-        .map((c) => `<option value="${c.id}">${c.name}</option>`)
-        .join("");
+    if (editCategory) {
+      editCategory.innerHTML = "";
+      categories.forEach((c) => {
+        const opt = document.createElement("option");
+        opt.value = c.id;
+        opt.textContent = c.name;
+        editCategory.appendChild(opt);
+      });
     }
   };
 
-  // Cargar modelos y traducciones
+  // Cargar flota completa con traducciones
   const loadFleet = async () => {
-    fleetGrid.innerHTML = '<div class="loading-state">Cargando flota...</div>';
+    fleetGrid.innerHTML = "";
+    const loadingEl = document.createElement("div");
+    loadingEl.className = "empty-state";
+    loadingEl.textContent = "Cargando catálogo de flota...";
+    fleetGrid.appendChild(loadingEl);
 
-    // Obtener modelos técnicos
     const { data: models, error: modelsError } = await client
       .from("vehicle_models")
       .select(`
@@ -95,11 +146,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (modelsError) {
       console.error("Error al cargar modelos:", modelsError);
-      fleetGrid.innerHTML = '<div class="alert alert-danger">Error al cargar el catálogo de flota.</div>';
+      fleetGrid.innerHTML = "";
+      const errEl = document.createElement("div");
+      errEl.className = "alert alert-danger";
+      errEl.textContent = "Error al cargar el catálogo de flota.";
+      errEl.style.display = "block";
+      fleetGrid.appendChild(errEl);
       return;
     }
 
-    // Obtener traducciones
     const { data: translations, error: transError } = await client
       .from("vehicle_model_translations")
       .select("*");
@@ -124,8 +179,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderFleet();
   };
 
-  // Renderizar tarjetas de vehículos
+  // Renderizar tarjetas de vehículos de forma segura (Hardening XSS: createElement + textContent)
   const renderFleet = () => {
+    fleetGrid.innerHTML = "";
+
     let activeCount = 0;
     let inactiveCount = 0;
 
@@ -138,325 +195,354 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (inactiveCountEl) inactiveCountEl.textContent = `${inactiveCount} Inactivos`;
 
     if (fleetModels.length === 0) {
-      fleetGrid.innerHTML = '<p>No hay vehículos registrados en el catálogo.</p>';
+      const emptyEl = document.createElement("div");
+      emptyEl.className = "empty-state";
+      emptyEl.textContent = "No hay vehículos registrados en el catálogo.";
+      fleetGrid.appendChild(emptyEl);
       return;
     }
 
-    fleetGrid.innerHTML = fleetModels
-      .map((vm) => {
-        const esTrans = vm.translations["es"] || {};
-        const enTrans = vm.translations["en"] || {};
-        const ptTrans = vm.translations["pt"] || {};
+    fleetModels.forEach((vm) => {
+      const esTrans = vm.translations["es"] || {};
+      const enTrans = vm.translations["en"] || {};
+      const ptTrans = vm.translations["pt"] || {};
 
-        const displayName = esTrans.display_name || vm.display_name || `${vm.make} ${vm.model}`;
-        const categoryName = esTrans.category_name || vm.vehicle_categories?.name || "Sin categoría";
-        const desc = esTrans.description || vm.description || "Sin descripción.";
+      const displayNameText = esTrans.display_name || vm.display_name || `${vm.make} ${vm.model}`;
+      const categoryNameText = esTrans.category_name || vm.vehicle_categories?.name || "Sin categoría";
+      const descText = esTrans.description || vm.description || "Sin descripción.";
 
-        const drivetrainLabel = vm.drivetrain ? vm.drivetrain : "Sin confirmar";
-        const isDrivetrainConfirmed = Boolean(vm.drivetrain);
+      // Crear tarjeta contenedora
+      const card = document.createElement("div");
+      card.className = `vehicle-card ${vm.active ? "" : "inactive"}`;
+      card.dataset.id = vm.id;
 
-        const fuelLabel = vm.fuel_type ? vm.fuel_type : "Sin confirmar";
-        const isFuelConfirmed = Boolean(vm.fuel_type);
+      // Imagen
+      const imgWrap = document.createElement("div");
+      imgWrap.className = "vehicle-card-img-wrap";
 
-        const transStatusBadge = (locale, trans) => {
-          const status = trans.translation_status || "pending";
-          let label = "○ Pendiente";
-          let css = "trans-pending";
+      if (vm.image_url) {
+        const img = document.createElement("img");
+        img.src = `../../${vm.image_url}`;
+        img.alt = displayNameText;
+        img.className = "vehicle-card-img";
+        imgWrap.appendChild(img);
+      } else {
+        const placeholder = document.createElement("div");
+        placeholder.className = "vehicle-card-img-placeholder";
+        placeholder.textContent = "Sin imagen";
+        imgWrap.appendChild(placeholder);
+      }
 
-          if (status === "original") {
-            label = "✓ Original";
-            css = "trans-original";
-          } else if (status === "translated") {
-            label = "✓ Traducido";
-            css = "trans-translated";
-          } else if (status === "reviewed") {
-            label = "✓ Revisado";
-            css = "trans-translated";
-          } else if (status === "stale") {
-            label = "△ Desactualizado";
-            css = "trans-stale";
-          } else if (status === "failed") {
-            label = "✕ Error";
-            css = "trans-failed";
-          }
+      const statusBadge = document.createElement("span");
+      statusBadge.className = `vehicle-card-status-badge ${vm.active ? "status-active" : "status-inactive"}`;
+      statusBadge.textContent = vm.active ? "Activo" : "Inactivo";
+      imgWrap.appendChild(statusBadge);
 
-          return `<span class="trans-tag ${css}">${locale.toUpperCase()} ${label}</span>`;
-        };
+      card.appendChild(imgWrap);
 
-        const imagePath = vm.image_url ? `../../${vm.image_url}` : "";
+      // Cuerpo de la tarjeta
+      const cardBody = document.createElement("div");
+      cardBody.className = "vehicle-card-body";
 
-        return `
-          <div class="vehicle-card ${vm.active ? "" : "inactive"}" data-id="${vm.id}">
-            <div class="vehicle-card-img-wrap">
-              ${
-                imagePath
-                  ? `<img src="${imagePath}" alt="${displayName}" class="vehicle-card-img" />`
-                  : `<div class="vehicle-card-img-placeholder">Sin imagen</div>`
-              }
-              <span class="vehicle-card-status-badge ${vm.active ? "status-active" : "status-inactive"}">
-                ${vm.active ? "Activo" : "Inactivo"}
-              </span>
-            </div>
-            <div class="vehicle-card-body">
-              <div class="vehicle-card-category">${categoryName}</div>
-              <h3 class="vehicle-card-title">${displayName}</h3>
-              <p class="vehicle-card-desc">${desc}</p>
+      const catEl = document.createElement("div");
+      catEl.className = "vehicle-card-category";
+      catEl.textContent = categoryNameText;
+      cardBody.appendChild(catEl);
 
-              <div class="vehicle-specs-grid">
-                <div class="spec-item">
-                  <span class="spec-label">Pasajeros</span>
-                  <span class="spec-value">${vm.seats} Pers.</span>
-                </div>
-                <div class="spec-item">
-                  <span class="spec-label">Equipaje</span>
-                  <span class="spec-value">${vm.luggage_capacity} Maletas</span>
-                </div>
-                <div class="spec-item">
-                  <span class="spec-label">Transmisión</span>
-                  <span class="spec-value">${vm.transmission === "automatic" ? "Automática" : "Manual"}</span>
-                </div>
-                <div class="spec-item">
-                  <span class="spec-label">Tracción</span>
-                  <span class="spec-value ${isDrivetrainConfirmed ? "" : "unconfirmed"}">${drivetrainLabel}</span>
-                </div>
-                <div class="spec-item">
-                  <span class="spec-label">Combustible</span>
-                  <span class="spec-value ${isFuelConfirmed ? "" : "unconfirmed"}">${fuelLabel}</span>
-                </div>
-                <div class="spec-item">
-                  <span class="spec-label">A/C</span>
-                  <span class="spec-value">${vm.air_conditioning ? "Sí" : "No"}</span>
-                </div>
-              </div>
+      const titleEl = document.createElement("h3");
+      titleEl.className = "vehicle-card-title";
+      titleEl.textContent = displayNameText;
+      cardBody.appendChild(titleEl);
 
-              <div class="translation-statuses">
-                ${transStatusBadge("es", esTrans)}
-                ${transStatusBadge("en", enTrans)}
-                ${transStatusBadge("pt", ptTrans)}
-              </div>
+      const descEl = document.createElement("p");
+      descEl.className = "vehicle-card-desc";
+      descEl.textContent = descText;
+      cardBody.appendChild(descEl);
 
-              <div class="vehicle-card-actions">
-                <button type="button" class="btn btn-sm btn-primary btn-edit" data-id="${vm.id}">
-                  Editar
-                </button>
-                <button type="button" class="btn btn-sm ${vm.active ? "btn-danger-outline btn-toggle-active" : "btn-outline btn-toggle-active"}" data-id="${vm.id}">
-                  ${vm.active ? "Desactivar" : "Activar"}
-                </button>
-              </div>
-            </div>
-          </div>
-        `;
-      })
-      .join("");
+      // Especificaciones técnicas
+      const specsGrid = document.createElement("div");
+      specsGrid.className = "vehicle-specs-grid";
 
-    // Conectar eventos de botones en tarjetas
-    document.querySelectorAll(".btn-edit").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const id = Number(btn.dataset.id);
-        openEditModal(id);
-      });
+      const addSpec = (label, val, unconfirmed = false) => {
+        const item = document.createElement("div");
+        item.className = "spec-item";
+        const l = document.createElement("span");
+        l.className = "spec-label";
+        l.textContent = label;
+        const v = document.createElement("span");
+        v.className = `spec-value ${unconfirmed ? "unconfirmed" : ""}`;
+        v.textContent = val;
+        item.appendChild(l);
+        item.appendChild(v);
+        specsGrid.appendChild(item);
+      };
+
+      addSpec("Pasajeros", `${vm.seats} Pers.`);
+      addSpec("Equipaje", `${vm.luggage_capacity} Maletas`);
+      addSpec("Transmisión", vm.transmission === "automatic" ? "Automática" : "Manual");
+      addSpec("Tracción", vm.drivetrain ? vm.drivetrain : "Sin confirmar", !vm.drivetrain);
+      addSpec("Combustible", vm.fuel_type ? vm.fuel_type : "Sin confirmar", !vm.fuel_type);
+      addSpec("A/C", vm.air_conditioning ? "Sí" : "No");
+
+      cardBody.appendChild(specsGrid);
+
+      // Semáforo de traducciones
+      const transStatuses = document.createElement("div");
+      transStatuses.className = "translation-statuses";
+
+      const addTransTag = (locale, trans) => {
+        const info = getTransBadgeInfo(trans.translation_status);
+        const tag = document.createElement("span");
+        tag.className = `trans-tag ${info.css}`;
+        tag.textContent = `${locale.toUpperCase()} ${info.label}`;
+        transStatuses.appendChild(tag);
+      };
+
+      addTransTag("es", esTrans);
+      addTransTag("en", enTrans);
+      addTransTag("pt", ptTrans);
+
+      cardBody.appendChild(transStatuses);
+
+      // Acciones
+      const actions = document.createElement("div");
+      actions.className = "vehicle-card-actions";
+
+      const editBtn = document.createElement("button");
+      editBtn.type = "button";
+      editBtn.className = "btn btn-sm btn-primary btn-edit";
+      editBtn.dataset.id = vm.id;
+      editBtn.textContent = "Editar";
+      editBtn.addEventListener("click", () => openEditModal(vm.id));
+
+      const toggleBtn = document.createElement("button");
+      toggleBtn.type = "button";
+      toggleBtn.className = `btn btn-sm ${vm.active ? "btn-danger-outline" : "btn-outline"} btn-toggle-active`;
+      toggleBtn.dataset.id = vm.id;
+      toggleBtn.textContent = vm.active ? "Desactivar" : "Activar";
+      toggleBtn.addEventListener("click", () => handleToggleActive(vm));
+
+      actions.appendChild(editBtn);
+      actions.appendChild(toggleBtn);
+      cardBody.appendChild(actions);
+
+      card.appendChild(cardBody);
+      fleetGrid.appendChild(card);
+    });
+  };
+
+  // Cargar datos de la traducción en los inputs de contenido
+  const populateLocaleFields = (locale) => {
+    currentLocale = locale;
+
+    // Actualizar tabs visuales
+    tabBtns.forEach((btn) => {
+      const isCurrent = btn.dataset.locale === locale;
+      btn.classList.toggle("active", isCurrent);
+      btn.setAttribute("aria-selected", isCurrent ? "true" : "false");
     });
 
-    document.querySelectorAll(".btn-toggle-active").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const id = Number(btn.dataset.id);
-        toggleActive(id);
-      });
-    });
+    const trans = currentEditingVehicle?.translations[locale] || {};
+
+    editDisplayName.value = trans.display_name || "";
+    editCategoryName.value = trans.category_name || "";
+    editShortDescription.value = trans.short_description || "";
+    editDescription.value = trans.description || "";
+    editSeoTitle.value = trans.seo_title || "";
+    editMetaDescription.value = trans.meta_description || "";
+
+    const tagText = `(${locale.toUpperCase()})`;
+    if (labelLocaleTagDisplayName) labelLocaleTagDisplayName.textContent = tagText;
+    if (labelLocaleTagCategoryName) labelLocaleTagCategoryName.textContent = tagText;
+    if (labelLocaleTagShortDesc) labelLocaleTagShortDesc.textContent = tagText;
+    if (labelLocaleTagDesc) labelLocaleTagDesc.textContent = tagText;
+
+    if (localeHelpText) {
+      if (locale === "es") {
+        localeHelpText.textContent = "El contenido en español es la fuente maestra. Al guardarlo, las traducciones en inglés y portugués pasarán automáticamente al estado stale (desactualizado).";
+      } else {
+        localeHelpText.textContent = "Traducción manual. Para marcarla como revisada (reviewed) debe tener al menos Nombre y Descripción. Si se vacía por completo volverá al estado pending.";
+      }
+    }
+  };
+
+  // Actualizar badges en los tabs del modal
+  const updateModalTabBadges = () => {
+    if (!currentEditingVehicle) return;
+
+    const esTrans = currentEditingVehicle.translations["es"] || {};
+    const enTrans = currentEditingVehicle.translations["en"] || {};
+    const ptTrans = currentEditingVehicle.translations["pt"] || {};
+
+    if (tabBadgeEs) tabBadgeEs.textContent = getTransBadgeInfo(esTrans.translation_status || "original").label;
+    if (tabBadgeEn) tabBadgeEn.textContent = getTransBadgeInfo(enTrans.translation_status || "pending").label;
+    if (tabBadgePt) tabBadgePt.textContent = getTransBadgeInfo(ptTrans.translation_status || "pending").label;
   };
 
   // Abrir modal de edición
-  const openEditModal = (id) => {
-    const vehicle = fleetModels.find((m) => m.id === id);
-    if (!vehicle) return;
+  const openEditModal = (vehicleId) => {
+    const vm = fleetModels.find((m) => m.id === vehicleId);
+    if (!vm) return;
 
-    const esTrans = vehicle.translations["es"] || {};
-    const enTrans = vehicle.translations["en"] || {};
-    const ptTrans = vehicle.translations["pt"] || {};
+    currentEditingVehicle = vm;
+    editVehicleId.value = vm.id;
 
-    // Poblar campos técnicos
-    document.getElementById("editVehicleId").value = vehicle.id;
-    document.getElementById("editMake").value = vehicle.make || "";
-    document.getElementById("editModel").value = vehicle.model || "";
-    document.getElementById("editCategory").value = vehicle.category_id || "";
-    document.getElementById("editSeats").value = vehicle.seats || 5;
-    document.getElementById("editLuggage").value = vehicle.luggage_capacity || 2;
-    document.getElementById("editTransmission").value = vehicle.transmission || "automatic";
-    document.getElementById("editDrivetrain").value = vehicle.drivetrain || "";
-    document.getElementById("editFuelType").value = vehicle.fuel_type || "";
-    document.getElementById("editAirConditioning").checked = Boolean(vehicle.air_conditioning);
-    document.getElementById("editSortOrder").value = vehicle.sort_order || 0;
-    document.getElementById("editActive").checked = Boolean(vehicle.active);
+    // Sección 1: Datos Técnicos
+    editMake.value = vm.make || "";
+    editModel.value = vm.model || "";
+    if (editCategory) editCategory.value = vm.category_id || "";
+    editSeats.value = vm.seats || 5;
+    editLuggage.value = vm.luggage_capacity || 2;
+    editTransmission.value = vm.transmission || "automatic";
+    editDrivetrain.value = vm.drivetrain || "";
+    editFuelType.value = vm.fuel_type || "";
+    editAirConditioning.checked = Boolean(vm.air_conditioning);
+    editSortOrder.value = vm.sort_order ?? 100;
+    editActive.checked = Boolean(vm.active);
 
-    // Poblar contenido maestro en español
-    document.getElementById("editDisplayName").value = esTrans.display_name || vehicle.display_name || "";
-    document.getElementById("editCategoryName").value = esTrans.category_name || "";
-    document.getElementById("editShortDescription").value = esTrans.short_description || "";
-    document.getElementById("editDescription").value = esTrans.description || vehicle.description || "";
-    document.getElementById("editSeoTitle").value = esTrans.seo_title || "";
-    document.getElementById("editMetaDescription").value = esTrans.meta_description || "";
+    // Sección 2: Contenido Multilingüe
+    updateModalTabBadges();
+    populateLocaleFields("es");
 
-    // Indicadores de traducción
-    document.getElementById("statusEsText").textContent = `ES ✓ Original (${esTrans.source_hash ? esTrans.source_hash.slice(0, 8) : "nuevo"})`;
-    document.getElementById("statusEnText").textContent = `EN: ${enTrans.translation_status || "pending"}`;
-    document.getElementById("statusPtText").textContent = `PT: ${ptTrans.translation_status || "pending"}`;
-
-    editModal.showModal();
+    if (typeof editModal.showModal === "function") {
+      editModal.showModal();
+    }
   };
 
-  // Cerrar modal
-  const closeEditModal = () => {
-    editModal.close();
-    editForm.reset();
-  };
+  // Event listeners para tabs de idioma
+  tabBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const locale = btn.dataset.locale;
+      populateLocaleFields(locale);
+    });
+  });
 
-  if (closeModalBtn) closeModalBtn.addEventListener("click", closeEditModal);
-  if (cancelEditBtn) cancelEditBtn.addEventListener("click", closeEditModal);
-
-  // Guardar cambios del vehículo
+  // Guardar formulario del modal
   editForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+    if (!currentEditingVehicle) return;
+
     saveBtn.disabled = true;
     saveBtn.textContent = "Guardando...";
 
-    const id = Number(document.getElementById("editVehicleId").value);
-    const make = document.getElementById("editMake").value.trim();
-    const model = document.getElementById("editModel").value.trim();
-    const category_id = Number(document.getElementById("editCategory").value);
-    const seats = Number(document.getElementById("editSeats").value);
-    const luggage_capacity = Number(document.getElementById("editLuggage").value);
-    const transmission = document.getElementById("editTransmission").value;
-    const drivetrain = document.getElementById("editDrivetrain").value || null;
-    const fuel_type = document.getElementById("editFuelType").value || null;
-    const air_conditioning = document.getElementById("editAirConditioning").checked;
-    const sort_order = Number(document.getElementById("editSortOrder").value);
-    const active = document.getElementById("editActive").checked;
-
-    // Contenido en español
-    const display_name = document.getElementById("editDisplayName").value.trim();
-    const category_name = document.getElementById("editCategoryName").value.trim() || null;
-    const short_description = document.getElementById("editShortDescription").value.trim() || null;
-    const description = document.getElementById("editDescription").value.trim() || null;
-    const seo_title = document.getElementById("editSeoTitle").value.trim() || null;
-    const meta_description = document.getElementById("editMetaDescription").value.trim() || null;
-
     try {
-      // 1. Actualizar datos técnicos en vehicle_models
-      const { error: modelUpdateError } = await client
-        .from("vehicle_models")
-        .update({
-          make,
-          model,
-          category_id,
-          seats,
-          luggage_capacity,
-          transmission,
-          drivetrain,
-          fuel_type,
-          air_conditioning,
-          sort_order,
-          active,
-          display_name, // legacy fallback
-          description,  // legacy fallback
-        })
-        .eq("id", id);
+      if (currentLocale === "es") {
+        // Guardar datos técnicos + ES maestro mediante RPC atómico admin_save_vehicle_model
+        const { error } = await client.rpc("admin_save_vehicle_model", {
+          p_vehicle_model_id: currentEditingVehicle.id,
+          p_display_name: editDisplayName.value.trim(),
+          p_category_name: editCategoryName.value.trim() || null,
+          p_short_description: editShortDescription.value.trim() || null,
+          p_description: editDescription.value.trim() || null,
+          p_seo_title: editSeoTitle.value.trim() || null,
+          p_meta_description: editMetaDescription.value.trim() || null,
+          p_category_id: parseInt(editCategory.value, 10),
+          p_transmission: editTransmission.value,
+          p_drivetrain: editDrivetrain.value || null,
+          p_fuel_type: editFuelType.value || null,
+          p_seats: parseInt(editSeats.value, 10),
+          p_luggage_capacity: parseInt(editLuggage.value, 10),
+          p_air_conditioning: editAirConditioning.checked,
+          p_sort_order: parseInt(editSortOrder.value, 10) || 100,
+          p_active: editActive.checked,
+        });
 
-      if (modelUpdateError) {
-        throw modelUpdateError;
+        if (error) throw error;
+        showAlert("Datos técnicos y contenido maestro en español guardados con éxito.");
+      } else {
+        // Guardar traducción manual (EN o PT) mediante RPC admin_save_vehicle_translation
+        const { error } = await client.rpc("admin_save_vehicle_translation", {
+          p_vehicle_model_id: currentEditingVehicle.id,
+          p_locale: currentLocale,
+          p_display_name: editDisplayName.value.trim() || null,
+          p_category_name: editCategoryName.value.trim() || null,
+          p_short_description: editShortDescription.value.trim() || null,
+          p_description: editDescription.value.trim() || null,
+          p_seo_title: editSeoTitle.value.trim() || null,
+          p_meta_description: editMetaDescription.value.trim() || null,
+        });
+
+        if (error) throw error;
+        showAlert(`Traducción en ${currentLocale.toUpperCase()} guardada con éxito.`);
       }
 
-      // 2. Actualizar contenido maestro en vehicle_model_translations (locale = 'es')
-      // El trigger recalcula source_hash automáticamente y actualiza EN/PT a 'stale' si ES cambió.
-      const { error: transUpdateError } = await client
-        .from("vehicle_model_translations")
-        .upsert(
-          {
-            vehicle_model_id: id,
-            locale: "es",
-            display_name,
-            category_name,
-            short_description,
-            description,
-            seo_title,
-            meta_description,
-            translation_source: "original",
-            translation_status: "original",
-          },
-          { onConflict: "vehicle_model_id,locale" },
-        );
-
-      if (transUpdateError) {
-        throw transUpdateError;
-      }
-
-      closeEditModal();
-      showAlert("Vehículo actualizado correctamente. Se recalculó el hash de contenido.");
+      // Recargar catálogo y actualizar el vehículo actual en el modal
       await loadFleet();
+      const updatedVm = fleetModels.find((m) => m.id === currentEditingVehicle.id);
+      if (updatedVm) {
+        currentEditingVehicle = updatedVm;
+        updateModalTabBadges();
+        populateLocaleFields(currentLocale);
+      }
     } catch (err) {
       console.error("Error al guardar vehículo:", err);
-      alert(`Error al guardar: ${err.message || "Error inesperado."}`);
+      showAlert(`Error: ${err.message || "No se pudo guardar"}`, "danger");
     } finally {
       saveBtn.disabled = false;
       saveBtn.textContent = "Guardar Cambios";
     }
   });
 
-  // Alternar estado activo / inactivo
-  const toggleActive = async (id) => {
-    const vehicle = fleetModels.find((m) => m.id === id);
-    if (!vehicle) return;
+  // Cerrar modal
+  const closeModal = () => {
+    if (editModal.open) editModal.close();
+    currentEditingVehicle = null;
+  };
 
-    if (vehicle.active) {
-      // Pedir confirmación al desactivar
-      vehicleToDeactivate = vehicle;
-      deactivateModelName.textContent = `${vehicle.make} ${vehicle.model}`;
-      deactivateModal.showModal();
+  closeModalBtn.addEventListener("click", closeModal);
+  cancelEditBtn.addEventListener("click", closeModal);
+
+  // Desactivar / Activar vehículo
+  const handleToggleActive = async (vm) => {
+    if (vm.active) {
+      vehicleToDeactivate = vm;
+      deactivateModelName.textContent = vm.display_name || `${vm.make} ${vm.model}`;
+      if (typeof deactivateModal.showModal === "function") {
+        deactivateModal.showModal();
+      }
     } else {
-      // Reactivar directamente
+      // Activar directamente
       const { error } = await client
         .from("vehicle_models")
         .update({ active: true, updated_at: new Date().toISOString() })
-        .eq("id", id);
+        .eq("id", vm.id);
 
       if (error) {
-        alert(`Error al reactivar el modelo: ${error.message}`);
-        return;
+        console.error("Error al activar:", error);
+        showAlert("Error al activar el modelo.", "danger");
+      } else {
+        showAlert(`Modelo ${vm.make} ${vm.model} activado.`);
+        await loadFleet();
       }
-      showAlert(`Modelo ${vehicle.make} ${vehicle.model} activado.`);
-      await loadFleet();
     }
   };
 
-  if (cancelDeactivateBtn) {
-    cancelDeactivateBtn.addEventListener("click", () => {
+  confirmDeactivateBtn.addEventListener("click", async () => {
+    if (!vehicleToDeactivate) return;
+
+    confirmDeactivateBtn.disabled = true;
+    const { error } = await client
+      .from("vehicle_models")
+      .update({ active: false, updated_at: new Date().toISOString() })
+      .eq("id", vehicleToDeactivate.id);
+
+    confirmDeactivateBtn.disabled = false;
+
+    if (error) {
+      console.error("Error al desactivar:", error);
+      showAlert("Error al desactivar el modelo.", "danger");
+    } else {
+      showAlert(`Modelo ${vehicleToDeactivate.make} ${vehicleToDeactivate.model} desactivado.`);
       deactivateModal.close();
-      vehicleToDeactivate = null;
-    });
-  }
-
-  if (confirmDeactivateBtn) {
-    confirmDeactivateBtn.addEventListener("click", async () => {
-      if (!vehicleToDeactivate) return;
-      confirmDeactivateBtn.disabled = true;
-
-      const { error } = await client
-        .from("vehicle_models")
-        .update({ active: false, updated_at: new Date().toISOString() })
-        .eq("id", vehicleToDeactivate.id);
-
-      confirmDeactivateBtn.disabled = false;
-      deactivateModal.close();
-
-      if (error) {
-        alert(`Error al desactivar el modelo: ${error.message}`);
-        return;
-      }
-
-      showAlert(`Modelo ${vehicleToDeactivate.make} ${vehicleToDeactivate.model} desactivado (conservando historial).`, "warning");
       vehicleToDeactivate = null;
       await loadFleet();
-    });
-  }
+    }
+  });
+
+  cancelDeactivateBtn.addEventListener("click", () => {
+    deactivateModal.close();
+    vehicleToDeactivate = null;
+  });
 
   // Inicializar
   await loadCategories();
