@@ -61,6 +61,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const detailDuration = document.getElementById("detailDuration");
   const detailVehicleModel = document.getElementById("detailVehicleModel");
   const detailCustomerNotes = document.getElementById("detailCustomerNotes");
+  const detailPrivacyConsentText = document.getElementById("detailPrivacyConsentText");
 
   // Campos del Modal (Edición)
   const detailStatus = document.getElementById("detailStatus");
@@ -328,6 +329,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       nameDiv.appendChild(document.createTextNode(" "));
       nameDiv.appendChild(typeBadge);
 
+      if (res.privacy_consent) {
+        const legalBadge = document.createElement("span");
+        legalBadge.className = "contact-chip";
+        legalBadge.style.backgroundColor = "#f0fdf4";
+        legalBadge.style.color = "#166534";
+        legalBadge.style.border = "1px solid #bbf7d0";
+        legalBadge.style.fontSize = "0.6875rem";
+        legalBadge.style.padding = "0.1rem 0.35rem";
+        legalBadge.title = `Consentimiento verificado Ley 21.719 otorgado el ${formatDate(res.privacy_consent_at || res.created_at)}`;
+        legalBadge.textContent = "🛡️ Ley 21.719";
+        nameDiv.appendChild(document.createTextNode(" "));
+        nameDiv.appendChild(legalBadge);
+      }
+
       const contactActions = document.createElement("div");
       contactActions.className = "quick-contact-actions";
 
@@ -568,6 +583,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       detailCustomerNotes.textContent = "El cliente no ingresó notas adicionales.";
       detailCustomerNotes.style.fontStyle = "italic";
       detailCustomerNotes.style.color = "var(--color-slate-500)";
+    }
+
+    // Trazabilidad de Consentimiento Ley 21.719
+    if (detailPrivacyConsentText) {
+      if (res.privacy_consent) {
+        const consentDate = res.privacy_consent_at ? formatDate(res.privacy_consent_at) : formatDate(res.created_at);
+        const version = res.privacy_policy_version || "2026-v1";
+        detailPrivacyConsentText.textContent = `Aceptación expresa e informada registrada el ${consentDate} · Versión ${version}.`;
+        detailPrivacyConsentText.style.color = "#15803d";
+      } else {
+        detailPrivacyConsentText.textContent = "Sin registro explícito de consentimiento en esta solicitud previa.";
+        detailPrivacyConsentText.style.color = "var(--color-slate-500)";
+      }
     }
 
     // Gestión editable
