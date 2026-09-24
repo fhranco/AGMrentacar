@@ -401,6 +401,74 @@ document.addEventListener("DOMContentLoaded", async () => {
       statusBadge.className = `res-status-badge ${statusInfo.css}`;
       statusBadge.textContent = statusInfo.label;
       tdStatus.appendChild(statusBadge);
+
+      // Selector de cambio rápido de estado directamente en la tabla
+      const quickSelect = document.createElement("select");
+      quickSelect.className = "filter-select";
+      quickSelect.style.padding = "0.2rem 0.4rem";
+      quickSelect.style.fontSize = "0.75rem";
+      quickSelect.style.borderRadius = "4px";
+      quickSelect.style.border = "1px solid var(--color-slate-300)";
+      quickSelect.style.marginTop = "0.35rem";
+      quickSelect.style.display = "block";
+      quickSelect.title = "Cambiar estado rápidamente";
+
+      const quickOptions = [
+        { val: "requested", text: "Solicitada" },
+        { val: "reviewing", text: "En revisión" },
+        { val: "quoted", text: "Cotizada" },
+        { val: "rejected", text: "Rechazada" },
+        { val: "cancelled", text: "Cancelada" },
+      ];
+
+      quickOptions.forEach((opt) => {
+        const o = document.createElement("option");
+        o.value = opt.val;
+        o.textContent = opt.text;
+        if (res.status === opt.val) o.selected = true;
+        quickSelect.appendChild(o);
+      });
+
+      quickSelect.addEventListener("change", async (e) => {
+        const newSt = e.target.value;
+        const prevSt = res.status;
+        quickSelect.disabled = true;
+        try {
+          const updatePayload = {
+            status: newSt,
+            updated_at: new Date().toISOString(),
+          };
+          if (newSt === "quoted" && !res.quoted_at) {
+            updatePayload.quoted_at = new Date().toISOString();
+          }
+
+          const { error } = await client
+            .from("reservations")
+            .update(updatePayload)
+            .eq("id", res.id);
+
+          if (error) throw error;
+
+          res.status = newSt;
+          res.updated_at = updatePayload.updated_at;
+          updateMetrics();
+          renderTable();
+          showAlert(
+            quotesAlert,
+            `Cotización ${res.reference_code || `#${res.id}`} actualizada a "${getStatusInfo(newSt).label}".`,
+            "success",
+          );
+          setTimeout(() => hideAlert(quotesAlert), 4000);
+        } catch (err) {
+          console.error("Error al cambiar estado rápido:", err);
+          e.target.value = prevSt;
+          showAlert(quotesAlert, "Error al actualizar estado: " + (err.message || "Intenta nuevamente."));
+        } finally {
+          quickSelect.disabled = false;
+        }
+      });
+
+      tdStatus.appendChild(quickSelect);
       tr.appendChild(tdStatus);
 
       // 6. Columna Monto Cotizado
@@ -531,6 +599,15 @@ document.addEventListener("DOMContentLoaded", async () => {
       const newQuotedClp = quotedClpVal !== "" ? Number(quotedClpVal) : null;
       const newInternalNotes = detailInternalNotes.value.trim() || null;
 
+      const currentRes = reservationsData.find((r) => r.id === reservationId);
+      if (newStatus === "confirmed" && !currentRes?.assigned_unit_id) {
+        showAlert(
+          modalAlert,
+          "Para confirmar una reserva la base de datos de AGM exige asignar una patente física. Actualmente puedes gestionarla como 'En revisión', 'Cotizada' o 'Rechazada'.",
+        );
+        return;
+      }
+
       saveDetailBtn.disabled = true;
       saveDetailBtn.textContent = "Guardando...";
 
@@ -567,11 +644,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         updateMetrics();
         renderTable();
         closeModal();
-        showAlert(quotesAlert, "Cotización actualizada correctamente.", "success");
+        showAlert(
+          quotesAlert,
+          `Cotización ${currentRes?.reference_code || `#${reservationId}`} actualizada correctamente.`,
+          "success",
+        );
         setTimeout(() => hideAlert(quotesAlert), 4000);
       } catch (err) {
         console.error("Error al actualizar cotización:", err);
-        showAlert(modalAlert, "Error al guardar los cambios: " + (err.message || "Intenta nuevamente."));
+        const errorMsg =
+          err.message && err.message.includes("check constraint")
+            ? "No se puede aplicar este estado debido a las reglas de integridad de la reserva."
+            : (err.message || "Intenta nuevamente.");
+        showAlert(modalAlert, "Error al guardar los cambios: " + errorMsg);
       } finally {
         saveDetailBtn.disabled = false;
         saveDetailBtn.textContent = "Guardar Cambios";

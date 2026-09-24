@@ -189,12 +189,11 @@
                 <label for="detailStatus" class="form-label">Estado de la Solicitud</label>
                 <select id="detailStatus" class="form-select">
                   <option value="requested">Solicitada (Nueva)</option>
-                  <option value="reviewing">En revisión</option>
-                  <option value="quoted">Cotizada formalmente</option>
-                  <option value="confirmed">Confirmada</option>
+                  <option value="reviewing">En revisión (Evaluando disponibilidad / cruce)</option>
+                  <option value="quoted">Cotizada formalmente al cliente</option>
                   <option value="rejected">Rechazada / No disponible</option>
-                  <option value="completed">Finalizada</option>
                   <option value="cancelled">Cancelada por cliente</option>
+                  <option value="confirmed" disabled title="Requiere asignar patente física en el sistema de flota">Confirmada (Requiere asignar patente física)</option>
                 </select>
                 <div class="form-help">
                   Actualiza el estado operativo según el avance con el cliente.
