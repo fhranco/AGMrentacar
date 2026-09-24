@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestión de Cotizaciones y Leads | Panel Administrativo AGM</title>
+    <link rel="stylesheet" href="../css/admin.css" />
+  </head>
+  <body>
+    <!-- Barra superior -->
+    <header class="admin-navbar">
+      <div class="admin-nav-left">
+        <a href="./" class="admin-nav-brand">
+          <span class="admin-nav-brand-title">AGM Rent a Car</span>
+          <span class="admin-nav-badge">Admin</span>
+        </a>
+        <nav class="admin-nav-links" aria-label="Navegación principal">
+          <a href="../flota/" class="admin-nav-link">Flota</a>
+          <a href="../cotizaciones/" class="admin-nav-link active">Cotizaciones</a>
+          <a href="../blog/" class="admin-nav-link">Blog</a>
+        </nav>
+      </div>
+      <div class="admin-nav-actions">
+        <span class="admin-nav-user">
+          <span id="navUserEmail">Cargando...</span>
+          <span id="navUserRole" class="admin-nav-role">staff</span>
+        </span>
+        <button type="button" id="logoutBtn" class="btn btn-sm btn-outline">
+          Cerrar sesión
+        </button>
+      </div>
+    </header>
+
+    <!-- Contenedor principal -->
+    <main class="admin-container">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">Gestión de Cotizaciones y Leads</h1>
+          <p class="page-subtitle">
+            Solicitudes de arriendo y reservas recibidas desde el sitio web y canales de contacto.
+          </p>
+        </div>
+        <div class="metric-badges">
+          <div class="metric-badge" id="metricTotal">0 Solicitudes</div>
+          <div class="metric-badge" id="metricRequested">0 Nuevas</div>
+          <div class="metric-badge" id="metricReviewing">0 En Revisión</div>
+          <div class="metric-badge" id="metricConfirmed">0 Confirmadas</div>
+        </div>
+      </div>
+
+      <div id="quotesAlert" class="alert" role="alert"></div>
+
+      <!-- Barra de filtros y búsqueda -->
+      <div class="filter-bar">
+        <div class="filter-group">
+          <input
+            type="search"
+            id="searchInput"
+            class="filter-search-input"
+            placeholder="Buscar por cliente, correo, teléfono o código..."
+            aria-label="Buscar cotizaciones"
+          />
+          <select id="statusFilter" class="filter-select" aria-label="Filtrar por estado">
+            <option value="all">Todos los estados</option>
+            <option value="requested">Solicitadas / Nuevas</option>
+            <option value="reviewing">En revisión</option>
+            <option value="quoted">Cotizadas</option>
+            <option value="confirmed">Confirmadas</option>
+            <option value="rejected">Rechazadas</option>
+            <option value="completed">Finalizadas</option>
+            <option value="cancelled">Canceladas</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <button type="button" id="refreshBtn" class="btn btn-sm btn-outline">
+            ↻ Actualizar lista
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabla de Cotizaciones -->
+      <div class="blog-table-card">
+        <div class="blog-table-wrap">
+          <table class="blog-table">
+            <thead>
+              <tr>
+                <th>Código / Fecha</th>
+                <th>Cliente / Contacto</th>
+                <th>Arriendo / Fechas</th>
+                <th>Sucursales</th>
+                <th>Estado</th>
+                <th>Monto Cotizado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="quotesTableBody">
+              <!-- Renderizado dinámico seguro desde cotizaciones.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <!-- Modal de Detalle y Gestión de Cotización -->
+    <dialog id="quoteDetailModal">
+      <div class="modal-header">
+        <h3 id="modalTitle">Detalle de Cotización</h3>
+        <button type="button" id="closeModalBtn" class="btn btn-sm btn-outline" aria-label="Cerrar modal">✕</button>
+      </div>
+
+      <form id="quoteDetailForm">
+        <input type="hidden" id="detailReservationId" />
+        <div class="modal-body">
+          <div id="modalAlert" class="alert" role="alert"></div>
+
+          <!-- Sección 1: Datos del Cliente -->
+          <div class="form-section">
+            <h4 class="form-section-title">Datos del Cliente y Contacto</h4>
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">Nombre Completo</div>
+                <div class="detail-value" id="detailCustomerName">-</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Tipo de Cliente</div>
+                <div class="detail-value" id="detailCustomerType">-</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Correo Electrónico</div>
+                <div class="detail-value" id="detailCustomerEmail">-</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Teléfono / WhatsApp</div>
+                <div class="detail-value" id="detailCustomerPhone">-</div>
+              </div>
+            </div>
+            <div id="detailCompanyWrap" style="display: none; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px dashed var(--color-slate-200);">
+              <div class="detail-grid">
+                <div class="detail-item">
+                  <div class="detail-label">Empresa / Razón Social</div>
+                  <div class="detail-value" id="detailCompanyName">-</div>
+                </div>
+                <div class="detail-item">
+                  <div class="detail-label">RUT Empresa</div>
+                  <div class="detail-value" id="detailCompanyTaxId">-</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Trazabilidad Legal de Datos Personales (Ley N° 21.719) -->
+            <div style="margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 8px; background-color: #f0fdf4; border: 1px solid #bbf7d0;">
+              <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <span style="font-size: 1.15rem;" aria-hidden="true">🛡️</span>
+                  <div>
+                    <div style="font-size: 0.8125rem; font-weight: 700; color: #166534;">
+                      Consentimiento Ley N° 21.719 (Protección de Datos)
+                    </div>
+                    <div style="font-size: 0.75rem; color: #15803d;" id="detailPrivacyConsentText">
+                      Verificando registro...
+                    </div>
+                  </div>
+                </div>
+                <a href="../../#politica-privacidad" target="_blank" rel="noopener noreferrer" class="contact-chip" style="background: #ffffff; color: #166534; border: 1px solid #86efac; font-size: 0.75rem; padding: 0.25rem 0.5rem;">
+                  Ver Política Oficial ↗
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sección 2: Itinerario del Arriendo -->
+          <div class="form-section">
+            <h4 class="form-section-title">Itinerario y Solicitud</h4>
+            <div class="detail-grid">
+              <div class="detail-item">
+                <div class="detail-label">Retiro</div>
+                <div class="detail-value" id="detailPickupLocation">-</div>
+                <div class="form-help" id="detailPickupDatetime">-</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Devolución</div>
+                <div class="detail-value" id="detailReturnLocation">-</div>
+                <div class="form-help" id="detailReturnDatetime">-</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Duración del Arriendo</div>
+                <div class="detail-value" id="detailDuration">-</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Vehículo / Categoría Solicitada</div>
+                <div class="detail-value" id="detailVehicleModel">Cualquier modelo disponible</div>
+              </div>
+            </div>
+
+            <!-- Notas del Cliente (Requerimientos / Cruce a Argentina) -->
+            <div style="margin-top: 1rem;">
+              <div class="detail-label">Notas del Cliente / Requerimientos Especiales</div>
+              <div class="customer-notes-card" id="detailCustomerNotes">
+                Sin notas adicionales.
+              </div>
+            </div>
+          </div>
+
+          <!-- Sección 3: Gestión Administrativa -->
+          <div class="form-section">
+            <h4 class="form-section-title">Gestión y Seguimiento del Lead</h4>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="detailStatus" class="form-label">Estado de la Solicitud</label>
+                <select id="detailStatus" class="form-select">
+                  <option value="requested">Solicitada (Nueva)</option>
+                  <option value="reviewing">En revisión (Evaluando disponibilidad / cruce)</option>
+                  <option value="quoted">Cotizada formalmente al cliente</option>
+                  <option value="rejected">Rechazada / No disponible</option>
+                  <option value="cancelled">Cancelada por cliente</option>
+                  <option value="confirmed" disabled title="Requiere asignar patente física en el sistema de flota">Confirmada (Requiere asignar patente física)</option>
+                </select>
+                <div class="form-help">
+                  Actualiza el estado operativo según el avance con el cliente.
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="detailQuotedClp" class="form-label">Monto Cotizado Total (CLP)</label>
+                <input
+                  type="number"
+                  id="detailQuotedClp"
+                  class="form-input"
+                  placeholder="Ej: 180000"
+                  min="0"
+                  step="1000"
+                />
+                <div class="form-help">
+                  Valor acordado o enviado al cliente en pesos chilenos.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="detailInternalNotes" class="form-label">Notas Internas del Equipo</label>
+              <textarea
+                id="detailInternalNotes"
+                class="form-textarea"
+                rows="3"
+                placeholder="Anotaciones de seguimiento interno (llamadas, cotización por correo, permisos a Argentina, etc.)..."
+              ></textarea>
+              <div class="form-help">
+                Estas notas son privadas y solo visibles para el personal de AGM.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="cancelDetailBtn" class="btn btn-outline">Cerrar</button>
+          <button type="submit" id="saveDetailBtn" class="btn btn-primary">Guardar Cambios</button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- Scripts locales (sin CDN externo, conforme a CSP) -->
+    <script src="../vendor/supabase.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/cotizaciones.js" defer></script>
+  </body>
+</html>

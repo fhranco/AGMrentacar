@@ -19,6 +19,8 @@ const distPath = join(root, "dist");
 const tempPath = join(root, ".build-temp");
 const production = process.argv.includes("--production");
 const turnstileSiteKey = (process.env.TURNSTILE_SITE_KEY || "").trim();
+const releaseMarker = "<!-- BUILD_VERSION -->";
+const turnstileMarker = "<!-- TURNSTILE_WIDGET -->";
 
 if (production && !turnstileSiteKey) {
   console.error(
@@ -35,9 +37,48 @@ const configMatch = source.match(
 const appMatch = [...source.matchAll(/<script>\s*([\s\S]*?)\s*<\/script>/g)]
   .find((match) => match[1].includes('document.addEventListener("DOMContentLoaded"'));
 
-if (!styleMatch || !configMatch || !appMatch) {
+if (
+  !styleMatch ||
+  !configMatch ||
+  !appMatch ||
+  !source.includes(releaseMarker) ||
+  !source.includes(turnstileMarker)
+) {
   throw new Error("No se pudieron separar los estilos o el JavaScript de code.html.");
 }
+
+const commit = (() => {
+  try {
+    return execFileSync("git", ["rev-parse", "--short=12", "HEAD"], {
+      cwd: root,
+      encoding: "utf8",
+    }).trim();
+  } catch {
+    return "sin-git";
+  }
+})();
+const builtAt = new Date().toISOString();
+const release = {
+  commit,
+  profile: production ? "production" : "preview",
+  built_at: builtAt,
+};
+const visibleCommit = commit === "sin-git" ? commit : commit.slice(0, 7);
+const localBuildParts = Object.fromEntries(
+  new Intl.DateTimeFormat("es-CL", {
+    timeZone: "America/Punta_Arenas",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  })
+    .formatToParts(new Date(builtAt))
+    .map(({ type, value }) => [type, value]),
+);
+const visibleBuiltAt = `${localBuildParts.day}/${localBuildParts.month}/${localBuildParts.year} ${localBuildParts.hour}:${localBuildParts.minute}`;
+const visibleRelease = `PREVIEW CLIENTE · v0.1 · ${visibleCommit} · STAGING · ${visibleBuiltAt}`;
 
 rmSync(distPath, { recursive: true, force: true });
 rmSync(tempPath, { recursive: true, force: true });
@@ -82,7 +123,50 @@ execFileSync(
 
 const compiledCssPath = join(distPath, "assets", "site.css");
 const compiledCss = readFileSync(compiledCssPath, "utf8")
-  .replaceAll("assets/images/", "images/");
+  .replaceAll("assets/images/", "images/")
+  .concat(`
+:root { --preview-banner-height: 2.75rem; }
+.agm-preview-banner {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 70;
+  min-height: var(--preview-banner-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-bottom: 3px solid #8ae600;
+  background: #052a40;
+  color: #ffffff;
+  box-shadow: 0 4px 16px rgba(5, 42, 64, 0.28);
+  font-size: 0.75rem;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+body > header { top: var(--preview-banner-height) !important; }
+body > main { padding-top: calc(7rem + var(--preview-banner-height)) !important; }
+@media (max-width: 639px) {
+  :root { --preview-banner-height: 4rem; }
+  .agm-preview-banner {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.6875rem;
+    letter-spacing: 0.055em;
+  }
+}
+.agm-turnstile-wrap {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  min-height: 4.0625rem;
+  padding: 0.25rem 0;
+}
+.agm-turnstile-wrap .cf-turnstile {
+  width: min(100%, 20rem);
+}
+`);
 writeFileSync(compiledCssPath, compiledCss);
 
 const contentSecurityPolicy = [
@@ -90,11 +174,11 @@ const contentSecurityPolicy = [
   "base-uri 'self'",
   "object-src 'none'",
   "form-action 'self'",
-  "script-src 'self' https://challenges.cloudflare.com",
+  "script-src 'self' https://challenges.cloudflare.com https://www.googletagmanager.com",
   "style-src 'self' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com data:",
-  "img-src 'self' data:",
-  "connect-src 'self' https://pteogwhauodbxudywsdm.supabase.co https://challenges.cloudflare.com",
+  "img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com",
+  "connect-src 'self' https://pteogwhauodbxudywsdm.supabase.co https://challenges.cloudflare.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com",
   "frame-src https://www.openstreetmap.org https://challenges.cloudflare.com",
   "upgrade-insecure-requests",
 ].join("; ");
@@ -106,54 +190,49 @@ let html = source
   .replace(appMatch[0], "")
   .replace(
     "</head>",
-    `    <meta http-equiv="Content-Security-Policy" content="${contentSecurityPolicy}" />\n    <link rel="stylesheet" href="assets/site.css" />\n  </head>`,
+    `    <meta http-equiv="Content-Security-Policy" content="${contentSecurityPolicy}" />\n    <link rel="stylesheet" href="assets/site.css?v=${visibleCommit}" />\n  </head>`,
   )
   .replace(
-    "</body>",
-    '    <script src="assets/app.js" defer></script>\n  </body>',
+    '<script src="assets/public-cms.js" defer></script>\n  </body>',
+    `    <script src="assets/app.js?v=${visibleCommit}" defer></script>\n    <script src="assets/public-cms.js?v=${visibleCommit}" defer></script>\n  </body>`,
+  )
+  .replace(
+    releaseMarker,
+    `<aside class="agm-preview-banner" aria-label="Entorno de revisión">${visibleRelease}</aside>`,
+  )
+  .replace(
+    turnstileMarker,
+    turnstileSiteKey
+      ? `<div class="agm-turnstile-wrap" aria-label="Verificación de seguridad"><div class="cf-turnstile" data-sitekey="${turnstileSiteKey}" data-action="request_quote" data-theme="light" data-size="flexible" data-appearance="always"></div></div>`
+      : "",
   );
 
 if (turnstileSiteKey) {
-  html = html
-    .replace(
-      "</head>",
-      '    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>\n  </head>',
-    )
-    .replace(
-      '<div class="lg:col-span-12 flex items-center">',
-      `<div class="lg:col-span-12 flex justify-center py-2"><div class="cf-turnstile" data-sitekey="${turnstileSiteKey}" data-action="request_quote"></div></div>\n                <div class="lg:col-span-12 flex items-center">`,
-    );
+  html = html.replace(
+    "</head>",
+    '    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>\n  </head>',
+  );
 }
 
 writeFileSync(join(distPath, "index.html"), html);
 writeFileSync(join(distPath, "assets", "app.js"), `${appMatch[1]}\n`);
+if (existsSync(join(root, "assets", "public-cms.js"))) {
+  cpSync(
+    join(root, "assets", "public-cms.js"),
+    join(distPath, "assets", "public-cms.js"),
+  );
+}
 cpSync(join(root, "assets", "images"), join(distPath, "assets", "images"), {
   recursive: true,
 });
 cpSync(join(root, "deploy", "apache.htaccess"), join(distPath, ".htaccess"));
-
-const commit = (() => {
-  try {
-    return execFileSync("git", ["rev-parse", "--short=12", "HEAD"], {
-      cwd: root,
-      encoding: "utf8",
-    }).trim();
-  } catch {
-    return "sin-git";
-  }
-})();
+if (existsSync(join(root, "admin"))) {
+  cpSync(join(root, "admin"), join(distPath, "admin"), { recursive: true });
+}
 
 writeFileSync(
   join(distPath, "release.json"),
-  JSON.stringify(
-    {
-      commit,
-      profile: production ? "production" : "preview",
-      built_at: new Date().toISOString(),
-    },
-    null,
-    2,
-  ) + "\n",
+  JSON.stringify(release, null, 2) + "\n",
 );
 
 const files = [];
