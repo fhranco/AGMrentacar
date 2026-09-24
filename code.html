@@ -305,23 +305,25 @@
           class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg flex flex-wrap items-center justify-between gap-y-1"
         >
           <div class="flex items-center gap-space-md">
+            <div class="flex items-center gap-space-xs text-brand-lime">
+              <span class="material-symbols-outlined text-[15px]">call</span>
+              <a class="text-slate-200 hover:text-brand-lime transition-colors" href="tel:+56966571218">+56 9 6657 1218</a>
+              <span class="text-slate-500">/</span>
+              <a class="text-slate-200 hover:text-brand-lime transition-colors" href="tel:+56966571211">+56 9 6657 1211</a>
+            </div>
+            <span class="hidden sm:inline text-slate-700">|</span>
             <a
-              class="flex items-center gap-space-xs text-brand-lime"
-              href="tel:+56966571218"
-              ><span class="material-symbols-outlined text-[15px]">call</span
-              ><span class="text-slate-200">+56 9 6657 1218</span></a
-            ><span class="hidden sm:inline text-slate-700">|</span
-            ><a
               class="hidden sm:flex items-center gap-space-xs hover:text-brand-lime transition-colors"
               href="mailto:reservas@agmrentacar.cl"
               ><span class="text-slate-300">reservas@agmrentacar.cl</span></a
-            ><span class="hidden md:inline text-slate-700">|</span
-            ><a
-              class="hidden md:flex items-center gap-space-xs text-brand-lime"
-              href="https://api.whatsapp.com/send?phone=56966571218"
-              ><span class="material-symbols-outlined text-[15px]">chat</span
-              ><span class="text-slate-200">Soporte por WhatsApp</span></a
-            >
+            ><span class="hidden md:inline text-slate-700">|</span>
+            <div class="hidden md:flex items-center gap-space-xs text-brand-lime">
+              <span class="material-symbols-outlined text-[15px]">chat</span>
+              <span class="text-slate-200">WhatsApp:</span>
+              <a class="text-slate-200 hover:text-brand-lime transition-colors" href="https://api.whatsapp.com/send?phone=56966571218" target="_blank" rel="noopener noreferrer">1218</a>
+              <span class="text-slate-500">/</span>
+              <a class="text-slate-200 hover:text-brand-lime transition-colors" href="https://api.whatsapp.com/send?phone=56966571211" target="_blank" rel="noopener noreferrer">1211</a>
+            </div>
           </div>
           <div class="flex items-center gap-space-md">
             <a class="hidden md:inline hover:text-brand-lime transition-colors" href="#contacto"
@@ -653,29 +655,28 @@
                 </div>
                 <!-- Secondary Shortcuts -->
                 <div
-                  class="flex items-center gap-4 text-slate-600 font-label-sm text-label-sm"
+                  class="flex items-center gap-3 sm:gap-4 text-slate-600 font-label-sm text-label-sm"
                 >
-                  <a
-                    class="flex items-center gap-1.5 hover:text-primary transition-colors"
-                    href="https://api.whatsapp.com/send?phone=56966571218"
-                  >
+                  <div class="flex items-center gap-1.5">
                     <span
                       class="material-symbols-outlined text-[16px] text-brand-lime"
                       >calendar_clock</span
                     >
-                    <span data-i18n="lbl_whatsapp_support">Soporte por WhatsApp</span>
-                  </a>
+                    <span data-i18n="lbl_whatsapp_support">Soporte WhatsApp</span>:
+                    <a class="hover:text-primary transition-colors font-semibold" href="https://api.whatsapp.com/send?phone=56966571218" target="_blank" rel="noopener noreferrer">1218</a>
+                    <span class="text-slate-300">/</span>
+                    <a class="hover:text-primary transition-colors font-semibold" href="https://api.whatsapp.com/send?phone=56966571211" target="_blank" rel="noopener noreferrer">1211</a>
+                  </div>
                   <span class="text-slate-300">|</span>
-                  <a
-                    class="flex items-center gap-1.5 hover:text-primary transition-colors"
-                    href="tel:+56966571218"
-                  >
+                  <div class="flex items-center gap-1.5">
                     <span
                       class="material-symbols-outlined text-[16px] text-brand-lime"
                       >speed</span
                     >
-                    <span data-i18n="lbl_24h_attention">Atención 24 horas</span>
-                  </a>
+                    <a class="hover:text-primary transition-colors font-semibold" href="tel:+56966571218">+56 9 6657 1218</a>
+                    <span class="text-slate-300 hidden sm:inline">/</span>
+                    <a class="hover:text-primary transition-colors font-semibold hidden sm:inline" href="tel:+56966571211">1211</a>
+                  </div>
                 </div>
               </div>
               <!-- Booking Fields Layout Grid -->
@@ -936,15 +937,14 @@
                   <!-- Arriendo Mensual Direct Link -->
                   <a
                     class="inline-flex items-center gap-1 text-primary hover:text-on-primary-fixed-variant font-bold transition-colors"
-                    href="mailto:reservas@agmrentacar.cl?subject=Cotizaci%C3%B3n%20especial%20de%20arriendo"
+                    href="mailto:reservas@agmrentacar.cl?subject=Salida%20a%20Argentina"
                   >
                     <span class="material-symbols-outlined text-[18px]"
-                      >calendar_month</span
+                      >public</span
                     >
                     <span
                       data-i18n="lbl_special_quote"
-                      >¿Necesitas una cotización especial? Escríbenos por
-                      correo</span
+                      >¿Requiere salir a Argentina? Indíquelo aquí</span
                     >
                     <span class="material-symbols-outlined text-[16px]"
                       >arrow_forward</span
@@ -986,32 +986,26 @@
           <div class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg">
             <!-- Section Header -->
             <div
-              class="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-10 items-end mb-8"
+              class="text-center max-w-3xl mx-auto mb-8"
             >
-              <div class="lg:col-span-8">
-                <div
-                  class="inline-flex items-center gap-2 text-primary font-mono text-[11px] font-bold uppercase tracking-[0.2em] mb-2"
-                >
-                  <span class="material-symbols-outlined text-[16px]"
-                    >directions_car</span
-                  >
-                  <span data-i18n="fleet_catalog_tag">Catálogo 01 / Flota AGM</span>
-                </div>
-                <h2
-                  class="font-headline-lg text-headline-lg text-slate-950 font-bold tracking-tight"
-                  data-i18n="fleet_title"
-                >
-                  Vehículos preparados para el sur.
-                </h2>
-              </div>
               <div
-                class="lg:col-span-4 lg:border-l lg:border-brand-blue/20 lg:pl-8"
+                class="inline-flex items-center gap-2 text-primary font-mono text-[11px] font-bold uppercase tracking-[0.2em] mb-2"
               >
-                <p class="font-body-md text-body-md text-slate-600" data-i18n="fleet_subtitle">
-                  Compara capacidades y elige según tu ruta, número de pasajeros
-                  o tipo de operación.
-                </p>
+                <span class="material-symbols-outlined text-[16px]"
+                  >directions_car</span
+                >
+                <span data-i18n="fleet_catalog_tag">Catálogo 01 / Flota AGM</span>
               </div>
+              <h2
+                class="font-headline-lg text-headline-lg text-slate-950 font-bold tracking-tight text-center"
+                data-i18n="fleet_title"
+              >
+                Vehículos preparados para la Patagonia
+              </h2>
+              <p class="font-body-md text-body-md text-slate-600 mt-2 text-justify sm:text-center" data-i18n="fleet_subtitle">
+                Compara capacidades y elige según tu ruta, número de pasajeros
+                o tipo de operación.
+              </p>
               <p class="sr-only" id="fleetFilterStatus" aria-live="polite">
                 Mostrando todos los vehículos.
               </p>
@@ -1109,11 +1103,11 @@
                     </div>
                     <div class="flex flex-col items-center">
                       <span class="material-symbols-outlined text-[18px] text-slate-500">luggage</span>
-                      <span data-i18n="spec_bags_2">2 Maletas</span>
+                      <span data-i18n="spec_bags_3">3 Maletas</span>
                     </div>
                     <div class="flex flex-col items-center">
                       <span class="material-symbols-outlined text-[18px] text-slate-500">settings</span>
-                      <span data-i18n="spec_auto">Automática</span>
+                      <span data-i18n="spec_manual_std">Manual</span>
                     </div>
                     <div class="flex flex-col items-center">
                       <span class="material-symbols-outlined text-[18px] text-slate-500">ac_unit</span>
@@ -1168,7 +1162,7 @@
                     </div>
                     <div class="flex flex-col items-center">
                       <span class="material-symbols-outlined text-[18px] text-slate-500">luggage</span>
-                      <span data-i18n="spec_bags_3">3 Maletas</span>
+                      <span data-i18n="spec_bags_4">4 Maletas</span>
                     </div>
                     <div class="flex flex-col items-center">
                       <span class="material-symbols-outlined text-[18px] text-slate-500">settings</span>
@@ -1227,7 +1221,7 @@
                     </div>
                     <div class="flex flex-col items-center">
                       <span class="material-symbols-outlined text-[18px] text-slate-500">luggage</span>
-                      <span data-i18n="spec_bags_3">3 Maletas</span>
+                      <span data-i18n="spec_bags_4">4 Maletas</span>
                     </div>
                     <div class="flex flex-col items-center">
                       <span class="material-symbols-outlined text-[18px] text-slate-500">settings</span>
@@ -1286,7 +1280,7 @@
                     </div>
                     <div class="flex flex-col items-center">
                       <span class="material-symbols-outlined text-[18px] text-slate-500">luggage</span>
-                      <span data-i18n="spec_bags_3">3 Maletas</span>
+                      <span data-i18n="spec_bags_4">4 Maletas</span>
                     </div>
                     <div class="flex flex-col items-center">
                       <span class="material-symbols-outlined text-[18px] text-slate-500">settings</span>
@@ -1345,7 +1339,7 @@
                     </div>
                     <div class="flex flex-col items-center">
                       <span class="material-symbols-outlined text-[18px] text-slate-500">luggage</span>
-                      <span data-i18n="spec_bags_4">4 Maletas</span>
+                      <span data-i18n="spec_bags_5">5 Maletas</span>
                     </div>
                     <div class="flex flex-col items-center">
                       <span class="material-symbols-outlined text-[18px] text-slate-500">settings</span>
@@ -1669,11 +1663,11 @@
             </div>
             <!-- NUEVOS SERVICIOS DESTACADOS AGM -->
             <div class="mt-12 pt-10 border-t border-brand-blue/15">
-              <div class="mb-8">
+              <div class="mb-8 text-center max-w-3xl mx-auto">
                 <span class="font-mono text-[11px] uppercase tracking-[0.2em] text-primary font-bold" data-i18n="services_new_tag">
                   Servicios y Beneficios Exclusivos
                 </span>
-                <h3 class="font-headline-lg text-headline-lg-mobile lg:text-headline-lg font-bold text-slate-950 mt-1" data-i18n="services_new_title">
+                <h3 class="font-headline-lg text-headline-lg-mobile lg:text-headline-lg font-bold text-slate-950 mt-1 text-center" data-i18n="services_new_title">
                   Todo lo necesario para tu viaje por Magallanes y la Patagonia
                 </h3>
               </div>
@@ -1682,13 +1676,13 @@
                 <!-- Servicio 1: Permisos especiales Argentina (Celeste Aventura / Internacional) -->
                 <div class="p-6 rounded-2xl bg-gradient-to-b from-sky-50/90 via-sky-50/40 to-white border border-sky-200/90 border-t-4 border-t-sky-500 hover:border-sky-400 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
                   <div>
-                    <div class="w-12 h-12 rounded-xl bg-sky-500 text-white flex items-center justify-center mb-4 shadow-md shadow-sky-500/25 group-hover:scale-110 transition-transform">
+                    <div class="w-12 h-12 rounded-xl bg-sky-500 text-white flex items-center justify-center mb-4 mx-auto shadow-md shadow-sky-500/25 group-hover:scale-110 transition-transform">
                       <span class="material-symbols-outlined text-[24px]">public</span>
                     </div>
-                    <h4 class="font-title-sm text-title-sm font-bold text-slate-900 group-hover:text-sky-950 mb-2 leading-snug" data-i18n="srv_argentina_title">
+                    <h4 class="font-title-sm text-title-sm font-bold text-slate-900 group-hover:text-sky-950 mb-2 leading-snug text-center" data-i18n="srv_argentina_title">
                       Permisos Especiales (Argentina)
                     </h4>
-                    <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed" data-i18n="srv_argentina_desc">
+                    <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed text-justify" data-i18n="srv_argentina_desc">
                       Para facilitar su viaje, en AGM Rent a Car gestionamos la documentación necesaria para la salida del vehículo hacia Argentina. Nuestro equipo le orientará durante el proceso, procurando que cuente con los permisos y requisitos correspondientes para realizar su viaje de manera segura y tranquila.
                     </p>
                   </div>
@@ -1696,13 +1690,13 @@
                 <!-- Servicio 2: Silla para niños gratis (Verde Lima AGM / Familia) -->
                 <div class="p-6 rounded-2xl bg-gradient-to-b from-lime-50/90 via-lime-50/30 to-white border border-lime-200/90 border-t-4 border-t-brand-lime hover:border-brand-lime shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
                   <div>
-                    <div class="w-12 h-12 rounded-xl bg-brand-lime text-slate-950 flex items-center justify-center mb-4 shadow-md shadow-brand-lime/30 group-hover:scale-110 transition-transform font-bold">
+                    <div class="w-12 h-12 rounded-xl bg-brand-lime text-slate-950 flex items-center justify-center mb-4 mx-auto shadow-md shadow-brand-lime/30 group-hover:scale-110 transition-transform font-bold">
                       <span class="material-symbols-outlined text-[24px]">child_care</span>
                     </div>
-                    <h4 class="font-title-sm text-title-sm font-bold text-slate-900 group-hover:text-slate-950 mb-2 leading-snug" data-i18n="srv_childseat_title">
+                    <h4 class="font-title-sm text-title-sm font-bold text-slate-900 group-hover:text-slate-950 mb-2 leading-snug text-center" data-i18n="srv_childseat_title">
                       Silla para Niños Gratis
                     </h4>
-                    <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed" data-i18n="srv_childseat_desc">
+                    <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed text-justify" data-i18n="srv_childseat_desc">
                       Para mayor comodidad y seguridad de toda la familia, ofrecemos el servicio de silla para niños sin costo adicional. En AGM Rent a Car, nos preocupamos por que los más pequeños viajen protegidos y cómodos durante todo el trayecto.
                     </p>
                   </div>
@@ -1710,13 +1704,13 @@
                 <!-- Servicio 3: Convenios con empresas (Azul Marino Corporativo / B2B) -->
                 <div class="p-6 rounded-2xl bg-gradient-to-b from-blue-50/90 via-indigo-50/30 to-white border border-blue-200/90 border-t-4 border-t-primary hover:border-primary shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
                   <div>
-                    <div class="w-12 h-12 rounded-xl bg-primary text-white flex items-center justify-center mb-4 shadow-md shadow-primary/25 group-hover:scale-110 transition-transform">
+                    <div class="w-12 h-12 rounded-xl bg-primary text-white flex items-center justify-center mb-4 mx-auto shadow-md shadow-primary/25 group-hover:scale-110 transition-transform">
                       <span class="material-symbols-outlined text-[24px]">apartment</span>
                     </div>
-                    <h4 class="font-title-sm text-title-sm font-bold text-slate-900 group-hover:text-primary mb-2 leading-snug" data-i18n="srv_corporate_title">
+                    <h4 class="font-title-sm text-title-sm font-bold text-slate-900 group-hover:text-primary mb-2 leading-snug text-center" data-i18n="srv_corporate_title">
                       Convenios con Empresas
                     </h4>
-                    <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed" data-i18n="srv_corporate_desc">
+                    <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed text-justify" data-i18n="srv_corporate_desc">
                       Ofrecemos convenios corporativos diseñados para su empresa, con un servicio de excelencia y atención personalizada en la región de Magallanes. En AGM Rent a Car, desarrollamos soluciones flexibles y adaptadas a los requerimientos específicos de cada negocio.
                     </p>
                   </div>
@@ -1724,13 +1718,13 @@
                 <!-- Servicio 4: Equipamiento para invierno (Cian Escarcha / Nieve Patagónica) -->
                 <div class="p-6 rounded-2xl bg-gradient-to-b from-cyan-50/90 via-teal-50/30 to-white border border-cyan-200/90 border-t-4 border-t-cyan-500 hover:border-cyan-500 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group">
                   <div>
-                    <div class="w-12 h-12 rounded-xl bg-cyan-600 text-white flex items-center justify-center mb-4 shadow-md shadow-cyan-600/25 group-hover:scale-110 transition-transform">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-600 text-white flex items-center justify-center mb-4 mx-auto shadow-md shadow-cyan-600/25 group-hover:scale-110 transition-transform">
                       <span class="material-symbols-outlined text-[24px]">ac_unit</span>
                     </div>
-                    <h4 class="font-title-sm text-title-sm font-bold text-slate-900 group-hover:text-cyan-950 mb-2 leading-snug" data-i18n="srv_winter_title">
+                    <h4 class="font-title-sm text-title-sm font-bold text-slate-900 group-hover:text-cyan-950 mb-2 leading-snug text-center" data-i18n="srv_winter_title">
                       Equipamiento para Invierno
                     </h4>
-                    <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed" data-i18n="srv_winter_desc">
+                    <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed text-justify" data-i18n="srv_winter_desc">
                       Preparamos su vehículo para las condiciones de la Patagonia con neumáticos con clavos y cadenas bajo solicitud, garantizando máxima adherencia en nieve y hielo.
                     </p>
                   </div>
@@ -1857,20 +1851,18 @@
         <!-- SECCIÓN BLOG Y GUÍAS DE RUTA EN LA PATAGONIA -->
         <section id="blog" class="w-full py-20 bg-slate-50 border-t border-b border-slate-200/70">
           <div class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg">
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-              <div class="space-y-3 max-w-2xl">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-blue-subtle text-primary font-label-sm text-label-sm font-bold uppercase tracking-wider">
-                  <span class="material-symbols-outlined text-[16px]">menu_book</span>
-                  <span data-i18n="blog_badge">Inspiración y Consejos para tu Viaje</span>
-                </div>
-                <h2 class="font-headline-lg text-headline-lg text-slate-950 font-bold tracking-tight" data-i18n="blog_title">
-                  Blog y Guías de Ruta en la Patagonia
-                </h2>
-                <p class="font-body-md text-body-md text-slate-600" data-i18n="blog_subtitle">
-                  Tiempos de conducción, cruces fronterizos a Argentina y recomendaciones prácticas de nuestros expertos locales para viajar seguro por Magallanes.
-                </p>
+            <div class="text-center max-w-3xl mx-auto mb-12">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-blue-subtle text-primary font-label-sm text-label-sm font-bold uppercase tracking-wider mb-2">
+                <span class="material-symbols-outlined text-[16px]">menu_book</span>
+                <span data-i18n="blog_badge">Inspiración y Consejos para tu Viaje</span>
               </div>
-              <div class="flex items-center gap-2 text-slate-500 font-label-md text-label-md">
+              <h2 class="font-headline-lg text-headline-lg text-slate-950 font-bold tracking-tight text-center" data-i18n="blog_title">
+                Blog y Guías de Ruta en la Patagonia
+              </h2>
+              <p class="font-body-md text-body-md text-slate-600 mt-2 text-justify sm:text-center" data-i18n="blog_subtitle">
+                Tiempos de conducción, cruces fronterizos a Argentina y recomendaciones prácticas de nuestros expertos locales para viajar seguro por Magallanes.
+              </p>
+              <div class="flex items-center justify-center gap-2 text-slate-500 font-label-md text-label-md mt-3">
                 <span class="w-2.5 h-2.5 rounded-full bg-success"></span>
                 <span data-i18n="blog_updated">Actualizado Temporada 2026</span>
               </div>
@@ -1903,7 +1895,7 @@
                     <h3 class="font-title-md text-title-md font-bold text-slate-950 mb-3 group-hover:text-primary transition-colors leading-snug" data-i18n="blog1_title">
                       Ruta Punta Arenas a Torres del Paine en auto: Guía completa 2026
                     </h3>
-                    <p class="font-body-sm text-body-sm text-slate-600 line-clamp-3 leading-relaxed" data-i18n="blog1_desc">
+                    <p class="font-body-sm text-body-sm text-slate-600 line-clamp-3 leading-relaxed text-justify" data-i18n="blog1_desc">
                       Distancias kilométricas, paradas estratégicas en Puerto Natales, abastecimiento de combustible y mejores miradores fotográficos para tu itinerario.
                     </p>
                   </div>
@@ -1945,7 +1937,7 @@
                     <h3 class="font-title-md text-title-md font-bold text-slate-950 mb-3 group-hover:text-primary transition-colors leading-snug" data-i18n="blog2_title">
                       Cómo cruzar a Argentina en vehículo de arriendo: Requisitos y pasos
                     </h3>
-                    <p class="font-body-sm text-body-sm text-slate-600 line-clamp-3 leading-relaxed" data-i18n="blog2_desc">
+                    <p class="font-body-sm text-body-sm text-slate-600 line-clamp-3 leading-relaxed text-justify" data-i18n="blog2_desc">
                       Todo sobre los pasos fronterizos Río Don Guillermo e Integración Austral, gestión del permiso aduanero notarial y seguro Mercosur obligatorio con AGM.
                     </p>
                   </div>
@@ -1987,7 +1979,7 @@
                     <h3 class="font-title-md text-title-md font-bold text-slate-950 mb-3 group-hover:text-primary transition-colors leading-snug" data-i18n="blog3_title">
                       Guía para conducir con viento, escarcha y ripio en Magallanes
                     </h3>
-                    <p class="font-body-sm text-body-sm text-slate-600 line-clamp-3 leading-relaxed" data-i18n="blog3_desc">
+                    <p class="font-body-sm text-body-sm text-slate-600 line-clamp-3 leading-relaxed text-justify" data-i18n="blog3_desc">
                       Recomendaciones clave ante ráfagas patagónicas, cuidado con puertas al abrir, neumáticos con clavos en temporada fría y conducción en caminos de grava.
                     </p>
                   </div>
@@ -2018,12 +2010,12 @@
                   >AGM Rent a Car • Magallanes</span
                 >
                 <h2
-                  class="font-headline-lg text-headline-lg text-slate-950 font-bold tracking-tight"
+                  class="font-headline-lg text-headline-lg text-slate-950 font-bold tracking-tight text-center lg:text-left"
                   data-i18n="contact_title"
                 >
                   Comienza tu ruta desde Punta Arenas
                 </h2>
-                <p class="font-body-md text-body-md text-slate-600" data-i18n="contact_desc">
+                <p class="font-body-md text-body-md text-slate-600 text-justify" data-i18n="contact_desc">
                   Coordinamos personalmente la entrega de tu vehículo para que
                   puedas comenzar el viaje apenas llegues a la región.
                 </p>
@@ -2067,7 +2059,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="pt-2 flex items-center gap-4">
+                <div class="pt-2 flex flex-wrap items-center gap-4">
                   <a
                     class="px-5 py-2.5 rounded-lg bg-brand-blue-dark text-surface-white hover:bg-brand-blue font-label-md text-label-md font-bold transition-all"
                     href="https://goo.gl/maps/6kCMyr35Fzw"
@@ -2076,7 +2068,7 @@
                     Ver ubicación
                   </a>
                   <span class="font-body-sm text-body-sm text-slate-500"
-                    ><span data-i18n="contact_reservations_label">Reservas:</span> <strong>+56 9 6657 1218</strong></span
+                    ><span data-i18n="contact_reservations_label">Reservas:</span> <strong>+56 9 6657 1218 / +56 9 6657 1211</strong></span
                   >
                 </div>
               </div>
@@ -2173,6 +2165,8 @@
               <a
                 class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition-colors flex items-center gap-3 border border-white/20"
                 href="https://api.whatsapp.com/send?phone=56966571218"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <span
                   class="material-symbols-outlined text-brand-lime text-[24px]"
@@ -2186,8 +2180,29 @@
                   >
                   <span
                     class="block font-label-md text-label-md font-bold text-surface-white"
-                    data-i18n="cta_support_wa"
-                    >WhatsApp</span
+                    >WA 1218</span
+                  >
+                </div>
+              </a>
+              <a
+                class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition-colors flex items-center gap-3 border border-white/20"
+                href="https://api.whatsapp.com/send?phone=56966571211"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span
+                  class="material-symbols-outlined text-brand-lime text-[24px]"
+                  >chat</span
+                >
+                <div class="text-left">
+                  <span
+                    class="block text-[10px] text-slate-400 uppercase font-semibold"
+                    data-i18n="cta_support_by"
+                    >Soporte por</span
+                  >
+                  <span
+                    class="block font-label-md text-label-md font-bold text-surface-white"
+                    >WA 1211</span
                   >
                 </div>
               </a>
@@ -3089,7 +3104,7 @@
               lbl_dropoff_branch: "Sucursal de Devolución",
               lbl_dropoff_note: "Devolución en aeropuerto, hoteles o departamentos de Punta Arenas sin costo adicional. Para otras ciudades, coordinamos en la confirmación.",
               lbl_responsible_note: "Los datos ingresados son tratados exclusivamente para la elaboración y envío de su cotización formal.",
-              lbl_special_quote: "¿Requiere condiciones especiales o cruce a Argentina? Indíquelo aquí.",
+              lbl_special_quote: "¿Requiere salir a Argentina? Indíquelo aquí",
 
               services_tag: "Ruta 01 / Servicios AGM",
               services_h2_1: "Del aterrizaje al camino,",
@@ -3122,7 +3137,7 @@
               srv_winter_desc: "Preparamos su vehículo para las condiciones de la Patagonia con neumáticos con clavos y cadenas bajo solicitud, garantizando máxima adherencia en nieve y hielo.",
 
               fleet_catalog_tag: "Catálogo 02 / Flota AGM",
-              fleet_title: "Vehículos preparados para el sur.",
+              fleet_title: "Vehículos preparados para la Patagonia",
               fleet_subtitle: "Compara capacidades y elige según tu ruta, número de pasajeros o tipo de operación.",
               filter_all: "Todos los vehículos",
               filter_crossover: "SUV y Crossover",
@@ -3147,8 +3162,10 @@
               spec_bags_2: "2 Maletas",
               spec_bags_3: "3 Maletas",
               spec_bags_4: "4 Maletas",
+              spec_bags_5: "5 Maletas",
               spec_auto: "Automática",
               spec_manual: "Manual 4x4",
+              spec_manual_std: "Manual",
               spec_pickup: "Pick-up",
               card_available: "Disponible",
               card_rate: "Tarifa",
@@ -3332,7 +3349,7 @@
               lbl_dropoff_branch: "Drop-off Location",
               lbl_dropoff_note: "Free drop-off at Punta Arenas Airport, hotels, or apartments. For other destinations, coordinated upon confirmation.",
               lbl_responsible_note: "Submitted details are handled strictly for preparing your formal quotation.",
-              lbl_special_quote: "Need special conditions or crossing to Argentina? Specify here.",
+              lbl_special_quote: "Require crossing to Argentina? Specify here",
 
               services_tag: "Route 01 / AGM Services",
               services_h2_1: "From landing to the open road,",
@@ -3365,7 +3382,7 @@
               srv_winter_desc: "We prepare your vehicle for Patagonian winter conditions with studded snow tires and chains on request, ensuring maximum grip and safety on snow and ice.",
 
               fleet_catalog_tag: "Catalog 02 / AGM Fleet",
-              fleet_title: "Vehicles prepared for the southern roads.",
+              fleet_title: "Vehicles Built for Patagonia",
               fleet_subtitle: "Compare capacities and choose according to your itinerary, passengers, or operation type.",
               filter_all: "All vehicles",
               filter_crossover: "SUV & Crossover",
@@ -3390,8 +3407,10 @@
               spec_bags_2: "2 Bags",
               spec_bags_3: "3 Bags",
               spec_bags_4: "4 Bags",
+              spec_bags_5: "5 Bags",
               spec_auto: "Automatic",
               spec_manual: "Manual 4x4",
+              spec_manual_std: "Manual",
               spec_pickup: "Pick-up",
               card_available: "Available",
               card_rate: "Rate",
@@ -3575,7 +3594,7 @@
               lbl_dropoff_branch: "Local de Devolução",
               lbl_dropoff_note: "Devolução gratuita no Aeroporto de Punta Arenas, hotéis ou apartamentos. Para outras cidades, combinamos na confirmação.",
               lbl_responsible_note: "Os dados informados são tratados exclusivamente para a elaboração e envio da sua cotação formal.",
-              lbl_special_quote: "Precisa de condições especiais ou cruzar para a Argentina? Indique aqui.",
+              lbl_special_quote: "Precisa sair para a Argentina? Indique aqui",
 
               services_tag: "Rota 01 / Serviços AGM",
               services_h2_1: "Do pouso à estrada,",
@@ -3596,7 +3615,7 @@
               srv_card3_desc: "SUVs e picapes 4x4 para turismo, negócios e mineração. Atendimento personalizado em Punta Arenas.",
               srv_card3_cta1: "Cotar veículo",
               srv_card3_cta2: "Ver frota",
-              services_new_tag: "Serviços e Benefícios Exclusivos",
+              services_new_tag: "Serviços e Beneficios Exclusivos",
               services_new_title: "Tudo o que você precisa para sua viagem por Magalhães e Patagônia",
               srv_argentina_title: "Permissões Especiais (Argentina)",
               srv_argentina_desc: "Para facilitar sua viagem internacional, a AGM Rent a Car cuida de toda a documentação oficial para cruzar para a Argentina com tranquilidade e segurança.",
@@ -3608,9 +3627,9 @@
               srv_winter_desc: "Preparamos seu veículo para as estradas da Patagônia com pneus com cravos e correntes de neve sob solicitação, garantindo máxima segurança.",
 
               fleet_catalog_tag: "Catálogo 02 / Frota AGM",
-              fleet_title: "Veículos preparados para o sul.",
+              fleet_title: "Veículos preparados para a Patagônia",
               fleet_subtitle: "Compare capacidades e escolha conforme seu roteiro, número de passageiros ou tipo de operação.",
-              filter_all: "Todos os veículos",
+              filter_all: "Todos os vehículos",
               filter_crossover: "SUV e Crossover",
               filter_suv4x4: "SUV 4x4",
               filter_suv_fam: "SUV familiar",
@@ -3633,8 +3652,10 @@
               spec_bags_2: "2 Malas",
               spec_bags_3: "3 Malas",
               spec_bags_4: "4 Malas",
+              spec_bags_5: "5 Malas",
               spec_auto: "Automático",
               spec_manual: "Manual 4x4",
+              spec_manual_std: "Manual",
               spec_pickup: "Caçamba",
               card_available: "Disponível",
               card_rate: "Tarifa",
@@ -3925,7 +3946,7 @@
             </p>
             <ul class="list-disc pl-5 space-y-1 text-slate-600">
               <li><strong>Correo formal para datos personales:</strong> <a href="mailto:reservas@agmrentacar.cl" class="text-primary hover:underline font-semibold">reservas@agmrentacar.cl</a></li>
-              <li><strong>Teléfono de atención:</strong> <a href="tel:+56966571218" class="text-primary hover:underline font-semibold">+56 9 6657 1218</a></li>
+              <li><strong>Teléfono de atención:</strong> <a href="tel:+56966571218" class="text-primary hover:underline font-semibold">+56 9 6657 1218</a> / <a href="tel:+56966571211" class="text-primary hover:underline font-semibold">+56 9 6657 1211</a></li>
             </ul>
           </section>
 
@@ -4409,10 +4430,22 @@
               class="px-4 py-2 rounded-lg bg-brand-blue-dark hover:bg-slate-950 text-surface-white font-label-md text-label-md transition-colors flex items-center gap-space-xs"
               data-path="whatsapp"
               href="https://api.whatsapp.com/send?phone=56966571218"
+              target="_blank"
+              rel="noopener noreferrer"
               ><span
                 class="material-symbols-outlined text-[18px] text-brand-lime"
                 >support_agent</span
-              ><span data-i18n="footer_wa_btn">Soporte WhatsApp</span></a
+              ><span>WA 1218</span></a
+            ><a
+              class="px-4 py-2 rounded-lg bg-brand-blue-dark hover:bg-slate-950 text-surface-white font-label-md text-label-md transition-colors flex items-center gap-space-xs"
+              data-path="whatsapp-2"
+              href="https://api.whatsapp.com/send?phone=56966571211"
+              target="_blank"
+              rel="noopener noreferrer"
+              ><span
+                class="material-symbols-outlined text-[18px] text-brand-lime"
+                >chat</span
+              ><span>WA 1211</span></a
             >
           </div>
         </div>
@@ -4444,8 +4477,7 @@
                 <strong class="text-surface-white" data-i18n="footer_lbl_location">Ubicación:</strong> <span data-i18n="footer_val_location">Punta Arenas, Región de Magallanes</span>
               </p>
               <p class="text-slate-300">
-                <strong class="text-surface-white" data-i18n="footer_lbl_res">Reservas:</strong> +56 9 6657
-                1218
+                <strong class="text-surface-white" data-i18n="footer_lbl_res">Reservas:</strong> +56 9 6657 1218 / +56 9 6657 1211
               </p>
               <p class="text-slate-300">
                 <strong class="text-surface-white" data-i18n="footer_lbl_email">Correo:</strong>
@@ -4581,6 +4613,8 @@
               <a
                 class="px-3 py-2 rounded-lg bg-white/5 border border-white/10 flex items-center gap-space-sm hover:bg-white/10 cursor-pointer"
                 href="https://api.whatsapp.com/send?phone=56966571218"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <span class="material-symbols-outlined text-brand-lime"
                   >support_agent</span
@@ -4589,8 +4623,26 @@
                   <div class="text-[10px] text-slate-400 uppercase font-bold" data-i18n="footer_card_wa_pre">
                     Soporte por
                   </div>
-                  <div class="font-label-md text-label-md text-surface-white" data-i18n="footer_card_wa">
-                    WhatsApp
+                  <div class="font-label-md text-label-md text-surface-white">
+                    WhatsApp 1218
+                  </div>
+                </div>
+              </a>
+              <a
+                class="px-3 py-2 rounded-lg bg-white/5 border border-white/10 flex items-center gap-space-sm hover:bg-white/10 cursor-pointer"
+                href="https://api.whatsapp.com/send?phone=56966571211"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span class="material-symbols-outlined text-brand-lime"
+                  >chat</span
+                >
+                <div>
+                  <div class="text-[10px] text-slate-400 uppercase font-bold" data-i18n="footer_card_wa_pre">
+                    Soporte por
+                  </div>
+                  <div class="font-label-md text-label-md text-surface-white">
+                    WhatsApp 1211
                   </div>
                 </div>
               </a>
