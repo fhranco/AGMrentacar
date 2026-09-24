@@ -9,3 +9,4 @@ dist/
 backups/
 supabase/.temp/
 *.docx
+.vercel/
