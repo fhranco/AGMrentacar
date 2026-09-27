@@ -1,0 +1,34 @@
+# AGM Rent a Car
+
+> Arriendo de vehículos y rent a car en Punta Arenas, Magallanes y la Patagonia (Chile y Argentina). Flota moderna de camionetas 4x4 y SUV, kilometraje libre y entrega gratuita en el Aeropuerto Presidente Carlos Ibáñez del Campo (PUQ).
+
+## Información General y Ubicación
+- **Nombre Comercial:** AGM Rent a Car
+- **Ubicación Base:** Punta Arenas, Región de Magallanes y de la Antártica Chilena, Chile.
+- **Coordenadas Geográficas:** -53.1638, -70.9171
+- **Aeropuerto Principal:** Aeropuerto Internacional Presidente Carlos Ibáñez del Campo (IATA: PUQ).
+- **Cobertura Operativa:** Punta Arenas, Puerto Natales, Parque Nacional Torres del Paine, Tierra del Fuego, y cruce internacional a Argentina (El Calafate, Río Gallegos, Ushuaia).
+
+## Servicios Clave
+- **Entrega en Aeropuerto PUQ:** Entrega y devolución sin costo adicional en el Aeropuerto de Punta Arenas, coordinada directamente según el horario de llegada de cada vuelo.
+- **Kilometraje:** Kilometraje libre e ilimitado en todas las categorías de arriendo.
+- **Permiso para Cruce a Argentina:** Trámite de autorización notarial internacional y seguro RCI (Responsabilidad Civil Internacional) obligatorio para transitar hacia El Calafate y Ushuaia.
+- **Cobertura y Asistencia:** Seguro CDW contra colisión, deducible estandarizado y soporte continuo en ruta en toda la Patagonia.
+
+## Flota de Vehículos
+- **Camionetas Pick-up 4x4:** Mazda BT-50 4x4 Diésel y Toyota 4Runner 4x4. Preparadas para faena, ripio y condiciones meteorológicas extremas de la Patagonia.
+- **SUV Medianas y Compactas:** Toyota RAV4 (Automática), Ford Territory (Automática), Mazda CX-5 (Automática), Nissan Kicks (Manual y Automática). Espaciosas, con excelente rendimiento y tracción adaptada.
+
+## Requisitos de Arriendo
+- Cédula de identidad o pasaporte vigente.
+- Licencia de conducir vigente (nacional o internacional).
+- Edad mínima de arriendo: 22 años.
+- Tarjeta de crédito bancaria para la garantía del vehículo.
+
+## Canales Oficiales y Enlaces Canónicos
+- **Sitio Web Oficial:** https://agmrentacar.cl/
+- **Cotizador y Reserva:** https://agmrentacar.cl/#cotizador
+- **Correo Electrónico:** reservas@agmrentacar.cl
+- **Teléfonos / WhatsApp Soporte:** +56 9 6657 1218 / +56 9 6657 1211
+- **Ficha Google Maps:** https://goo.gl/maps/6kCMyr35Fzw
+- **Sitemap XML:** https://agmrentacar.cl/sitemap.xml
