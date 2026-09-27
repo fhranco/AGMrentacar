@@ -21,19 +21,34 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_CL" />
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&amp;display=block"
-      rel="stylesheet"
-    />
+    <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" as="image" href="assets/images/hero-magallanes-mobile.webp" type="image/webp" media="(max-width: 768px)" fetchpriority="high" />
     <link rel="preload" as="image" href="assets/images/hero-magallanes.webp" type="image/webp" media="(min-width: 769px)" fetchpriority="high" />
     <style>
+      @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: optional;
+        src: url("assets/fonts/inter-latin.woff2") format("woff2");
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Plus Jakarta Sans';
+        font-style: normal;
+        font-weight: 200 800;
+        font-display: optional;
+        src: url("assets/fonts/plus-jakarta-sans-latin.woff2") format("woff2");
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Material Symbols Outlined';
+        font-style: normal;
+        font-weight: 400;
+        font-display: block;
+        src: url("assets/fonts/material-symbols-outlined.woff2") format("woff2");
+      }
       @layer base {
         html,
         body {
@@ -3131,8 +3146,8 @@
               quote_menu_tourism: "Cotización Turismo / Particular",
               quote_menu_business: "Convenios Empresas y Faenas",
 
-              hero_h1: "Arriendo de Vehículos en Punta Arenas y la Patagonia",
-              hero_desc: "Recorre Punta Arenas, Puerto Natales, Torres del Paine y Tierra del Fuego con la libertad que necesitas. Flota moderna, kilometraje libre y cruce a Argentina.",
+              hero_h1: "Arriendo de vehículos en Punta Arenas y la Patagonia.",
+              hero_desc: "Especialistas en arriendo de vehículos en la Patagonia. SUV y camionetas 4x4 con kilometraje libre, cruce autorizado a Argentina (El Calafate y Ushuaia), entrega sin costo en el aeropuerto y atención 24 horas.",
               btn_quote_now: "Cotizar ahora",
               btn_view_fleet: "Ver nuestra flota",
               badge_unlimited_km: "Kilometraje libre",
@@ -3140,10 +3155,10 @@
               badge_free_airport: "Entrega en aeropuerto sin costo",
               badge_24h_service: "Atención 24 horas",
               hero_tag: "Arriendo de Vehículos en Punta Arenas",
-              hero_promo_free_delivery: "Entrega gratuita en aeropuerto, hoteles o departamentos",
-              hero_promo_locations: "Aeropuerto Carlos Ibáñez del Campo (PUQ) y radio urbano",
-              hero_promo_24h: "24/7",
-              hero_pill_region: "Punta Arenas · Torres del Paine · Tierra del Fuego",
+              hero_promo_free_delivery: "Entrega sin costo:",
+              hero_promo_locations: "Aeropuerto, hoteles y departamentos",
+              hero_promo_24h: "las 24 horas",
+              hero_pill_region: "Magallanes y Antártica Chilena",
 
               tab_personal: "Turismo / Particular",
               tab_business: "Empresas / Faenas",
@@ -3927,7 +3942,17 @@
                 setLanguage(btn.dataset.lang, true);
               });
             });
-            setLanguage(currentLang, false);
+            if (currentLang !== "es") {
+              setLanguage(currentLang, false);
+            } else {
+              langButtons.forEach((btn) => {
+                const isSelected = btn.dataset.lang === "es";
+                btn.className = isSelected
+                  ? "px-1.5 py-0.5 rounded text-brand-lime font-bold hover:bg-white/10 transition-colors cursor-pointer"
+                  : "px-1.5 py-0.5 rounded text-slate-300 hover:text-surface-white font-medium hover:bg-white/10 transition-colors cursor-pointer";
+                btn.setAttribute("aria-pressed", String(isSelected));
+              });
+            }
           }
 
           window.openVehicleQuote = openVehicleQuote;
