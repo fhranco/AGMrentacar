@@ -213,17 +213,6 @@ cpSync(join(root, "assets", "images"), join(distPath, "assets", "images"), {
   recursive: true,
 });
 cpSync(join(root, "deploy", "apache.htaccess"), join(distPath, ".htaccess"));
-const commitDate = (() => {
-  try {
-    return execFileSync("git", ["log", "-1", "--format=%cs"], {
-      cwd: root,
-      encoding: "utf8",
-    }).trim();
-  } catch {
-    return new Date().toISOString().slice(0, 10);
-  }
-})();
-
 for (const staticRootFile of [
   "favicon.ico",
   "favicon.svg",
@@ -236,16 +225,6 @@ for (const staticRootFile of [
   if (existsSync(filePath)) {
     cpSync(filePath, join(distPath, staticRootFile));
   }
-}
-
-const sitemapDistPath = join(distPath, "sitemap.xml");
-if (existsSync(sitemapDistPath)) {
-  const sitemapRaw = readFileSync(sitemapDistPath, "utf8");
-  const sitemapUpdated = sitemapRaw.replace(
-    /<lastmod>[^<]+<\/lastmod>/,
-    `<lastmod>${commitDate}</lastmod>`,
-  );
-  writeFileSync(sitemapDistPath, sitemapUpdated);
 }
 if (existsSync(join(root, "admin"))) {
   cpSync(join(root, "admin"), join(distPath, "admin"), { recursive: true });
