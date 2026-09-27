@@ -24,17 +24,10 @@
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&amp;display=swap"
       rel="stylesheet"
     />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preload" as="image" href="assets/images/hero-magallanes.webp" type="image/webp" fetchpriority="high" />
     <style>
       @layer base {
         html,
@@ -60,13 +53,13 @@
         display: none;
       }
       .agm-hero-bg {
-        background-image: url("assets/images/hero-magallanes.jpg");
+        background-image: url("assets/images/hero-magallanes.webp");
       }
       .agm-arrival-bg {
-        background-image: url("assets/images/delivery-magallanes.jpg");
+        background-image: url("assets/images/delivery-magallanes.webp");
       }
       .agm-work-bg {
-        background-image: url("assets/images/work-magallanes.jpg");
+        background-image: url("assets/images/work-magallanes.webp");
       }
     </style>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -381,6 +374,9 @@
               alt="AGM Rent a Car"
               class="h-9 w-auto object-contain"
               src="assets/images/logo-agm.png"
+              width="135"
+              height="69"
+              decoding="async"
           /></a>
         </div>
         <nav
@@ -498,10 +494,15 @@
         >
           <!-- AGM brand field with pristine, authentic Patagonian landscape -->
           <div class="absolute inset-0 z-0">
-            <div
-              class="agm-hero-bg absolute inset-y-0 right-0 w-full lg:w-[60%] bg-cover bg-center opacity-85 lg:opacity-95 transform"
-              data-alt="Vehículo AGM recorriendo los paisajes australes de Magallanes"
-            ></div>
+            <img
+              class="agm-hero-bg absolute inset-y-0 right-0 w-full lg:w-[60%] h-full object-cover object-center opacity-85 lg:opacity-95"
+              src="assets/images/hero-magallanes.webp"
+              alt="Vehículo AGM recorriendo los paisajes australes de Magallanes"
+              width="1376"
+              height="768"
+              fetchpriority="high"
+              decoding="async"
+            />
             <div
               class="absolute inset-0 bg-gradient-to-r from-brand-blue-dark via-brand-blue-dark/90 to-transparent"
             ></div>
@@ -1093,7 +1094,11 @@
                     <img
                       class="w-full h-full object-cover rounded-md group-hover:scale-105 transition-transform duration-500"
                       alt="Nissan Kicks en paisajes de la Patagonia de AGM Rent a Car"
-                      src="assets/images/nissan-kicks.jpg"
+                      src="assets/images/nissan-kicks.webp"
+                      loading="lazy"
+                      decoding="async"
+                      width="768"
+                      height="428"
                     />
                   </div>
                   <div class="grid grid-cols-4 gap-1 py-3 border-t border-b border-slate-100 text-center font-label-sm text-label-sm text-slate-600 mb-4">
@@ -1152,7 +1157,11 @@
                     <img
                       class="w-full h-full object-cover rounded-md group-hover:scale-105 transition-transform duration-500"
                       alt="Ford Territory en mirador de la Patagonia de AGM Rent a Car"
-                      src="assets/images/ford-territory.jpg"
+                      src="assets/images/ford-territory.webp"
+                      loading="lazy"
+                      decoding="async"
+                      width="768"
+                      height="428"
                     />
                   </div>
                   <div class="grid grid-cols-4 gap-1 py-3 border-t border-b border-slate-100 text-center font-label-sm text-label-sm text-slate-600 mb-4">
@@ -1211,7 +1220,11 @@
                     <img
                       class="w-full h-full object-cover rounded-md group-hover:scale-105 transition-transform duration-500"
                       alt="Mazda CX-5 en la Patagonia de AGM Rent a Car"
-                      src="assets/images/mazda-cx5.jpg"
+                      src="assets/images/mazda-cx5.webp"
+                      loading="lazy"
+                      decoding="async"
+                      width="768"
+                      height="428"
                     />
                   </div>
                   <div class="grid grid-cols-4 gap-1 py-3 border-t border-b border-slate-100 text-center font-label-sm text-label-sm text-slate-600 mb-4">
@@ -1270,7 +1283,11 @@
                     <img
                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       alt="Toyota RAV4 de AGM Rent a Car"
-                      src="assets/images/toyota-rav4.jpg"
+                      src="assets/images/toyota-rav4.webp"
+                      loading="lazy"
+                      decoding="async"
+                      width="768"
+                      height="428"
                     />
                   </div>
                   <div class="grid grid-cols-4 gap-1 py-3 border-t border-b border-slate-100 text-center font-label-sm text-label-sm text-slate-600 mb-4">
@@ -1329,7 +1346,11 @@
                     <img
                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       alt="Toyota 4Runner de AGM Rent a Car"
-                      src="assets/images/toyota-4runner.jpg"
+                      src="assets/images/toyota-4runner.webp"
+                      loading="lazy"
+                      decoding="async"
+                      width="768"
+                      height="428"
                     />
                   </div>
                   <div class="grid grid-cols-4 gap-1 py-3 border-t border-b border-slate-100 text-center font-label-sm text-label-sm text-slate-600 mb-4">
@@ -1387,7 +1408,11 @@
                     <img
                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       alt="Mazda BT-50 de AGM Rent a Car"
-                      src="assets/images/mazda-bt50.jpg"
+                      src="assets/images/mazda-bt50.webp"
+                      loading="lazy"
+                      decoding="async"
+                      width="768"
+                      height="428"
                     />
                   </div>
                   <div class="grid grid-cols-4 gap-1 py-3 border-t border-b border-slate-100 text-center font-label-sm text-label-sm text-slate-600 mb-4">
@@ -1875,9 +1900,13 @@
                 <div>
                   <div class="relative h-56 w-full overflow-hidden bg-slate-100">
                     <img
-                      src="assets/images/blog-torres-del-paine.jpg"
+                      src="assets/images/blog-torres-del-paine.webp"
                       alt="Ruta de Punta Arenas a Torres del Paine en auto"
                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                      decoding="async"
+                      width="800"
+                      height="446"
                     />
                     <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-slate-950/80 backdrop-blur-md text-surface-white font-label-sm text-label-sm font-semibold" data-i18n="blog1_tag">
                       Rutas Australes
@@ -1917,9 +1946,13 @@
                 <div>
                   <div class="relative h-56 w-full overflow-hidden bg-slate-100">
                     <img
-                      src="assets/images/blog-cruce-argentina.jpg"
+                      src="assets/images/blog-cruce-argentina.webp"
                       alt="Cruce a Argentina en auto de arriendo El Calafate y Ushuaia"
                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                      decoding="async"
+                      width="800"
+                      height="446"
                     />
                     <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-slate-950/80 backdrop-blur-md text-surface-white font-label-sm text-label-sm font-semibold" data-i18n="blog2_tag">
                       Frontera y Trámites
@@ -1959,9 +1992,13 @@
                 <div>
                   <div class="relative h-56 w-full overflow-hidden bg-slate-100">
                     <img
-                      src="assets/images/blog-conduccion-patagonia.jpg"
+                      src="assets/images/blog-conduccion-patagonia.webp"
                       alt="Consejos para conducir con viento y escarcha en Magallanes"
                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                      decoding="async"
+                      width="800"
+                      height="446"
                     />
                     <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-slate-950/80 backdrop-blur-md text-surface-white font-label-sm text-label-sm font-semibold" data-i18n="blog3_tag">
                       Seguridad y Clima
@@ -2745,7 +2782,7 @@
               title: "Ruta Punta Arenas a Torres del Paine en auto: Guía completa 2026",
               category: "Rutas Australes",
               readTime: "5 min de lectura",
-              image: "assets/images/blog-torres-del-paine.jpg",
+              image: "assets/images/blog-torres-del-paine.webp",
               recommendedVehicle: "Toyota RAV4",
               content: `
                 <div class="space-y-4">
@@ -2791,7 +2828,7 @@
               title: "Cómo cruzar a Argentina en vehículo de arriendo: El Calafate y Ushuaia",
               category: "Frontera y Trámites",
               readTime: "6 min de lectura",
-              image: "assets/images/blog-cruce-argentina.jpg",
+              image: "assets/images/blog-cruce-argentina.webp",
               recommendedVehicle: "Toyota 4Runner",
               content: `
                 <div class="space-y-4">
@@ -2840,7 +2877,7 @@
               title: "Guía para conducir con viento, escarcha y ripio en Magallanes",
               category: "Seguridad y Clima",
               readTime: "4 min de lectura",
-              image: "assets/images/blog-conduccion-patagonia.jpg",
+              image: "assets/images/blog-conduccion-patagonia.webp",
               recommendedVehicle: "Mazda CX-5",
               content: `
                 <div class="space-y-4">
@@ -4262,9 +4299,13 @@
         <div class="relative h-64 sm:h-80 w-full overflow-hidden bg-slate-900">
           <img
             id="blogDialogImage"
-            src="assets/images/blog-torres-del-paine.jpg"
+            src="assets/images/blog-torres-del-paine.webp"
             alt="Imagen de cabecera de la guía"
             class="w-full h-full object-cover opacity-80"
+            loading="lazy"
+            decoding="async"
+            width="800"
+            height="446"
           />
           <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
           <button

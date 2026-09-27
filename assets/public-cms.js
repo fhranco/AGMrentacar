@@ -24,17 +24,17 @@
   };
 
   const KNOWN_IMAGES = {
-    "nissan-kicks": "assets/images/nissan-kicks.jpg",
-    "ford-territory": "assets/images/ford-territory.jpg",
-    "mazda-cx-5": "assets/images/mazda-cx5.jpg",
-    "toyota-rav4": "assets/images/toyota-rav4.jpg",
-    "toyota-4runner": "assets/images/toyota-4runner.jpg",
-    "mazda-bt-50": "assets/images/mazda-bt50.jpg",
+    "nissan-kicks": "assets/images/nissan-kicks.webp",
+    "ford-territory": "assets/images/ford-territory.webp",
+    "mazda-cx-5": "assets/images/mazda-cx5.webp",
+    "toyota-rav4": "assets/images/toyota-rav4.webp",
+    "toyota-4runner": "assets/images/toyota-4runner.webp",
+    "mazda-bt-50": "assets/images/mazda-bt50.webp",
   };
 
   const KNOWN_BLOG_METADATA = {
     "torres-del-paine": {
-      image: "assets/images/blog-torres-del-paine.jpg",
+      image: "assets/images/blog-torres-del-paine.webp",
       recommendedVehicle: "Toyota RAV4",
       locale: {
         es: {
@@ -55,7 +55,7 @@
       },
     },
     "cruce-argentina": {
-      image: "assets/images/blog-cruce-argentina.jpg",
+      image: "assets/images/blog-cruce-argentina.webp",
       recommendedVehicle: "Toyota 4Runner",
       locale: {
         es: {
@@ -76,7 +76,7 @@
       },
     },
     "conduccion-patagonia": {
-      image: "assets/images/blog-conduccion-patagonia.jpg",
+      image: "assets/images/blog-conduccion-patagonia.webp",
       recommendedVehicle: "Mazda CX-5",
       locale: {
         es: {
@@ -425,6 +425,10 @@
         "w-full h-full object-cover rounded-md group-hover:scale-105 transition-transform duration-500";
       img.alt = `${trans.displayName} de AGM Rent a Car`;
       img.src = safeImg;
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.width = 768;
+      img.height = 428;
       imgContainer.appendChild(img);
       topSection.appendChild(imgContainer);
 
@@ -747,6 +751,10 @@
       img.alt = article.title;
       img.className =
         "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500";
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.width = 800;
+      img.height = 446;
       imgWrap.appendChild(img);
 
       const tagBadge = document.createElement("span");
