@@ -47,6 +47,9 @@ if (
   throw new Error("No se pudieron separar los estilos o el JavaScript de code.html.");
 }
 
+const getFingerprint = (content) =>
+  createHash("sha256").update(content).digest("hex").slice(0, 8);
+
 const commit = (() => {
   try {
     return execFileSync("git", ["rev-parse", "--short=12", "HEAD"], {
@@ -57,13 +60,14 @@ const commit = (() => {
     return "sin-git";
   }
 })();
+const sourceFingerprint = getFingerprint(source);
+const visibleCommit = commit === "sin-git" ? sourceFingerprint : commit.slice(0, 7);
 const builtAt = new Date().toISOString();
 const release = {
-  commit,
+  commit: commit === "sin-git" ? `sha256-${sourceFingerprint}` : commit,
   profile: production ? "production" : "preview",
   built_at: builtAt,
 };
-const visibleCommit = commit === "sin-git" ? commit : commit.slice(0, 7);
 const localBuildParts = Object.fromEntries(
   new Intl.DateTimeFormat("es-CL", {
     timeZone: "America/Punta_Arenas",
@@ -124,6 +128,7 @@ execFileSync(
 const compiledCssPath = join(distPath, "assets", "site.css");
 const compiledCss = readFileSync(compiledCssPath, "utf8")
   .replaceAll("assets/images/", "images/")
+  .replaceAll("assets/fonts/", "fonts/")
   .concat(`
 .agm-turnstile-wrap {
   grid-column: 1 / -1;
@@ -144,13 +149,21 @@ const contentSecurityPolicy = [
   "object-src 'none'",
   "form-action 'self'",
   "script-src 'self' https://challenges.cloudflare.com https://www.googletagmanager.com",
-  "style-src 'self' https://fonts.googleapis.com",
-  "font-src 'self' https://fonts.gstatic.com data:",
+  "style-src 'self'",
+  "font-src 'self' data:",
   "img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com",
   "connect-src 'self' https://pteogwhauodbxudywsdm.supabase.co https://challenges.cloudflare.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com",
   "frame-src https://www.openstreetmap.org https://challenges.cloudflare.com",
   "upgrade-insecure-requests",
 ].join("; ");
+
+const publicCmsSource = existsSync(join(root, "assets", "public-cms.js"))
+  ? readFileSync(join(root, "assets", "public-cms.js"), "utf8")
+  : "";
+
+const cssVersion = commit !== "sin-git" ? visibleCommit : getFingerprint(compiledCss);
+const appJsVersion = commit !== "sin-git" ? visibleCommit : getFingerprint(appMatch[1]);
+const cmsJsVersion = commit !== "sin-git" ? visibleCommit : getFingerprint(publicCmsSource);
 
 let html = source
   .replace(styleMatch[0], "")
@@ -159,11 +172,11 @@ let html = source
   .replace(appMatch[0], "")
   .replace(
     "</head>",
-    `    <meta http-equiv="Content-Security-Policy" content="${contentSecurityPolicy}" />\n    <link rel="stylesheet" href="assets/site.css?v=${visibleCommit}" />\n  </head>`,
+    `    <meta http-equiv="Content-Security-Policy" content="${contentSecurityPolicy}" />\n    <link rel="stylesheet" href="assets/site.css?v=${cssVersion}" />\n  </head>`,
   )
   .replace(
     '<script src="assets/public-cms.js" defer></script>\n  </body>',
-    `    <script src="assets/app.js?v=${visibleCommit}" defer></script>\n    <script src="assets/public-cms.js?v=${visibleCommit}" defer></script>\n  </body>`,
+    `    <script src="assets/app.js?v=${appJsVersion}" defer></script>\n    <script src="assets/public-cms.js?v=${cmsJsVersion}" defer></script>\n  </body>`,
   )
   .replace(
     releaseMarker,
@@ -190,6 +203,11 @@ if (existsSync(join(root, "assets", "public-cms.js"))) {
     join(root, "assets", "public-cms.js"),
     join(distPath, "assets", "public-cms.js"),
   );
+}
+if (existsSync(join(root, "assets", "fonts"))) {
+  cpSync(join(root, "assets", "fonts"), join(distPath, "assets", "fonts"), {
+    recursive: true,
+  });
 }
 cpSync(join(root, "assets", "images"), join(distPath, "assets", "images"), {
   recursive: true,

@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const failures = [];
 const warnings = [];
-const ignored = new Set([".git", "node_modules", "dist", ".build-temp"]);
+const ignored = new Set([".git", "node_modules", "dist", ".build-temp", "scratch"]);
 const textExtensions = new Set([
   ".html", ".js", ".mjs", ".json", ".md", ".toml", ".sql", ".yml", ".yaml",
   ".npmrc", ".gitignore",

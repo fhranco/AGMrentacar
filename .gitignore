@@ -12,3 +12,4 @@ supabase/.temp/
 .vercel/
 .vercel
 .env*
+scratch/
