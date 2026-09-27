@@ -82,7 +82,7 @@ const distHtmlPath = join(root, "dist", "index.html");
 if (existsSync(join(root, "dist")) && statSync(join(root, "dist")).isDirectory()) {
   const distHtml = readFileSync(distHtmlPath, "utf8");
   if (distHtml.includes("cdn.tailwindcss.com")) failures.push("El paquete usa Tailwind CDN.");
-  if (/<script(?![^>]*\ssrc=)[^>]*>/i.test(distHtml)) failures.push("El paquete contiene JavaScript inline.");
+  if (/<script(?![^>]*(?:\ssrc=|\stype=["']application\/ld\+json["']))[^>]*>/i.test(distHtml)) failures.push("El paquete contiene JavaScript inline.");
   if (/<style[\s>]/i.test(distHtml) || /style=/.test(distHtml)) failures.push("El paquete contiene CSS inline.");
   if (!distHtml.includes("Content-Security-Policy")) failures.push("Falta CSP en el paquete.");
   if (!readFileSync(join(root, "dist", ".htaccess"), "utf8").includes("Strict-Transport-Security")) {

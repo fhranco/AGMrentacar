@@ -230,6 +230,7 @@ for (const staticRootFile of [
   "apple-touch-icon.png",
   "robots.txt",
   "sitemap.xml",
+  "llms.txt",
 ]) {
   const filePath = join(root, staticRootFile);
   if (existsSync(filePath)) {
