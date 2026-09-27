@@ -213,6 +213,12 @@ cpSync(join(root, "assets", "images"), join(distPath, "assets", "images"), {
   recursive: true,
 });
 cpSync(join(root, "deploy", "apache.htaccess"), join(distPath, ".htaccess"));
+for (const staticRootFile of ["favicon.ico", "favicon.svg", "apple-touch-icon.png"]) {
+  const filePath = join(root, staticRootFile);
+  if (existsSync(filePath)) {
+    cpSync(filePath, join(distPath, staticRootFile));
+  }
+}
 if (existsSync(join(root, "admin"))) {
   cpSync(join(root, "admin"), join(distPath, "admin"), { recursive: true });
 }
