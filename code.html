@@ -24,10 +24,15 @@
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap"
       rel="stylesheet"
     />
-    <link rel="preload" as="image" href="assets/images/hero-magallanes.webp" type="image/webp" fetchpriority="high" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&amp;display=block"
+      rel="stylesheet"
+    />
+    <link rel="preload" as="image" href="assets/images/hero-magallanes-mobile.webp" type="image/webp" media="(max-width: 768px)" fetchpriority="high" />
+    <link rel="preload" as="image" href="assets/images/hero-magallanes.webp" type="image/webp" media="(min-width: 769px)" fetchpriority="high" />
     <style>
       @layer base {
         html,
@@ -52,8 +57,34 @@
       ::-webkit-scrollbar {
         display: none;
       }
-      .agm-hero-bg {
-        background-image: url("assets/images/hero-magallanes.webp");
+      .material-symbols-outlined {
+        font-family: 'Material Symbols Outlined';
+        font-weight: normal;
+        font-style: normal;
+        font-size: 24px;
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        display: inline-block;
+        white-space: nowrap;
+        word-wrap: normal;
+        direction: ltr;
+        -webkit-font-feature-settings: 'liga';
+        -webkit-font-smoothing: antialiased;
+        width: 1em;
+        height: 1em;
+        overflow: hidden;
+        vertical-align: middle;
+        text-align: center;
+        flex-shrink: 0;
+        font-display: block;
+      }
+      #cookieConsentBanner {
+        z-index: 65;
+        contain: layout;
+        transition-property: transform, opacity;
+        transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+        transition-duration: 300ms;
       }
       .agm-arrival-bg {
         background-image: url("assets/images/delivery-magallanes.webp");
@@ -494,15 +525,18 @@
         >
           <!-- AGM brand field with pristine, authentic Patagonian landscape -->
           <div class="absolute inset-0 z-0">
-            <img
-              class="agm-hero-bg absolute inset-y-0 right-0 w-full lg:w-[60%] h-full object-cover object-center opacity-85 lg:opacity-95"
-              src="assets/images/hero-magallanes.webp"
-              alt="Vehículo AGM recorriendo los paisajes australes de Magallanes"
-              width="1376"
-              height="768"
-              fetchpriority="high"
-              decoding="async"
-            />
+            <picture class="contents">
+              <source media="(max-width: 768px)" srcset="assets/images/hero-magallanes-mobile.webp" type="image/webp" />
+              <img
+                class="absolute inset-y-0 right-0 w-full lg:w-[60%] h-full object-cover object-center opacity-85 lg:opacity-95"
+                src="assets/images/hero-magallanes.webp"
+                alt="Vehículo AGM recorriendo los paisajes australes de Magallanes"
+                width="1376"
+                height="768"
+                fetchpriority="high"
+                decoding="async"
+              />
+            </picture>
             <div
               class="absolute inset-0 bg-gradient-to-r from-brand-blue-dark via-brand-blue-dark/90 to-transparent"
             ></div>
@@ -3049,7 +3083,11 @@
               analytics_storage: "granted",
             });
           } else if (!savedConsent) {
-            setTimeout(showCookieBanner, 600);
+            if ("requestIdleCallback" in window) {
+              window.requestIdleCallback(() => setTimeout(showCookieBanner, 1500));
+            } else {
+              window.addEventListener("load", () => setTimeout(showCookieBanner, 1500));
+            }
           }
 
           acceptCookiesBtn?.addEventListener("click", () => applyCookieConsent("all"));
@@ -4360,7 +4398,7 @@
     <!-- Banner de Consentimiento de Cookies (Ley N° 21.719 / Google Consent Mode v2) -->
     <aside
       aria-label="Aviso de cookies y privacidad"
-      class="fixed bottom-0 inset-x-0 z-[65] p-3 sm:p-4 transition-all duration-300 transform translate-y-full opacity-0 pointer-events-none"
+      class="fixed bottom-0 inset-x-0 p-3 sm:p-4 transform translate-y-full opacity-0 pointer-events-none"
       id="cookieConsentBanner"
       role="region"
     >
