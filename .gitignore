@@ -10,3 +10,5 @@ backups/
 supabase/.temp/
 *.docx
 .vercel/
+.vercel
+.env*

@@ -8,6 +8,7 @@ const ALLOWED_ORIGINS = new Set([
   "https://orange-squid-480505.hostingersite.com",
   "https://agmrentacar.cl",
   "https://www.agmrentacar.cl",
+  "https://ag-mrentacar.vercel.app",
 ]);
 const ALLOWED_TURNSTILE_HOSTNAMES = new Set([
   "agmrentacar.cl",
@@ -16,6 +17,7 @@ const ALLOWED_TURNSTILE_HOSTNAMES = new Set([
   "fhranco.github.io",
   "localhost",
   "127.0.0.1",
+  "ag-mrentacar.vercel.app",
 ]);
 
 type QuoteRequest = {

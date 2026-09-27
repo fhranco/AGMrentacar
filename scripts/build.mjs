@@ -125,37 +125,6 @@ const compiledCssPath = join(distPath, "assets", "site.css");
 const compiledCss = readFileSync(compiledCssPath, "utf8")
   .replaceAll("assets/images/", "images/")
   .concat(`
-:root { --preview-banner-height: 2.75rem; }
-.agm-preview-banner {
-  position: fixed;
-  inset: 0 0 auto;
-  z-index: 70;
-  min-height: var(--preview-banner-height);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem 1rem;
-  border-bottom: 3px solid #8ae600;
-  background: #052a40;
-  color: #ffffff;
-  box-shadow: 0 4px 16px rgba(5, 42, 64, 0.28);
-  font-size: 0.75rem;
-  font-weight: 800;
-  line-height: 1.25;
-  letter-spacing: 0.08em;
-  text-align: center;
-  text-transform: uppercase;
-}
-body > header { top: var(--preview-banner-height) !important; }
-body > main { padding-top: calc(7rem + var(--preview-banner-height)) !important; }
-@media (max-width: 639px) {
-  :root { --preview-banner-height: 4rem; }
-  .agm-preview-banner {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.6875rem;
-    letter-spacing: 0.055em;
-  }
-}
 .agm-turnstile-wrap {
   grid-column: 1 / -1;
   display: flex;
@@ -198,7 +167,7 @@ let html = source
   )
   .replace(
     releaseMarker,
-    `<aside class="agm-preview-banner" aria-label="Entorno de revisión">${visibleRelease}</aside>`,
+    "",
   )
   .replace(
     turnstileMarker,
