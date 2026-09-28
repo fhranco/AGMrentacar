@@ -29,6 +29,7 @@ type QuoteRequest = {
   company_tax_id?: unknown;
   pickup_location_slug?: unknown;
   return_location_slug?: unknown;
+  vehicle_slug?: unknown;
   pickup_at?: unknown;
   return_at?: unknown;
   customer_notes?: unknown;
@@ -127,6 +128,7 @@ const handler = withSupabase(
     const companyTaxId = textValue(payload.company_tax_id, 30) || null;
     const pickupSlug = textValue(payload.pickup_location_slug, 80);
     const returnSlug = textValue(payload.return_location_slug, 80) || pickupSlug;
+    const vehicleSlug = textValue(payload.vehicle_slug, 100);
     const notes = textValue(payload.customer_notes, 1200) || null;
     const pickupAt = new Date(textValue(payload.pickup_at, 40));
     const returnAt = new Date(textValue(payload.return_at, 40));
@@ -183,6 +185,35 @@ const handler = withSupabase(
     }
 
     const locationIds = new Map(locations.map((item) => [item.slug, item.id]));
+
+    let requestedModelId: number | null = null;
+    let requestedVehicleName = "Recomendación AGM";
+
+    if (vehicleSlug) {
+      const { data: vehicleModel, error: vehicleModelError } =
+        await ctx.supabaseAdmin
+          .from("vehicle_models")
+          .select("id, slug, display_name")
+          .eq("slug", vehicleSlug)
+          .eq("active", true)
+          .maybeSingle();
+
+      if (vehicleModelError) {
+        console.error("Vehicle model lookup failed", vehicleModelError);
+        return json(req, { error: "No pudimos procesar la solicitud." }, 500);
+      }
+
+      if (!vehicleModel) {
+        return json(
+          req,
+          { error: "El vehículo seleccionado no está disponible." },
+          422,
+        );
+      }
+
+      requestedModelId = vehicleModel.id;
+      requestedVehicleName = vehicleModel.display_name;
+    }
 
     let { data: customer, error: customerError } = await ctx.supabaseAdmin
       .from("customers")
@@ -247,6 +278,7 @@ const handler = withSupabase(
       .from("reservations")
       .insert({
         customer_id: customer.id,
+        requested_model_id: requestedModelId,
         pickup_location_id: locationIds.get(pickupSlug),
         return_location_id: locationIds.get(returnSlug),
         pickup_at: pickupAt.toISOString(),
@@ -274,6 +306,7 @@ const handler = withSupabase(
       `Cliente: ${fullName}`,
       `Correo: ${email}`,
       phone ? `Teléfono: ${phone}` : null,
+      `Vehículo: ${requestedVehicleName}`,
       `Retiro: ${pickupAt.toISOString()}`,
       `Devolución: ${returnAt.toISOString()}`,
       notes ? `Notas: ${notes}` : null,

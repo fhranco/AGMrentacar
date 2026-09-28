@@ -2816,10 +2816,8 @@
               const returnLocation = useDifferentReturn
                 ? document.getElementById("returnLocation").value
                 : pickupLocation;
-              const selectedVehicle =
-                vehiclePreference.options[
-                  vehiclePreference.selectedIndex
-                ]?.textContent.trim() || "Sin preferencia";
+              const selectedVehicleOption =
+                vehiclePreference.options[vehiclePreference.selectedIndex];
 
               const privacyConsentInput = document.getElementById("privacyConsent");
               if (!privacyConsentInput?.checked) {
@@ -2854,9 +2852,10 @@
                     company_tax_id: companyTaxIdInput?.value || "",
                     pickup_location_slug: pickupLocation,
                     return_location_slug: returnLocation,
+                    vehicle_slug:
+                      selectedVehicleOption?.dataset.vehicleSlug || "",
                     pickup_at: `${pickupDate}T${pickupTime}:00-03:00`,
                     return_at: `${returnDate}T${returnTime}:00-03:00`,
-                    customer_notes: `Vehículo de interés: ${selectedVehicle}`,
                     privacy_consent: true,
                     privacy_policy_version: "2026-v1",
                     turnstile_token:
