@@ -57,6 +57,8 @@ const corsHeaders = (req: Request) => {
 const json = (req: Request, body: unknown, status = 200) =>
   Response.json(body, { status, headers: corsHeaders(req) });
 
+const TURNSTILE_VERIFY_TIMEOUT_MS = 8_000;
+
 const verifyTurnstile = async (token: string, remoteIp: string) => {
   const secret = Deno.env.get("TURNSTILE_SECRET_KEY") || "";
   const required = Deno.env.get("TURNSTILE_REQUIRED") === "true";
@@ -74,15 +76,25 @@ const verifyTurnstile = async (token: string, remoteIp: string) => {
           response: token,
           remoteip: remoteIp || undefined,
         }),
+        signal: AbortSignal.timeout(TURNSTILE_VERIFY_TIMEOUT_MS),
       },
     );
+
+    if (!response.ok) {
+      console.error("Turnstile Siteverify request failed", {
+        status: response.status,
+      });
+      return false;
+    }
+
     const result = await response.json();
-    return response.ok &&
+    return (
       result.success === true &&
       result.action === "request_quote" &&
-      ALLOWED_TURNSTILE_HOSTNAMES.has(result.hostname);
-  } catch (error) {
-    console.error("Turnstile validation failed", error);
+      ALLOWED_TURNSTILE_HOSTNAMES.has(result.hostname)
+    );
+  } catch {
+    console.error("Turnstile validation failed");
     return false;
   }
 };

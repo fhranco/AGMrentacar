@@ -63,6 +63,18 @@ if (!functionSource.includes("TURNSTILE_SECRET_KEY") || !functionSource.includes
 if (!functionSource.includes('result.action === "request_quote"') || !functionSource.includes("ALLOWED_TURNSTILE_HOSTNAMES")) {
   failures.push("Turnstile no valida la acción y el hostname esperados.");
 }
+if (!functionSource.includes("TURNSTILE_VERIFY_TIMEOUT_MS") || !functionSource.includes("AbortSignal.timeout")) {
+  failures.push("Turnstile no implementa timeout en la verificación contra Siteverify.");
+}
+const honeypotIndex = functionSource.indexOf("payload.website");
+const turnstileVerifyIndex = functionSource.indexOf("verifyTurnstile(turnstileToken");
+if (honeypotIndex === -1) {
+  failures.push("La función pública no implementa el campo honeypot website.");
+} else if (turnstileVerifyIndex === -1) {
+  failures.push("La función pública no valida Turnstile con turnstileToken.");
+} else if (honeypotIndex > turnstileVerifyIndex) {
+  failures.push("El honeypot (payload.website) debe evaluarse antes de verifyTurnstile.");
+}
 if (functionSource.includes('"*"') && functionSource.includes("Access-Control-Allow-Origin")) {
   failures.push("CORS permite cualquier origen.");
 }
@@ -98,7 +110,7 @@ for (const placeholder of ["Términos y Condiciones", "Políticas de Privacidad"
   const expression = new RegExp(`href="#"[^>]*>[^<]*${placeholder}|${placeholder}[\\s\\S]{0,120}href="#"`, "i");
   if (expression.test(source)) warnings.push(`El enlace “${placeholder}” aún es provisional.`);
 }
-warnings.push("El correo automático y Turnstile deben activarse antes de aceptar tráfico real.");
+warnings.push("Antes de producción verificar RESEND_API_KEY, TURNSTILE_SECRET_KEY y TURNSTILE_REQUIRED=true en Supabase, además de TURNSTILE_SITE_KEY en el build.");
 
 for (const warning of warnings) console.warn(`AVISO: ${warning}`);
 if (failures.length) {
