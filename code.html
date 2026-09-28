@@ -1124,12 +1124,12 @@
                   tabindex="-1"
                   type="text"
                 />
-                <p
+                <div
                   aria-live="polite"
                   class="hidden lg:col-span-12 rounded-xl px-4 py-3 font-body-sm text-body-sm"
                   id="quoteFormStatus"
                   role="status"
-                ></p>
+                ></div>
                 <!-- Optional Dropdown for Devolver en otra sucursal Toggle -->
                 <div
                   class="lg:col-span-12 pt-2 flex flex-wrap items-center justify-between gap-3 text-slate-600 font-body-sm text-body-sm"
@@ -2646,6 +2646,7 @@
           const quoteFormNextSibling = quoteFormContainer?.nextSibling;
           let lastQuoteTrigger = null;
           let turnstileWidgetId = null;
+          let quoteSubmitted = false;
 
           const removeTurnstile = () => {
             if (turnstileWidgetId === null || !window.turnstile) return;
@@ -2729,7 +2730,25 @@
             } else {
               vehiclePreference.value = vehicle;
             }
-            document.getElementById("quoteFormStatus")?.classList.add("hidden");
+            quoteSubmitted = false;
+            const submitBtn = document.getElementById("quoteSubmitButton");
+            const submitTxt = document.getElementById("quoteSubmitText");
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.classList.remove("opacity-70", "cursor-wait");
+              const iconSpan =
+                submitBtn.querySelector(".material-symbols-outlined");
+              if (iconSpan) iconSpan.textContent = "send";
+            }
+            if (submitTxt) {
+              submitTxt.textContent = "Solicitar cotización";
+            }
+            const statusEl = document.getElementById("quoteFormStatus");
+            if (statusEl) {
+              statusEl.className =
+                "hidden lg:col-span-12 rounded-xl px-4 py-3 font-body-sm text-body-sm";
+              statusEl.replaceChildren();
+            }
             if (quoteDialogTitle) {
               const displayName =
                 trigger?.dataset?.vehicleName || matchOpt?.value || vehicle;
@@ -2803,8 +2822,108 @@
               }
             });
 
+            const renderQuoteSuccess = (referenceCode) => {
+              if (!formStatus) return;
+
+              formStatus.replaceChildren();
+              formStatus.className =
+                "lg:col-span-12 rounded-2xl border border-emerald-200 bg-emerald-50 p-5 sm:p-6 text-slate-800 space-y-4";
+
+              // A. Encabezado con icono y título
+              const headerDiv = document.createElement("div");
+              headerDiv.className = "flex items-start gap-3";
+
+              const iconSpan = document.createElement("span");
+              iconSpan.className =
+                "material-symbols-outlined text-[32px] sm:text-[36px] text-emerald-600 shrink-0 select-none";
+              iconSpan.setAttribute("aria-hidden", "true");
+              iconSpan.textContent = "check_circle";
+
+              const headerTextDiv = document.createElement("div");
+
+              const titleEl = document.createElement("h3");
+              titleEl.className =
+                "text-lg sm:text-xl font-bold text-slate-900 leading-snug";
+              titleEl.textContent = "Solicitud registrada correctamente";
+
+              // C. Texto
+              const introP = document.createElement("p");
+              introP.className =
+                "text-sm text-slate-600 mt-1 leading-relaxed";
+              introP.textContent =
+                "Recibimos tu solicitud de cotización. Guarda este código para cualquier consulta relacionada con tu solicitud.";
+
+              headerTextDiv.append(titleEl, introP);
+              headerDiv.append(iconSpan, headerTextDiv);
+
+              // D. Código de solicitud
+              const codeCard = document.createElement("div");
+              codeCard.className =
+                "rounded-xl bg-white border border-emerald-200 p-4 sm:p-5 shadow-xs text-center sm:text-left";
+
+              const codeLabel = document.createElement("p");
+              codeLabel.className =
+                "text-xs font-semibold uppercase tracking-wider text-slate-500";
+              codeLabel.textContent = "Código de solicitud";
+
+              const codeValue = document.createElement("p");
+              codeValue.className =
+                "text-xl sm:text-2xl font-bold text-brand-blue-dark break-all mt-1 tracking-wide select-all font-mono";
+              codeValue.textContent = referenceCode;
+
+              codeCard.append(codeLabel, codeValue);
+
+              // E. Advertencia
+              const noticeDiv = document.createElement("div");
+              noticeDiv.className =
+                "rounded-xl bg-emerald-100/60 border border-emerald-200/70 p-3.5 sm:p-4 text-xs sm:text-sm text-emerald-950 space-y-1";
+
+              const warningP = document.createElement("p");
+              warningP.className = "font-semibold";
+              warningP.textContent =
+                "Esto todavía no constituye una reserva confirmada.";
+
+              const nextStepsP = document.createElement("p");
+              nextStepsP.className = "text-emerald-900";
+              nextStepsP.textContent =
+                "AGM revisará la disponibilidad y responderá formalmente al correo que ingresaste.";
+
+              noticeDiv.append(warningP, nextStepsP);
+
+              // F. Contacto
+              const contactDiv = document.createElement("div");
+              contactDiv.className =
+                "pt-1 text-xs sm:text-sm text-slate-600 flex flex-wrap items-center gap-1.5";
+
+              const contactText = document.createElement("span");
+              contactText.textContent = "¿Necesitas agregar información?";
+
+              const contactLink = document.createElement("a");
+              contactLink.href = "mailto:reservas@agmrentacar.cl";
+              contactLink.className =
+                "font-semibold text-brand-blue-dark underline hover:text-primary transition-colors";
+              contactLink.textContent = "reservas@agmrentacar.cl";
+
+              contactDiv.append(contactText, contactLink);
+
+              formStatus.append(headerDiv, codeCard, noticeDiv, contactDiv);
+
+              // 7. Accesibilidad
+              formStatus.classList.remove("hidden");
+              formStatus.setAttribute("tabindex", "-1");
+              formStatus.focus({ preventScroll: true });
+              formStatus.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest",
+              });
+            };
+
             quoteForm.addEventListener("submit", async (event) => {
               event.preventDefault();
+
+              if (quoteSubmitted) {
+                return;
+              }
               const pickupLocation =
                 document.getElementById("pickupLocation").value;
               const pickupDate = document.getElementById("pickupDate").value;
@@ -2879,18 +2998,34 @@
                   );
                 }
 
-                formStatus.className =
-                  "lg:col-span-12 rounded-xl px-4 py-3 font-body-sm text-body-sm bg-emerald-50 text-emerald-800 border border-emerald-200";
-                formStatus.textContent = `Solicitud recibida. Tu código es ${response.reference_code}. AGM responderá formalmente a tu correo.`;
+                quoteSubmitted = true;
+                renderQuoteSuccess(response.reference_code);
+                submitButton.disabled = true;
+                submitText.textContent = "Solicitud registrada";
+                const submitIcon =
+                  submitButton.querySelector(".material-symbols-outlined");
+                if (submitIcon) submitIcon.textContent = "check_circle";
               } catch (error) {
                 formStatus.className =
                   "lg:col-span-12 rounded-xl px-4 py-3 font-body-sm text-body-sm bg-red-50 text-red-800 border border-red-200";
                 formStatus.textContent =
                   error.message || "No pudimos enviar la solicitud. Intenta nuevamente.";
               } finally {
-                submitButton.disabled = false;
-                submitButton.classList.remove("opacity-70", "cursor-wait");
-                submitText.textContent = "Solicitar cotización";
+                if (!quoteSubmitted) {
+                  submitButton.disabled = false;
+                  submitButton.classList.remove("opacity-70", "cursor-wait");
+                  submitText.textContent = "Solicitar cotización";
+                  const submitIcon =
+                    submitButton.querySelector(".material-symbols-outlined");
+                  if (submitIcon) submitIcon.textContent = "send";
+                } else {
+                  submitButton.disabled = true;
+                  submitButton.classList.remove("cursor-wait");
+                  submitText.textContent = "Solicitud registrada";
+                  const submitIcon =
+                    submitButton.querySelector(".material-symbols-outlined");
+                  if (submitIcon) submitIcon.textContent = "check_circle";
+                }
                 if (turnstileWidgetId !== null && window.turnstile) {
                   window.turnstile.reset(turnstileWidgetId);
                 }
