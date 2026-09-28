@@ -282,6 +282,268 @@ const buildCustomerEmail = (input: CustomerEmailInput): CustomerEmailContent => 
   return { subject, html, text };
 };
 
+const normalizePhoneDigits = (value: string): string =>
+  value.replace(/\D/g, "");
+
+const formatCustomerType = (type: string): string => {
+  switch (type) {
+    case "tourism":
+      return "Turismo";
+    case "business":
+      return "Empresa";
+    case "mining":
+      return "Faena";
+    default:
+      return type;
+  }
+};
+
+type InternalEmailInput = {
+  reservationId: number;
+  referenceCode: string;
+  fullName: string;
+  email: string;
+  phone: string | null;
+  customerType: string;
+  companyName: string | null;
+  companyTaxId: string | null;
+  vehicleName: string;
+  pickupLocationName: string;
+  returnLocationName: string;
+  pickupAt: Date;
+  returnAt: Date;
+};
+
+const buildInternalEmail = (input: InternalEmailInput): CustomerEmailContent => {
+  const safeName = escapeHtml(input.fullName);
+  const safeEmail = escapeHtml(input.email);
+  const safePhone = input.phone ? escapeHtml(input.phone) : null;
+  const safeRefCode = escapeHtml(input.referenceCode);
+  const safeReservationId = escapeHtml(String(input.reservationId));
+  const safeVehicle = escapeHtml(input.vehicleName);
+  const safePickupLoc = escapeHtml(input.pickupLocationName);
+  const safeReturnLoc = escapeHtml(input.returnLocationName);
+  const customerTypeLabel = escapeHtml(formatCustomerType(input.customerType));
+  const isBusiness = input.customerType === "business";
+  const safeCompanyName = input.companyName ? escapeHtml(input.companyName) : "";
+  const safeCompanyTaxId = input.companyTaxId ? escapeHtml(input.companyTaxId) : "";
+
+  const pickupTimeStr = escapeHtml(formatPuntaArenasDateTime(input.pickupAt));
+  const returnTimeStr = escapeHtml(formatPuntaArenasDateTime(input.returnAt));
+
+  const pickupTimePlain = formatPuntaArenasDateTime(input.pickupAt);
+  const returnTimePlain = formatPuntaArenasDateTime(input.returnAt);
+
+  const phoneDigits = input.phone ? normalizePhoneDigits(input.phone) : "";
+  const hasPhone = Boolean(phoneDigits);
+  const telTarget =
+    input.phone?.trim().startsWith("+") && phoneDigits
+      ? `+${phoneDigits}`
+      : phoneDigits;
+
+  const subject = `Nueva solicitud web · ${input.referenceCode}`;
+
+  const html = `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nueva solicitud de cotización</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f4f6f8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1e293b; -webkit-font-smoothing: antialiased;">
+  <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f4f6f8; padding: 24px 12px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 600px; background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; text-align: left;">
+          <!-- HEADER -->
+          <tr>
+            <td style="background-color: #0D5E8E; padding: 24px 32px; border-bottom: 4px solid #8AE600;">
+              <p style="margin: 0; font-size: 13px; font-weight: 700; letter-spacing: 2px; color: #ffffff; text-transform: uppercase;">AGM RENT A CAR</p>
+              <h1 style="margin: 8px 0 0 0; font-size: 22px; font-weight: 700; color: #ffffff;">Nueva solicitud de cotización</h1>
+              <p style="margin: 4px 0 0 0; font-size: 13px; color: #cbd5e1;">Solicitud recibida desde agmrentacar.cl</p>
+            </td>
+          </tr>
+          <!-- BODY CONTENT -->
+          <tr>
+            <td style="padding: 32px 32px 24px 32px;">
+              <!-- CÓDIGO DE SOLICITUD E ID INTERNO -->
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #1E80B7; border-radius: 6px; margin-bottom: 24px;">
+                <tr>
+                  <td style="padding: 16px 20px;">
+                    <span style="display: block; font-size: 11px; font-weight: 700; letter-spacing: 1px; color: #64748b; text-transform: uppercase;">Código de solicitud</span>
+                    <span style="display: block; font-size: 22px; font-weight: 700; color: #0D5E8E; letter-spacing: 1px; margin-top: 4px;">${safeRefCode}</span>
+                    <span style="display: block; font-size: 12px; color: #64748b; margin-top: 6px;">ID interno: <strong>#${safeReservationId}</strong></span>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- CLIENTE -->
+              <div style="margin-bottom: 24px;">
+                <h2 style="margin: 0 0 10px 0; font-size: 13px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">Cliente</h2>
+                <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px;">
+                  <tr>
+                    <td style="padding: 10px 14px; background-color: #f8fafc; font-weight: 600; color: #475569; width: 35%; border-bottom: 1px solid #e2e8f0;">Nombre</td>
+                    <td style="padding: 10px 14px; color: #0f172a; border-bottom: 1px solid #e2e8f0; font-weight: 600;">${safeName}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 14px; background-color: #f8fafc; font-weight: 600; color: #475569; border-bottom: 1px solid #e2e8f0;">Correo</td>
+                    <td style="padding: 10px 14px; color: #0f172a; border-bottom: 1px solid #e2e8f0;"><a href="mailto:${encodeURIComponent(input.email)}?subject=${encodeURIComponent(`Cotización AGM ${input.referenceCode}`)}" style="color: #0D5E8E; text-decoration: underline;">${safeEmail}</a></td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 14px; background-color: #f8fafc; font-weight: 600; color: #475569; border-bottom: 1px solid #e2e8f0;">Teléfono</td>
+                    <td style="padding: 10px 14px; color: #0f172a; border-bottom: 1px solid #e2e8f0;">${safePhone ? safePhone : '<span style="color: #94a3b8;">No informado</span>'}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 14px; background-color: #f8fafc; font-weight: 600; color: #475569;">Tipo</td>
+                    <td style="padding: 10px 14px; color: #0f172a; font-weight: 600;">${customerTypeLabel}</td>
+                  </tr>
+                </table>
+              </div>
+
+              ${isBusiness ? `
+              <!-- EMPRESA -->
+              <div style="margin-bottom: 24px;">
+                <h2 style="margin: 0 0 10px 0; font-size: 13px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">Empresa</h2>
+                <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px;">
+                  <tr>
+                    <td style="padding: 10px 14px; background-color: #f8fafc; font-weight: 600; color: #475569; width: 35%; border-bottom: 1px solid #e2e8f0;">Razón social</td>
+                    <td style="padding: 10px 14px; color: #0f172a; border-bottom: 1px solid #e2e8f0; font-weight: 600;">${safeCompanyName}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 14px; background-color: #f8fafc; font-weight: 600; color: #475569;">RUT</td>
+                    <td style="padding: 10px 14px; color: #0f172a;">${safeCompanyTaxId}</td>
+                  </tr>
+                </table>
+              </div>
+              ` : ""}
+
+              <!-- SOLICITUD -->
+              <div style="margin-bottom: 24px;">
+                <h2 style="margin: 0 0 10px 0; font-size: 13px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">Solicitud</h2>
+                <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px;">
+                  <tr>
+                    <td style="padding: 10px 14px; background-color: #f8fafc; font-weight: 600; color: #475569; width: 35%; border-bottom: 1px solid #e2e8f0;">Vehículo</td>
+                    <td style="padding: 10px 14px; color: #0f172a; border-bottom: 1px solid #e2e8f0; font-weight: 600;">${safeVehicle}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 14px; background-color: #f8fafc; font-weight: 600; color: #475569; border-bottom: 1px solid #e2e8f0;">Retiro</td>
+                    <td style="padding: 10px 14px; color: #0f172a; border-bottom: 1px solid #e2e8f0;">${safePickupLoc}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 14px; background-color: #f8fafc; font-weight: 600; color: #475569; border-bottom: 1px solid #e2e8f0;">Fecha y hora de retiro</td>
+                    <td style="padding: 10px 14px; color: #0f172a; border-bottom: 1px solid #e2e8f0;">${pickupTimeStr}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 14px; background-color: #f8fafc; font-weight: 600; color: #475569; border-bottom: 1px solid #e2e8f0;">Devolución</td>
+                    <td style="padding: 10px 14px; color: #0f172a; border-bottom: 1px solid #e2e8f0;">${safeReturnLoc}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 14px; background-color: #f8fafc; font-weight: 600; color: #475569;">Fecha y hora de devolución</td>
+                    <td style="padding: 10px 14px; color: #0f172a;">${returnTimeStr}</td>
+                  </tr>
+                </table>
+              </div>
+
+              <!-- ACCIONES DE CONTACTO -->
+              <div style="margin-bottom: 24px;">
+                <h2 style="margin: 0 0 10px 0; font-size: 13px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1px;">Acciones de contacto directo</h2>
+                <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px;">
+                  <tr>
+                    <td style="padding: 16px 20px;">
+                      <a href="mailto:${encodeURIComponent(input.email)}?subject=${encodeURIComponent(`Cotización AGM ${input.referenceCode}`)}" style="display: inline-block; background-color: #0D5E8E; color: #ffffff; text-decoration: none; font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 4px; margin-right: 8px; margin-bottom: 6px;">Responder por correo</a>
+                      ${hasPhone ? `
+                      <a href="tel:${telTarget}" style="display: inline-block; background-color: #ffffff; color: #0f172a; text-decoration: none; font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 4px; border: 1px solid #cbd5e1; margin-right: 8px; margin-bottom: 6px;">Llamar</a>
+                      <a href="https://api.whatsapp.com/send?phone=${encodeURIComponent(phoneDigits)}" target="_blank" rel="noopener noreferrer" style="display: inline-block; background-color: #25D366; color: #ffffff; text-decoration: none; font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 4px; margin-bottom: 6px;">WhatsApp</a>
+                      ` : ""}
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+              <!-- PRÓXIMA ACCIÓN RECOMENDADA -->
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #eff6ff; border: 1px solid #bfdbfe; border-left: 4px solid #1E80B7; border-radius: 6px; margin-bottom: 8px;">
+                <tr>
+                  <td style="padding: 14px 18px;">
+                    <span style="display: block; font-size: 11px; font-weight: 700; letter-spacing: 1px; color: #1e40af; text-transform: uppercase;">Próxima acción recomendada</span>
+                    <span style="display: block; font-size: 13px; line-height: 20px; color: #1e3a8a; margin-top: 4px;">Revisar disponibilidad, preparar cotización y responder al cliente utilizando el código de solicitud.</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <!-- FOOTER -->
+          <tr>
+            <td style="background-color: #f8fafc; padding: 18px 32px; border-top: 1px solid #e2e8f0; font-size: 12px; line-height: 18px; color: #64748b; text-align: center;">
+              <p style="margin: 0; font-weight: 600; color: #475569;">AGM Rent a Car &middot; Sistema Operativo de Reservas</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+
+  const textParts = [
+    "AGM RENT A CAR",
+    "Nueva solicitud de cotización",
+    "Solicitud recibida desde agmrentacar.cl",
+    "",
+    `Código de solicitud: ${input.referenceCode}`,
+    `ID interno: #${input.reservationId}`,
+    "",
+    "CLIENTE",
+    "--------------------------------------------------",
+    `Nombre: ${input.fullName}`,
+    `Correo: ${input.email}`,
+    `Teléfono: ${input.phone || "No informado"}`,
+    `Tipo: ${formatCustomerType(input.customerType)}`,
+  ];
+
+  if (isBusiness) {
+    textParts.push(
+      "",
+      "EMPRESA",
+      "--------------------------------------------------",
+      `Razón social: ${input.companyName || "No informada"}`,
+      `RUT: ${input.companyTaxId || "No informado"}`,
+    );
+  }
+
+  textParts.push(
+    "",
+    "SOLICITUD",
+    "--------------------------------------------------",
+    `Vehículo: ${input.vehicleName}`,
+    `Retiro: ${input.pickupLocationName}`,
+    `Fecha y hora de retiro: ${pickupTimePlain}`,
+    `Devolución: ${input.returnLocationName}`,
+    `Fecha y hora de devolución: ${returnTimePlain}`,
+    "",
+    "ACCIONES DE CONTACTO",
+    "--------------------------------------------------",
+    `Responder por correo: ${input.email}`,
+  );
+
+  if (hasPhone) {
+    textParts.push(
+      `Llamar: ${input.phone}`,
+      `WhatsApp: https://api.whatsapp.com/send?phone=${phoneDigits}`,
+    );
+  }
+
+  textParts.push(
+    "",
+    "PRÓXIMA ACCIÓN RECOMENDADA",
+    "--------------------------------------------------",
+    "Revisar disponibilidad, preparar cotización y responder al cliente utilizando el código de solicitud.",
+  );
+
+  const text = textParts.join("\n");
+
+  return { subject, html, text };
+};
+
 const handler = withSupabase(
   { auth: ["publishable"] },
   async (req, ctx) => {
@@ -518,6 +780,23 @@ const handler = withSupabase(
       returnAt,
     });
     void customerEmail;
+
+    const internalEmail = buildInternalEmail({
+      reservationId: reservation.id,
+      referenceCode: reservation.reference_code,
+      fullName,
+      email,
+      phone,
+      customerType,
+      companyName,
+      companyTaxId,
+      vehicleName: requestedVehicleName,
+      pickupLocationName,
+      returnLocationName,
+      pickupAt,
+      returnAt,
+    });
+    void internalEmail;
 
     const summary = [
       `Solicitud ${reservation.reference_code}`,
