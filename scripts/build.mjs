@@ -97,7 +97,7 @@ const inputCss = [
 ].join("\n");
 const tailwindConfig = [
   `const config = ${configMatch[1]};`,
-  `config.content = [${JSON.stringify(sourcePath)}, ${JSON.stringify(join(root, "pages", "**", "*.{html,js}"))}];`,
+  `config.content = [${JSON.stringify(sourcePath)}, ${JSON.stringify(join(root, "pages", "**", "*.{html,js}"))}, ${JSON.stringify(join(root, "templates", "**", "*.{html,js}"))}];`,
   "module.exports = config;",
 ].join("\n");
 
@@ -161,6 +161,10 @@ const publicCmsSource = existsSync(join(root, "assets", "public-cms.js"))
   ? readFileSync(join(root, "assets", "public-cms.js"), "utf8")
   : "";
 
+const internalHeaderSource = existsSync(join(root, "templates", "internal-header.html"))
+  ? readFileSync(join(root, "templates", "internal-header.html"), "utf8")
+  : "";
+
 const cssVersion = commit !== "sin-git" ? visibleCommit : getFingerprint(compiledCss);
 const appJsVersion = commit !== "sin-git" ? visibleCommit : getFingerprint(appMatch[1]);
 const cmsJsVersion = commit !== "sin-git" ? visibleCommit : getFingerprint(publicCmsSource);
@@ -181,6 +185,11 @@ const assemblePageHtml = ({
       .replace(/\s*<script src="https:\/\/cdn\.tailwindcss\.com"><\/script>/, "")
       .replace(configMatch[0], "")
       .replace(appMatch[0], "");
+  }
+
+  if (html.includes("<!-- AGM_INTERNAL_HEADER -->")) {
+    const renderedHeader = internalHeaderSource.replaceAll("{{ROOT}}", rootRelative);
+    html = html.replace("<!-- AGM_INTERNAL_HEADER -->", renderedHeader);
   }
 
   const scriptTags = `    <script src="${rootRelative}assets/app.js?v=${appJsVersion}" defer></script>\n    <script src="${rootRelative}assets/public-cms.js?v=${cmsJsVersion}" defer></script>\n  </body>`;
