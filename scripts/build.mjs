@@ -97,7 +97,7 @@ const inputCss = [
 ].join("\n");
 const tailwindConfig = [
   `const config = ${configMatch[1]};`,
-  `config.content = [${JSON.stringify(sourcePath)}];`,
+  `config.content = [${JSON.stringify(sourcePath)}, ${JSON.stringify(join(root, "pages", "**", "*.{html,js}"))}];`,
   "module.exports = config;",
 ].join("\n");
 
@@ -165,38 +165,78 @@ const cssVersion = commit !== "sin-git" ? visibleCommit : getFingerprint(compile
 const appJsVersion = commit !== "sin-git" ? visibleCommit : getFingerprint(appMatch[1]);
 const cmsJsVersion = commit !== "sin-git" ? visibleCommit : getFingerprint(publicCmsSource);
 
-let html = source
-  .replace(styleMatch[0], "")
-  .replace(/\s*<script src="https:\/\/cdn\.tailwindcss\.com"><\/script>/, "")
-  .replace(configMatch[0], "")
-  .replace(appMatch[0], "")
-  .replace(
-    "</head>",
-    `    <meta http-equiv="Content-Security-Policy" content="${contentSecurityPolicy}" />\n    <link rel="stylesheet" href="assets/site.css?v=${cssVersion}" />\n  </head>`,
-  )
-  .replace(
-    '<script src="assets/public-cms.js" defer></script>\n  </body>',
-    `    <script src="assets/app.js?v=${appJsVersion}" defer></script>\n    <script src="assets/public-cms.js?v=${cmsJsVersion}" defer></script>\n  </body>`,
-  )
-  .replace(
-    releaseMarker,
-    "",
-  )
-  .replace(
-    turnstileMarker,
-    turnstileSiteKey
-      ? `<div class="agm-turnstile-wrap" aria-label="Verificación de seguridad"><div class="cf-turnstile" data-sitekey="${turnstileSiteKey}" data-action="request_quote" data-theme="light" data-size="flexible" data-appearance="always"></div></div>`
-      : "",
-  );
+/**
+ * Ensambla un documento HTML completo inyectando CSP, CSS versionado,
+ * scripts modulares y widget Turnstile si aplica.
+ */
+const assemblePageHtml = ({
+  rawHtml,
+  stripInternalTags = false,
+  rootRelative = "",
+}) => {
+  let html = rawHtml;
+  if (stripInternalTags) {
+    html = html
+      .replace(styleMatch[0], "")
+      .replace(/\s*<script src="https:\/\/cdn\.tailwindcss\.com"><\/script>/, "")
+      .replace(configMatch[0], "")
+      .replace(appMatch[0], "");
+  }
 
-if (turnstileSiteKey) {
-  html = html.replace(
-    "</head>",
-    '    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>\n  </head>',
-  );
+  html = html
+    .replace(
+      "</head>",
+      `    <meta http-equiv="Content-Security-Policy" content="${contentSecurityPolicy}" />\n    <link rel="stylesheet" href="${rootRelative}assets/site.css?v=${cssVersion}" />\n  </head>`,
+    )
+    .replace(
+      '<script src="assets/public-cms.js" defer></script>\n  </body>',
+      `    <script src="${rootRelative}assets/app.js?v=${appJsVersion}" defer></script>\n    <script src="${rootRelative}assets/public-cms.js?v=${cmsJsVersion}" defer></script>\n  </body>`,
+    )
+    .replace(releaseMarker, "")
+    .replace(
+      turnstileMarker,
+      turnstileSiteKey
+        ? `<div class="agm-turnstile-wrap" aria-label="Verificación de seguridad"><div class="cf-turnstile" data-sitekey="${turnstileSiteKey}" data-action="request_quote" data-theme="light" data-size="flexible" data-appearance="always"></div></div>`
+        : "",
+    );
+
+  if (turnstileSiteKey) {
+    html = html.replace(
+      "</head>",
+      '    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>\n  </head>',
+    );
+  }
+
+  return html;
+};
+
+/**
+ * Catálogo del motor multipágina.
+ * Actualmente genera únicamente la home (index.html), dejando la infraestructura
+ * modular preparada para incorporar /vehiculos/, /cotizar/, /blog/, etc. en fases posteriores.
+ */
+const PAGES = [
+  {
+    id: "home",
+    route: "/",
+    outputFile: "index.html",
+    render: () =>
+      assemblePageHtml({
+        rawHtml: source,
+        stripInternalTags: true,
+        rootRelative: "",
+      }),
+  },
+];
+
+for (const page of PAGES) {
+  const outputPath = join(distPath, page.outputFile);
+  const outputDir = dirname(outputPath);
+  if (!existsSync(outputDir)) {
+    mkdirSync(outputDir, { recursive: true });
+  }
+  writeFileSync(outputPath, page.render());
 }
-
-writeFileSync(join(distPath, "index.html"), html);
 writeFileSync(join(distPath, "assets", "app.js"), `${appMatch[1]}\n`);
 if (existsSync(join(root, "assets", "public-cms.js"))) {
   cpSync(
