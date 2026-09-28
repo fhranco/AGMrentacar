@@ -544,6 +544,68 @@ const buildInternalEmail = (input: InternalEmailInput): CustomerEmailContent => 
   return { subject, html, text };
 };
 
+const RESEND_FROM = "AGM Rent a Car <reservas@agmrentacar.cl>";
+
+type EmailSendResult =
+  | {
+      ok: true;
+      id: string;
+    }
+  | {
+      ok: false;
+      status?: number;
+    };
+
+type SendResendEmailOptions = {
+  apiKey: string;
+  to: string;
+  subject: string;
+  html: string;
+  text: string;
+  idempotencyKey: string;
+};
+
+const sendResendEmail = async ({
+  apiKey,
+  to,
+  subject,
+  html,
+  text,
+  idempotencyKey,
+}: SendResendEmailOptions): Promise<EmailSendResult> => {
+  try {
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+        "Idempotency-Key": idempotencyKey,
+      },
+      body: JSON.stringify({
+        from: RESEND_FROM,
+        to,
+        subject,
+        html,
+        text,
+      }),
+      signal: AbortSignal.timeout(8_000),
+    });
+
+    if (!response.ok) {
+      return { ok: false, status: response.status };
+    }
+
+    const payload = await response.json();
+    if (typeof payload?.id === "string" && payload.id.trim()) {
+      return { ok: true, id: payload.id.trim() };
+    }
+
+    return { ok: false, status: response.status };
+  } catch {
+    return { ok: false };
+  }
+};
+
 const handler = withSupabase(
   { auth: ["publishable"] },
   async (req, ctx) => {
@@ -869,8 +931,120 @@ const handler = withSupabase(
       );
     }
 
-    void customerCommunication;
-    void internalCommunication;
+    const resendApiKey = Deno.env.get("RESEND_API_KEY");
+
+    if (!resendApiKey) {
+      console.error("RESEND_API_KEY is not configured");
+
+      if (customerCommunication?.id) {
+        const { error: updateError } = await ctx.supabaseAdmin
+          .from("communications")
+          .update({ delivery_status: "failed" })
+          .eq("id", customerCommunication.id);
+
+        if (updateError) {
+          console.error("Customer communication update failed", updateError);
+        }
+      } else {
+        console.error("Customer email result could not be persisted");
+      }
+
+      if (internalCommunication?.id) {
+        const { error: updateError } = await ctx.supabaseAdmin
+          .from("communications")
+          .update({ delivery_status: "failed" })
+          .eq("id", internalCommunication.id);
+
+        if (updateError) {
+          console.error("Internal communication update failed", updateError);
+        }
+      } else {
+        console.error("Internal email result could not be persisted");
+      }
+    } else {
+      const [customerSendResult, internalSendResult] = await Promise.all([
+        sendResendEmail({
+          apiKey: resendApiKey,
+          to: email,
+          subject: customerEmail.subject,
+          html: customerEmail.html,
+          text: customerEmail.text,
+          idempotencyKey: `agm-quote-customer/${reservation.reference_code}`,
+        }),
+        sendResendEmail({
+          apiKey: resendApiKey,
+          to: "reservas@agmrentacar.cl",
+          subject: internalEmail.subject,
+          html: internalEmail.html,
+          text: internalEmail.text,
+          idempotencyKey: `agm-quote-internal/${reservation.reference_code}`,
+        }),
+      ]);
+
+      if (!customerSendResult.ok) {
+        console.error(
+          "Customer email send failed",
+          customerSendResult.status !== undefined
+            ? { status: customerSendResult.status }
+            : undefined,
+        );
+      }
+
+      if (customerCommunication?.id) {
+        const updatePayload = customerSendResult.ok
+          ? {
+              delivery_status: "sent",
+              external_id: customerSendResult.id,
+              sent_at: new Date().toISOString(),
+            }
+          : {
+              delivery_status: "failed",
+            };
+
+        const { error: updateError } = await ctx.supabaseAdmin
+          .from("communications")
+          .update(updatePayload)
+          .eq("id", customerCommunication.id);
+
+        if (updateError) {
+          console.error("Customer communication update failed", updateError);
+        }
+      } else {
+        console.error("Customer email result could not be persisted");
+      }
+
+      if (!internalSendResult.ok) {
+        console.error(
+          "Internal email send failed",
+          internalSendResult.status !== undefined
+            ? { status: internalSendResult.status }
+            : undefined,
+        );
+      }
+
+      if (internalCommunication?.id) {
+        const updatePayload = internalSendResult.ok
+          ? {
+              delivery_status: "sent",
+              external_id: internalSendResult.id,
+              sent_at: new Date().toISOString(),
+            }
+          : {
+              delivery_status: "failed",
+            };
+
+        const { error: updateError } = await ctx.supabaseAdmin
+          .from("communications")
+          .update(updatePayload)
+          .eq("id", internalCommunication.id);
+
+        if (updateError) {
+          console.error("Internal communication update failed", updateError);
+        }
+      } else {
+        console.error("Internal email result could not be persisted");
+      }
+    }
 
     return json(
       req,
