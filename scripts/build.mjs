@@ -183,14 +183,17 @@ const assemblePageHtml = ({
       .replace(appMatch[0], "");
   }
 
+  const scriptTags = `    <script src="${rootRelative}assets/app.js?v=${appJsVersion}" defer></script>\n    <script src="${rootRelative}assets/public-cms.js?v=${cmsJsVersion}" defer></script>\n  </body>`;
+  if (html.includes('<script src="assets/public-cms.js" defer></script>')) {
+    html = html.replace('<script src="assets/public-cms.js" defer></script>\n  </body>', scriptTags);
+  } else {
+    html = html.replace("</body>", scriptTags);
+  }
+
   html = html
     .replace(
       "</head>",
       `    <meta http-equiv="Content-Security-Policy" content="${contentSecurityPolicy}" />\n    <link rel="stylesheet" href="${rootRelative}assets/site.css?v=${cssVersion}" />\n  </head>`,
-    )
-    .replace(
-      '<script src="assets/public-cms.js" defer></script>\n  </body>',
-      `    <script src="${rootRelative}assets/app.js?v=${appJsVersion}" defer></script>\n    <script src="${rootRelative}assets/public-cms.js?v=${cmsJsVersion}" defer></script>\n  </body>`,
     )
     .replace(releaseMarker, "")
     .replace(
@@ -212,8 +215,6 @@ const assemblePageHtml = ({
 
 /**
  * Catálogo del motor multipágina.
- * Actualmente genera únicamente la home (index.html), dejando la infraestructura
- * modular preparada para incorporar /vehiculos/, /cotizar/, /blog/, etc. en fases posteriores.
  */
 const PAGES = [
   {
@@ -225,6 +226,17 @@ const PAGES = [
         rawHtml: source,
         stripInternalTags: true,
         rootRelative: "",
+      }),
+  },
+  {
+    id: "vehiculos",
+    route: "/vehiculos/",
+    outputFile: "vehiculos/index.html",
+    render: () =>
+      assemblePageHtml({
+        rawHtml: readFileSync(join(root, "pages", "vehiculos.html"), "utf8"),
+        stripInternalTags: false,
+        rootRelative: "../",
       }),
   },
 ];
