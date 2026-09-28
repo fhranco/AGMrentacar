@@ -203,7 +203,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           .select("id, name, slug"),
         client
           .from("vehicle_models")
-          .select("id, name"),
+          .select("id, display_name, make, model"),
       ]);
 
       if (resRes.error) throw resRes.error;
@@ -217,7 +217,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         (locRes.data || []).map((l) => [l.id, l.name]),
       );
       vehicleModelsMap = new Map(
-        (modRes.data || []).map((m) => [m.id, m.name]),
+        (modRes.data || []).map((m) => [
+          m.id,
+          m.display_name || (m.make && m.model ? `${m.make} ${m.model}` : m.name) || "Vehículo",
+        ]),
       );
 
       updateMetrics();
