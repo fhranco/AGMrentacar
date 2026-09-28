@@ -87,6 +87,201 @@ const verifyTurnstile = async (token: string, remoteIp: string) => {
   }
 };
 
+const escapeHtml = (value: string): string =>
+  value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+
+const formatPuntaArenasDateTime = (date: Date): string =>
+  new Intl.DateTimeFormat("es-CL", {
+    timeZone: "America/Punta_Arenas",
+    dateStyle: "long",
+    timeStyle: "short",
+  }).format(date);
+
+type CustomerEmailInput = {
+  fullName: string;
+  email: string;
+  referenceCode: string;
+  vehicleName: string;
+  pickupLocationName: string;
+  returnLocationName: string;
+  pickupAt: Date;
+  returnAt: Date;
+};
+
+type CustomerEmailContent = {
+  subject: string;
+  html: string;
+  text: string;
+};
+
+const buildCustomerEmail = (input: CustomerEmailInput): CustomerEmailContent => {
+  const safeName = escapeHtml(input.fullName);
+  const safeRefCode = escapeHtml(input.referenceCode);
+  const safeVehicle = escapeHtml(input.vehicleName);
+  const safePickupLoc = escapeHtml(input.pickupLocationName);
+  const safeReturnLoc = escapeHtml(input.returnLocationName);
+  const pickupTimeStr = escapeHtml(formatPuntaArenasDateTime(input.pickupAt));
+  const returnTimeStr = escapeHtml(formatPuntaArenasDateTime(input.returnAt));
+
+  const pickupTimePlain = formatPuntaArenasDateTime(input.pickupAt);
+  const returnTimePlain = formatPuntaArenasDateTime(input.returnAt);
+
+  const subject = `Recibimos tu solicitud · ${input.referenceCode}`;
+
+  const html = `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solicitud recibida</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f4f6f8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1e293b; -webkit-font-smoothing: antialiased;">
+  <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f4f6f8; padding: 24px 12px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 600px; background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; text-align: left;">
+          <!-- HEADER -->
+          <tr>
+            <td style="background-color: #0D5E8E; padding: 24px 32px; border-bottom: 4px solid #8AE600;">
+              <p style="margin: 0; font-size: 13px; font-weight: 700; letter-spacing: 2px; color: #ffffff; text-transform: uppercase;">AGM RENT A CAR</p>
+              <h1 style="margin: 8px 0 0 0; font-size: 22px; font-weight: 700; color: #ffffff;">Solicitud recibida</h1>
+            </td>
+          </tr>
+          <!-- BODY CONTENT -->
+          <tr>
+            <td style="padding: 32px 32px 24px 32px;">
+              <p style="margin: 0 0 16px 0; font-size: 16px; line-height: 24px; color: #1e293b;">
+                Hola, <strong>${safeName}</strong>.
+              </p>
+              <p style="margin: 0 0 24px 0; font-size: 15px; line-height: 22px; color: #334155;">
+                Recibimos correctamente tu solicitud de cotización. Nuestro equipo revisará la disponibilidad y los antecedentes enviados.
+              </p>
+
+              <!-- CÓDIGO DE SOLICITUD -->
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #1E80B7; border-radius: 6px; margin-bottom: 24px;">
+                <tr>
+                  <td style="padding: 16px 20px;">
+                    <span style="display: block; font-size: 11px; font-weight: 700; letter-spacing: 1px; color: #64748b; text-transform: uppercase;">Código de solicitud</span>
+                    <span style="display: block; font-size: 22px; font-weight: 700; color: #0D5E8E; letter-spacing: 1px; margin-top: 4px;">${safeRefCode}</span>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- RESUMEN -->
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="border: 1px solid #e2e8f0; border-radius: 6px; margin-bottom: 24px; font-size: 14px;">
+                <tr>
+                  <td style="padding: 10px 14px; background-color: #f8fafc; font-weight: 600; color: #475569; width: 40%; border-bottom: 1px solid #e2e8f0;">Vehículo</td>
+                  <td style="padding: 10px 14px; color: #0f172a; border-bottom: 1px solid #e2e8f0; font-weight: 600;">${safeVehicle}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px 14px; background-color: #f8fafc; font-weight: 600; color: #475569; border-bottom: 1px solid #e2e8f0;">Retiro</td>
+                  <td style="padding: 10px 14px; color: #0f172a; border-bottom: 1px solid #e2e8f0;">${safePickupLoc}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px 14px; background-color: #f8fafc; font-weight: 600; color: #475569; border-bottom: 1px solid #e2e8f0;">Fecha y hora de retiro</td>
+                  <td style="padding: 10px 14px; color: #0f172a; border-bottom: 1px solid #e2e8f0;">${pickupTimeStr}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px 14px; background-color: #f8fafc; font-weight: 600; color: #475569; border-bottom: 1px solid #e2e8f0;">Devolución</td>
+                  <td style="padding: 10px 14px; color: #0f172a; border-bottom: 1px solid #e2e8f0;">${safeReturnLoc}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px 14px; background-color: #f8fafc; font-weight: 600; color: #475569;">Fecha y hora de devolución</td>
+                  <td style="padding: 10px 14px; color: #0f172a;">${returnTimeStr}</td>
+                </tr>
+              </table>
+
+              <!-- AVISO CRÍTICO -->
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #fffbeb; border: 1px solid #fef3c7; border-left: 4px solid #f59e0b; border-radius: 6px; margin-bottom: 24px;">
+                <tr>
+                  <td style="padding: 14px 18px; font-size: 13px; line-height: 20px; color: #92400e;">
+                    <strong>Información importante:</strong> Esta solicitud todavía no constituye una reserva confirmada. AGM revisará la disponibilidad y te enviará la cotización formal por correo.
+                  </td>
+                </tr>
+              </table>
+
+              <!-- SIGUIENTES PASOS -->
+              <div style="margin-bottom: 24px;">
+                <h2 style="margin: 0 0 12px 0; font-size: 15px; font-weight: 700; color: #0f172a;">¿Qué ocurre ahora?</h2>
+                <ol style="margin: 0; padding-left: 20px; font-size: 13px; line-height: 20px; color: #334155;">
+                  <li style="margin-bottom: 6px;">Revisaremos la disponibilidad del vehículo solicitado.</li>
+                  <li style="margin-bottom: 6px;">Prepararemos tu cotización.</li>
+                  <li style="margin-bottom: 6px;">Recibirás la propuesta formal por correo.</li>
+                  <li style="margin-bottom: 0;">La reserva quedará confirmada únicamente cuando AGM complete el proceso de confirmación correspondiente.</li>
+                </ol>
+              </div>
+
+              <!-- CONTACTO -->
+              <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 16px 20px; margin-bottom: 8px;">
+                <h2 style="margin: 0 0 8px 0; font-size: 14px; font-weight: 700; color: #0f172a;">¿Necesitas agregar información a tu solicitud?</h2>
+                <p style="margin: 0 0 6px 0; font-size: 13px; line-height: 20px; color: #475569;">
+                  Correo: <a href="mailto:reservas@agmrentacar.cl" style="color: #0D5E8E; font-weight: 600; text-decoration: underline;">reservas@agmrentacar.cl</a>
+                </p>
+                <p style="margin: 0; font-size: 13px; line-height: 20px; color: #475569;">
+                  Teléfonos: <a href="tel:+56966571218" style="color: #0D5E8E; font-weight: 600; text-decoration: underline;">+56 9 6657 1218</a> &middot; <a href="tel:+56966571211" style="color: #0D5E8E; font-weight: 600; text-decoration: underline;">+56 9 6657 1211</a>
+                </p>
+              </div>
+            </td>
+          </tr>
+          <!-- FOOTER -->
+          <tr>
+            <td style="background-color: #f8fafc; padding: 20px 32px; border-top: 1px solid #e2e8f0; font-size: 12px; line-height: 18px; color: #64748b; text-align: center;">
+              <p style="margin: 0 0 4px 0; font-weight: 600; color: #475569;">AGM Rent a Car SpA &middot; Punta Arenas &middot; Región de Magallanes</p>
+              <p style="margin: 0; color: #94a3b8;">Recibiste este correo porque enviaste una solicitud de cotización a través de agmrentacar.cl.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+
+  const text = [
+    "AGM RENT A CAR",
+    "Solicitud recibida",
+    "",
+    `Hola, ${input.fullName}.`,
+    "",
+    "Recibimos correctamente tu solicitud de cotización. Nuestro equipo revisará la disponibilidad y los antecedentes enviados.",
+    "",
+    `Código de solicitud: ${input.referenceCode}`,
+    "",
+    "RESUMEN DE LA SOLICITUD",
+    "--------------------------------------------------",
+    `Vehículo: ${input.vehicleName}`,
+    `Retiro: ${input.pickupLocationName}`,
+    `Fecha y hora de retiro: ${pickupTimePlain}`,
+    `Devolución: ${input.returnLocationName}`,
+    `Fecha y hora de devolución: ${returnTimePlain}`,
+    "",
+    "INFORMACIÓN IMPORTANTE:",
+    "Esta solicitud todavía no constituye una reserva confirmada. AGM revisará la disponibilidad y te enviará la cotización formal por correo.",
+    "",
+    "¿QUÉ OCURRE AHORA?",
+    "1. Revisaremos la disponibilidad del vehículo solicitado.",
+    "2. Prepararemos tu cotización.",
+    "3. Recibirás la propuesta formal por correo.",
+    "4. La reserva quedará confirmada únicamente cuando AGM complete el proceso de confirmación correspondiente.",
+    "",
+    "¿NECESITAS AGREGAR INFORMACIÓN A TU SOLICITUD?",
+    "Correo: reservas@agmrentacar.cl",
+    "Teléfonos: +56 9 6657 1218 / +56 9 6657 1211",
+    "",
+    "--------------------------------------------------",
+    "AGM Rent a Car SpA",
+    "Punta Arenas · Región de Magallanes",
+    "Recibiste este correo porque enviaste una solicitud de cotización a través de agmrentacar.cl.",
+  ].join("\n");
+
+  return { subject, html, text };
+};
+
 const handler = withSupabase(
   { auth: ["publishable"] },
   async (req, ctx) => {
@@ -175,7 +370,7 @@ const handler = withSupabase(
     const requestedSlugs = [...new Set([pickupSlug, returnSlug])];
     const { data: locations, error: locationsError } = await ctx.supabaseAdmin
       .from("locations")
-      .select("id, slug")
+      .select("id, slug, name")
       .in("slug", requestedSlugs)
       .eq("active", true);
 
@@ -185,6 +380,9 @@ const handler = withSupabase(
     }
 
     const locationIds = new Map(locations.map((item) => [item.slug, item.id]));
+    const locationNames = new Map(
+      locations.map((item) => [item.slug, item.name]),
+    );
 
     let requestedModelId: number | null = null;
     let requestedVehicleName = "Recomendación AGM";
@@ -300,6 +498,26 @@ const handler = withSupabase(
       console.error("Reservation insert failed", reservationError);
       return json(req, { error: "No pudimos crear la solicitud." }, 500);
     }
+
+    const pickupLocationName = locationNames.get(pickupSlug);
+    const returnLocationName = locationNames.get(returnSlug);
+
+    if (!pickupLocationName || !returnLocationName) {
+      console.error("Location name mapping failed");
+      return json(req, { error: "No pudimos procesar la solicitud." }, 500);
+    }
+
+    const customerEmail = buildCustomerEmail({
+      fullName,
+      email,
+      referenceCode: reservation.reference_code,
+      vehicleName: requestedVehicleName,
+      pickupLocationName,
+      returnLocationName,
+      pickupAt,
+      returnAt,
+    });
+    void customerEmail;
 
     const summary = [
       `Solicitud ${reservation.reference_code}`,
