@@ -248,6 +248,20 @@ const PAGES = [
         rootRelative: "../",
       }),
   },
+  {
+    id: "aeropuerto-punta-arenas",
+    route: "/aeropuerto-punta-arenas/",
+    outputFile: "aeropuerto-punta-arenas/index.html",
+    render: () =>
+      assemblePageHtml({
+        rawHtml: readFileSync(
+          join(root, "pages", "aeropuerto-punta-arenas.html"),
+          "utf8",
+        ),
+        stripInternalTags: false,
+        rootRelative: "../",
+      }),
+  },
 ];
 
 for (const page of PAGES) {
