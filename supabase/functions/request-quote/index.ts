@@ -779,7 +779,6 @@ const handler = withSupabase(
       pickupAt,
       returnAt,
     });
-    void customerEmail;
 
     const internalEmail = buildInternalEmail({
       reservationId: reservation.id,
@@ -796,7 +795,6 @@ const handler = withSupabase(
       pickupAt,
       returnAt,
     });
-    void internalEmail;
 
     const summary = [
       `Solicitud ${reservation.reference_code}`,
@@ -824,6 +822,55 @@ const handler = withSupabase(
     if (communicationError) {
       console.error("Communication log failed", communicationError);
     }
+
+    const { data: customerCommunication, error: customerCommunicationError } =
+      await ctx.supabaseAdmin
+        .from("communications")
+        .insert({
+          reservation_id: reservation.id,
+          channel: "email",
+          purpose: "quote",
+          direction: "outbound",
+          recipient: email,
+          subject: customerEmail.subject,
+          body: customerEmail.text,
+          delivery_status: "queued",
+        })
+        .select("id")
+        .single();
+
+    if (customerCommunicationError) {
+      console.error(
+        "Customer email communication log failed",
+        customerCommunicationError,
+      );
+    }
+
+    const { data: internalCommunication, error: internalCommunicationError } =
+      await ctx.supabaseAdmin
+        .from("communications")
+        .insert({
+          reservation_id: reservation.id,
+          channel: "email",
+          purpose: "internal",
+          direction: "outbound",
+          recipient: "reservas@agmrentacar.cl",
+          subject: internalEmail.subject,
+          body: internalEmail.text,
+          delivery_status: "queued",
+        })
+        .select("id")
+        .single();
+
+    if (internalCommunicationError) {
+      console.error(
+        "Internal email communication log failed",
+        internalCommunicationError,
+      );
+    }
+
+    void customerCommunication;
+    void internalCommunication;
 
     return json(
       req,
