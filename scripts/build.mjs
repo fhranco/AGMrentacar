@@ -262,6 +262,48 @@ const PAGES = [
         rootRelative: "../",
       }),
   },
+  {
+    id: "arriendo-punta-arenas",
+    route: "/arriendo-punta-arenas/",
+    outputFile: "arriendo-punta-arenas/index.html",
+    render: () =>
+      assemblePageHtml({
+        rawHtml: readFileSync(
+          join(root, "pages", "arriendo-punta-arenas.html"),
+          "utf8",
+        ),
+        stripInternalTags: false,
+        rootRelative: "../",
+      }),
+  },
+  {
+    id: "rent-a-car-patagonia",
+    route: "/rent-a-car-patagonia/",
+    outputFile: "rent-a-car-patagonia/index.html",
+    render: () =>
+      assemblePageHtml({
+        rawHtml: readFileSync(
+          join(root, "pages", "rent-a-car-patagonia.html"),
+          "utf8",
+        ),
+        stripInternalTags: false,
+        rootRelative: "../",
+      }),
+  },
+  {
+    id: "arriendo-puerto-natales",
+    route: "/arriendo-puerto-natales/",
+    outputFile: "arriendo-puerto-natales/index.html",
+    render: () =>
+      assemblePageHtml({
+        rawHtml: readFileSync(
+          join(root, "pages", "arriendo-puerto-natales.html"),
+          "utf8",
+        ),
+        stripInternalTags: false,
+        rootRelative: "../",
+      }),
+  },
 ];
 
 for (const page of PAGES) {
