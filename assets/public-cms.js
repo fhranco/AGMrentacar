@@ -731,7 +731,6 @@
       return;
     }
 
-    const dict = I18N[locale] || I18N.es;
     const fragment = document.createDocumentFragment();
 
     validArticles.forEach((article) => {
