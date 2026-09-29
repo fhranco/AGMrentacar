@@ -304,6 +304,34 @@ const PAGES = [
         rootRelative: "../",
       }),
   },
+  {
+    id: "arriendo-auto-cruce-argentina",
+    route: "/arriendo-auto-cruce-argentina/",
+    outputFile: "arriendo-auto-cruce-argentina/index.html",
+    render: () =>
+      assemblePageHtml({
+        rawHtml: readFileSync(
+          join(root, "pages", "arriendo-auto-cruce-argentina.html"),
+          "utf8",
+        ),
+        stripInternalTags: false,
+        rootRelative: "../",
+      }),
+  },
+  {
+    id: "arriendo-auto-torres-del-paine",
+    route: "/arriendo-auto-torres-del-paine/",
+    outputFile: "arriendo-auto-torres-del-paine/index.html",
+    render: () =>
+      assemblePageHtml({
+        rawHtml: readFileSync(
+          join(root, "pages", "arriendo-auto-torres-del-paine.html"),
+          "utf8",
+        ),
+        stripInternalTags: false,
+        rootRelative: "../",
+      }),
+  },
 ];
 
 for (const page of PAGES) {
