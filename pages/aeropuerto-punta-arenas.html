@@ -35,7 +35,7 @@
     <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
 
-    <!-- Structured Data (WebPage & Breadcrumbs) -->
+    <!-- Structured Data (WebPage, BreadcrumbList, AutoRental, FAQPage) -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -71,6 +71,100 @@
                 "position": 2,
                 "name": "Aeropuerto Punta Arenas",
                 "item": "https://agmrentacar.cl/aeropuerto-punta-arenas/"
+              }
+            ]
+          },
+          {
+            "@type": "AutoRental",
+            "@id": "https://agmrentacar.cl/#autorental",
+            "name": "AGM Rent a Car",
+            "alternateName": "AGM Rent a Car SpA",
+            "url": "https://agmrentacar.cl/",
+            "logo": "https://agmrentacar.cl/assets/images/agm-logo.svg",
+            "image": "https://agmrentacar.cl/assets/images/delivery-magallanes.webp",
+            "description": "Arriendo de autos en Punta Arenas y la Patagonia chilena. Flota SUV y 4x4 con kilómetros libres, entrega en aeropuerto PUQ y gestión para cruce a Argentina.",
+            "telephone": "+56966571218",
+            "email": "reservas@agmrentacar.cl",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Punta Arenas",
+              "addressLocality": "Punta Arenas",
+              "addressRegion": "Región de Magallanes y de la Antártica Chilena",
+              "postalCode": "6200000",
+              "addressCountry": "CL"
+            },
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": -53.1638,
+              "longitude": -70.9171
+            },
+            "areaServed": [
+              {
+                "@type": "City",
+                "name": "Punta Arenas"
+              },
+              {
+                "@type": "State",
+                "name": "Región de Magallanes y de la Antártica Chilena"
+              }
+            ],
+            "hasMap": "https://maps.google.com/?q=Punta+Arenas,+Chile",
+            "sameAs": [
+              "https://agmrentacar.cl/"
+            ],
+            "openingHoursSpecification": [
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+                "opens": "09:00",
+                "closes": "18:00"
+              },
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Saturday"],
+                "opens": "09:00",
+                "closes": "14:00"
+              }
+            ],
+            "currenciesAccepted": "CLP",
+            "paymentAccepted": "Cash, Credit Card",
+            "priceRange": "$$"
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://agmrentacar.cl/aeropuerto-punta-arenas/#faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "¿Puedo recibir el vehículo directamente en el aeropuerto de Punta Arenas?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sí. En AGM coordinamos la entrega del vehículo directamente en el Aeropuerto Presidente Carlos Ibáñez del Campo (PUQ) a la llegada de tu vuelo, previa confirmación de la reserva."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Necesito informar mi número de vuelo?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sí, es muy recomendable. Informar el número de vuelo y la aerolínea nos permite verificar el estado del vuelo y adaptarnos a posibles adelantos o retrasos para entregarte el auto a tiempo."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Puedo devolver el vehículo en el aeropuerto?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sí. La devolución también se coordina en el mismo aeropuerto PUQ según el horario de tu vuelo de salida, para que entregues el vehículo de manera ágil antes de hacer el check-in."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Puedo viajar desde Punta Arenas hacia Argentina?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sí. Es posible cruzar la frontera hacia destinos como Ushuaia o El Calafate. Requiere aviso previo al momento de cotizar para tramitar la autorización notarial y el seguro binacional obligatorio."
+                }
               }
             ]
           }
