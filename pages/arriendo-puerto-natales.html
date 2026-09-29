@@ -127,175 +127,273 @@
       }
     </script>
 
+    <!-- Estilos compartidos -->
+    <link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="../dist/assets/index.css" />
   </head>
-  <body class="bg-surface-white font-body text-slate-800 antialiased selection:bg-brand-lime selection:text-slate-900">
-    <a class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:bg-slate-950 focus:text-white focus:rounded-lg focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-brand-lime" href="#main-content">
-      Saltar al contenido principal
-    </a>
-
+  <body class="bg-surface-bg font-body-md text-body-md text-on-surface antialiased selection:bg-brand-lime selection:text-slate-900">
     <!-- AGM_INTERNAL_HEADER -->
 
-    <main class="pt-32 pb-20" id="main-content">
-      <!-- Breadcrumbs -->
-      <div class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg mb-6">
-        <nav aria-label="Breadcrumb" class="flex items-center gap-2 text-slate-500 font-label-sm text-label-sm">
-          <a class="hover:text-primary transition-colors flex items-center gap-1" href="https://agmrentacar.cl/">
-            <span class="material-symbols-outlined text-[16px]">home</span>
-            <span>Inicio</span>
-          </a>
-          <span class="text-slate-400">/</span>
-          <span aria-current="page" class="text-slate-900 font-semibold">Arriendo Puerto Natales</span>
-        </nav>
-      </div>
+    <main class="w-full pt-28 bg-surface-bg min-h-screen" id="main-content">
+      <!-- HERO CORPORATIVO AGM CON IMAGEN INMERSIVA Y GLASSMORPHISM -->
+      <section class="relative w-full overflow-hidden bg-brand-blue text-surface-white">
+        <div class="absolute inset-0 z-0">
+          <picture class="contents">
+            <source media="(max-width: 768px)" srcset="../assets/images/hero-magallanes-mobile.webp" type="image/webp" />
+            <img
+              class="absolute inset-y-0 right-0 w-full lg:w-[60%] h-full object-cover object-center opacity-85 lg:opacity-95"
+              src="../assets/images/hero-magallanes.webp"
+              alt="Vehículo AGM en ruta por la Patagonia chilena hacia Puerto Natales"
+              width="1376"
+              height="768"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </picture>
+          <div class="absolute inset-0 bg-gradient-to-r from-brand-blue-dark via-brand-blue-dark/95 to-transparent"></div>
+          <div class="absolute -top-40 -left-28 w-[34rem] h-[34rem] rounded-full border-[90px] border-white/5 pointer-events-none"></div>
+        </div>
 
-      <!-- HERO -->
-      <section class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg mb-16">
-        <div class="rounded-3xl bg-slate-950 text-white overflow-hidden border border-slate-800 shadow-2xl relative">
-          <div class="grid grid-cols-1 lg:grid-cols-12 items-center">
-            <div class="p-8 sm:p-12 lg:p-14 lg:col-span-7 z-10">
-              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-lime/10 border border-brand-lime/20 text-brand-lime font-mono text-[11px] font-bold uppercase tracking-[0.2em] mb-4">
-                <span class="material-symbols-outlined text-[16px]">park</span>
-                <span>PUERTO NATALES · TORRES DEL PAINE</span>
-              </div>
-              <h1 class="font-headline-lg text-headline-lg sm:text-[40px] font-bold tracking-tight text-white leading-tight mb-4">
-                Arriendo de Autos en Puerto Natales
-              </h1>
-              <p class="font-body-md text-body-md text-slate-300 leading-relaxed max-w-xl mb-8">
-                La puerta de entrada a Torres del Paine. Flota SUV y 4x4 con kilómetros libres para explorar los fiordos, glaciares y senderos de la Patagonia austral sin límites.
-              </p>
-              <div class="flex flex-wrap gap-3">
-                <a class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-brand-lime hover:bg-brand-lime-hover text-slate-950 font-label-md text-label-md font-bold transition-all shadow-md" href="https://agmrentacar.cl/#cotizador">
-                  <span class="material-symbols-outlined text-[20px]">request_quote</span>
-                  <span>Solicitar cotización</span>
-                </a>
-                <a class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-label-md text-label-md font-semibold transition-all" href="../vehiculos/">
-                  <span class="material-symbols-outlined text-[20px]">directions_car</span>
-                  <span>Ver flota</span>
-                </a>
-              </div>
+        <div class="relative z-10 max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg pt-12 lg:pt-16 pb-16 lg:pb-24">
+          <!-- Top Tagline -->
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-8">
+            <div class="inline-flex w-fit items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
+              <span class="w-2 h-2 rounded-full bg-brand-lime animate-pulse"></span>
+              <span class="font-label-sm text-label-sm uppercase tracking-wider text-brand-lime">Destino • Puerto Natales</span>
+              <span class="text-white/30">|</span>
+              <span class="font-body-sm text-body-sm text-white/85">Puerta al Parque Nacional Torres del Paine</span>
             </div>
-            <div class="hidden lg:flex lg:col-span-5 items-center justify-center p-8 relative min-h-[320px]">
-              <div class="absolute inset-0 bg-gradient-to-br from-brand-blue/20 to-brand-lime/10 rounded-r-3xl"></div>
-              <div class="relative z-10 text-center">
-                <span class="material-symbols-outlined text-[80px] text-brand-lime opacity-80">park</span>
-                <p class="text-slate-400 font-label-sm text-label-sm mt-2">Puerto Natales · Patagonia chilena</p>
-              </div>
+            <div class="inline-flex w-fit items-center gap-3 px-4 py-2 rounded-xl bg-white/10 backdrop-blur border border-white/20">
+              <span class="material-symbols-outlined text-brand-lime text-[18px]">flight_land</span>
+              <p class="font-body-sm text-body-sm text-white/90">
+                <strong class="text-surface-white font-bold">Entrega coordinada:</strong>
+                <span>Punta Arenas / Aeropuerto PUQ hacia Natales</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Hero Headline Card idéntica a la Home -->
+          <div class="max-w-3xl mb-10 p-6 sm:p-8 rounded-2xl bg-slate-950/65 backdrop-blur-md border border-white/15 shadow-2xl">
+            <div class="inline-flex items-center gap-2 mb-3">
+              <span class="px-2.5 py-1 rounded-md bg-brand-lime text-slate-950 font-label-sm text-label-sm font-bold uppercase tracking-wider">
+                Ruta Natales
+              </span>
+              <span class="text-white/40">·</span>
+              <span class="text-white/80 font-label-sm text-label-sm">Última Esperanza · Torres del Paine · Fiordos</span>
+            </div>
+            <h1 class="font-headline-xl text-headline-xl-mobile lg:text-headline-xl text-surface-white tracking-tight leading-tight mb-4">
+              Arriendo de Autos en Puerto Natales y Torres del Paine.
+            </h1>
+            <p class="font-body-lg text-body-lg text-white/95 max-w-2xl leading-relaxed">
+              Explora los fiordos, glaciares y senderos de la Patagonia austral sin ataduras de horarios. Flota SUV y 4x4 con <strong class="text-brand-lime font-bold">kilometraje libre garantizado</strong> y neumáticos preparados para caminos de ripio.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-3 mt-7">
+              <a
+                class="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-brand-lime px-6 py-3 font-label-lg text-label-lg font-bold text-slate-950 shadow-[0_14px_30px_-12px_rgba(138,230,0,0.8)] transition-all hover:-translate-y-0.5 hover:bg-brand-lime-hover hover:shadow-[0_18px_36px_-12px_rgba(138,230,0,0.9)] cursor-pointer"
+                href="https://agmrentacar.cl/#cotizador"
+              >
+                <span class="material-symbols-outlined text-[20px]">request_quote</span>
+                <span>Cotizar auto para Puerto Natales</span>
+              </a>
+              <a
+                class="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/40 bg-white/10 px-6 py-3 font-label-lg text-label-lg font-bold text-white backdrop-blur transition-all hover:bg-white hover:text-brand-blue-dark cursor-pointer"
+                href="../vehiculos/"
+              >
+                <span>Ver flota disponible</span>
+                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+              </a>
+            </div>
+            <!-- Badges de confianza -->
+            <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 font-body-sm text-body-sm text-white/90 pt-4 border-t border-white/15">
+              <span class="inline-flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[17px] text-brand-lime">check_circle</span>
+                <span>Kilometraje libre ilimitado</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[17px] text-brand-lime">check_circle</span>
+                <span>Flota 4x4 para ripio</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[17px] text-brand-lime">check_circle</span>
+                <span>Asistencia en ruta local</span>
+              </span>
+              <span class="inline-flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[17px] text-brand-lime">check_circle</span>
+                <span>Cruce binacional a El Calafate</span>
+              </span>
             </div>
           </div>
         </div>
       </section>
 
       <!-- VENTAJAS -->
-      <section class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg mb-20">
-        <div class="text-center max-w-2xl mx-auto mb-12">
+      <section class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg py-space-xl">
+        <div class="text-center max-w-2xl mx-auto mb-14">
           <span class="inline-flex items-center gap-2 text-primary font-mono text-[11px] font-bold uppercase tracking-[0.2em] mb-2">
             <span class="material-symbols-outlined text-[16px]">verified</span>
             POR QUÉ AGM
           </span>
-          <h2 class="font-headline-md text-headline-md font-bold text-slate-900 tracking-tight">
+          <h2 class="font-headline-md text-headline-md font-bold text-slate-950 tracking-tight">
             El arriendo ideal para la zona de Puerto Natales
           </h2>
+          <p class="font-body-md text-body-md text-slate-600 mt-2">
+            Movilidad segura y autónoma para recorrer Última Esperanza y el circuito de Torres del Paine.
+          </p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-            <span class="material-symbols-outlined text-primary text-[32px] mb-3 block">route</span>
-            <h3 class="font-title-sm text-title-sm font-bold text-slate-900 mb-2">Kilómetros libres</h3>
-            <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed">Sin restricciones de distancia. Recorre Natales, Torres del Paine y todos sus alrededores sin cargos extra.</p>
+          <div class="bg-surface-white rounded-2xl border border-brand-blue/15 p-6 hover:border-brand-blue/40 hover:shadow-xl transition-all flex flex-col justify-between group">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-brand-blue-dark text-brand-lime flex items-center justify-center mb-5 shadow-sm">
+                <span class="material-symbols-outlined text-[24px]">route</span>
+              </div>
+              <h3 class="font-title-md text-title-md font-bold text-slate-900 mb-2 group-hover:text-primary transition-colors">Kilómetros libres</h3>
+              <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed">Sin restricciones de distancia. Recorre Natales, Torres del Paine y todos sus alrededores sin cargos extra.</p>
+            </div>
+            <div class="pt-4 border-t border-slate-100 mt-6 flex items-center gap-2 text-brand-blue font-label-sm text-label-sm font-semibold">
+              <span class="material-symbols-outlined text-[16px] text-brand-lime">check</span>
+              <span>Kilometraje 100% ilimitado</span>
+            </div>
           </div>
-          <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-            <span class="material-symbols-outlined text-primary text-[32px] mb-3 block">terrain</span>
-            <h3 class="font-title-sm text-title-sm font-bold text-slate-900 mb-2">Flota 4x4 para ripio</h3>
-            <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed">Vehículos preparados para los caminos de tierra y ripio que rodean el Parque Nacional Torres del Paine.</p>
+
+          <div class="bg-surface-white rounded-2xl border border-brand-blue/15 p-6 hover:border-brand-blue/40 hover:shadow-xl transition-all flex flex-col justify-between group">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-brand-blue-dark text-brand-lime flex items-center justify-center mb-5 shadow-sm">
+                <span class="material-symbols-outlined text-[24px]">terrain</span>
+              </div>
+              <h3 class="font-title-md text-title-md font-bold text-slate-900 mb-2 group-hover:text-primary transition-colors">Flota 4x4 para ripio</h3>
+              <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed">Vehículos con despeje reforzado y neumáticos aptos para los caminos de tierra que rodean el Parque Nacional.</p>
+            </div>
+            <div class="pt-4 border-t border-slate-100 mt-6 flex items-center gap-2 text-brand-blue font-label-sm text-label-sm font-semibold">
+              <span class="material-symbols-outlined text-[16px] text-brand-lime">check</span>
+              <span>Tracción y seguridad total</span>
+            </div>
           </div>
-          <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-            <span class="material-symbols-outlined text-primary text-[32px] mb-3 block">flight_takeoff</span>
-            <h3 class="font-title-sm text-title-sm font-bold text-slate-900 mb-2">Retiro en Punta Arenas</h3>
-            <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed">Recoge el auto en Punta Arenas o aeropuerto PUQ y dirige directamente hacia Puerto Natales (2,5 hrs).</p>
+
+          <div class="bg-surface-white rounded-2xl border border-brand-blue/15 p-6 hover:border-brand-blue/40 hover:shadow-xl transition-all flex flex-col justify-between group">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-brand-blue-dark text-brand-lime flex items-center justify-center mb-5 shadow-sm">
+                <span class="material-symbols-outlined text-[24px]">flight_takeoff</span>
+              </div>
+              <h3 class="font-title-md text-title-md font-bold text-slate-900 mb-2 group-hover:text-primary transition-colors">Retiro en Punta Arenas</h3>
+              <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed">Recoge el auto en Punta Arenas o aeropuerto PUQ y viaja directamente por Ruta 9 hacia Puerto Natales (2,5 hrs de pavimento).</p>
+            </div>
+            <div class="pt-4 border-t border-slate-100 mt-6 flex items-center gap-2 text-brand-blue font-label-sm text-label-sm font-semibold">
+              <span class="material-symbols-outlined text-[16px] text-brand-lime">check</span>
+              <span>Coordinación 24/7 en aeropuerto</span>
+            </div>
           </div>
-          <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-            <span class="material-symbols-outlined text-primary text-[32px] mb-3 block">support_agent</span>
-            <h3 class="font-title-sm text-title-sm font-bold text-slate-900 mb-2">Asistencia local</h3>
-            <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed">Nuestro equipo conoce cada camino de la región y puede orientarte sobre rutas, condiciones y accesos.</p>
+
+          <div class="bg-surface-white rounded-2xl border border-brand-blue/15 p-6 hover:border-brand-blue/40 hover:shadow-xl transition-all flex flex-col justify-between group">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-brand-blue-dark text-brand-lime flex items-center justify-center mb-5 shadow-sm">
+                <span class="material-symbols-outlined text-[24px]">support_agent</span>
+              </div>
+              <h3 class="font-title-md text-title-md font-bold text-slate-900 mb-2 group-hover:text-primary transition-colors">Asistencia local</h3>
+              <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed">Nuestro equipo conoce cada camino de la región y te orienta sobre condiciones climáticas, estado de rutas y accesos.</p>
+            </div>
+            <div class="pt-4 border-t border-slate-100 mt-6 flex items-center gap-2 text-brand-blue font-label-sm text-label-sm font-semibold">
+              <span class="material-symbols-outlined text-[16px] text-brand-lime">check</span>
+              <span>Asistencia técnica en ruta</span>
+            </div>
           </div>
-          <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-            <span class="material-symbols-outlined text-primary text-[32px] mb-3 block">public</span>
-            <h3 class="font-title-sm text-title-sm font-bold text-slate-900 mb-2">Cruce a Argentina</h3>
-            <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed">Desde Puerto Natales también puedes acceder a El Calafate y El Chaltén con la autorización que gestionamos.</p>
+
+          <div class="bg-surface-white rounded-2xl border border-brand-blue/15 p-6 hover:border-brand-blue/40 hover:shadow-xl transition-all flex flex-col justify-between group">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-brand-blue-dark text-brand-lime flex items-center justify-center mb-5 shadow-sm">
+                <span class="material-symbols-outlined text-[24px]">public</span>
+              </div>
+              <h3 class="font-title-md text-title-md font-bold text-slate-900 mb-2 group-hover:text-primary transition-colors">Cruce a Argentina</h3>
+              <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed">Desde Puerto Natales puedes cruzar por paso Río Don Guillermo hacia El Calafate y El Chaltén con permiso notarial AGM.</p>
+            </div>
+            <div class="pt-4 border-t border-slate-100 mt-6 flex items-center gap-2 text-brand-blue font-label-sm text-label-sm font-semibold">
+              <span class="material-symbols-outlined text-[16px] text-brand-lime">check</span>
+              <span>Permiso y seguro binacional</span>
+            </div>
           </div>
-          <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-            <span class="material-symbols-outlined text-primary text-[32px] mb-3 block">receipt_long</span>
-            <h3 class="font-title-sm text-title-sm font-bold text-slate-900 mb-2">Cotización online</h3>
-            <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed">Solicita tu cotización en minutos y recibe la propuesta formal por correo con todos los detalles.</p>
+
+          <div class="bg-surface-white rounded-2xl border border-brand-blue/15 p-6 hover:border-brand-blue/40 hover:shadow-xl transition-all flex flex-col justify-between group">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-brand-blue-dark text-brand-lime flex items-center justify-center mb-5 shadow-sm">
+                <span class="material-symbols-outlined text-[24px]">receipt_long</span>
+              </div>
+              <h3 class="font-title-md text-title-md font-bold text-slate-900 mb-2 group-hover:text-primary transition-colors">Cotización online</h3>
+              <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed">Solicita tu cotización en minutos y recibe propuesta formal por correo con todos los detalles y tarifas en CLP.</p>
+            </div>
+            <div class="pt-4 border-t border-slate-100 mt-6 flex items-center gap-2 text-brand-blue font-label-sm text-label-sm font-semibold">
+              <span class="material-symbols-outlined text-[16px] text-brand-lime">check</span>
+              <span>Tarifas claras sin sorpresas</span>
+            </div>
           </div>
         </div>
       </section>
 
       <!-- RUTAS DESDE PUERTO NATALES -->
-      <section class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg mb-20">
-        <div class="text-center max-w-2xl mx-auto mb-12">
-          <span class="inline-flex items-center gap-2 text-primary font-mono text-[11px] font-bold uppercase tracking-[0.2em] mb-2">
-            <span class="material-symbols-outlined text-[16px]">explore</span>
-            RUTAS DESDE PUERTO NATALES
-          </span>
-          <h2 class="font-headline-md text-headline-md font-bold text-slate-950 tracking-tight">
-            Todo al alcance de tu vehículo
-          </h2>
-          <p class="font-body-md text-body-md text-slate-600 mt-3 leading-relaxed">
-            Puerto Natales es el punto de partida perfecto para las rutas más espectaculares de la Patagonia.
-          </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="group p-8 rounded-2xl border border-slate-200 bg-slate-50 hover:border-primary hover:bg-white transition-all shadow-sm hover:shadow-md cursor-default">
-            <div class="flex items-start gap-4">
-              <span class="material-symbols-outlined text-primary text-[36px] shrink-0">park</span>
-              <div>
-                <h3 class="font-title-md text-title-md font-bold text-slate-900 mb-1 group-hover:text-primary transition-colors">Torres del Paine</h3>
-                <p class="font-body-sm text-body-sm text-slate-500 mb-2">~70 km desde Puerto Natales</p>
-                <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed">El destino más icónico de la Patagonia, a solo una hora por camino de ripio. Flota 4x4 recomendada.</p>
-              </div>
-            </div>
+      <section class="bg-slate-100/70 border-y border-slate-200 py-space-xl">
+        <div class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg">
+          <div class="text-center max-w-2xl mx-auto mb-12">
+            <span class="inline-flex items-center gap-2 text-primary font-mono text-[11px] font-bold uppercase tracking-[0.2em] mb-2">
+              <span class="material-symbols-outlined text-[16px]">explore</span>
+              RUTAS DESDE PUERTO NATALES
+            </span>
+            <h2 class="font-headline-md text-headline-md font-bold text-slate-950 tracking-tight">
+              Todo al alcance de tu vehículo
+            </h2>
+            <p class="font-body-md text-body-md text-slate-600 mt-2 leading-relaxed">
+              Puerto Natales es el punto de partida ideal para las rutas más icónicas de la Patagonia austral.
+            </p>
           </div>
 
-          <div class="group p-8 rounded-2xl border border-slate-200 bg-slate-50 hover:border-primary hover:bg-white transition-all shadow-sm hover:shadow-md cursor-default">
-            <div class="flex items-start gap-4">
-              <span class="material-symbols-outlined text-primary text-[36px] shrink-0">water</span>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-surface-white rounded-2xl border border-brand-blue/15 p-6 hover:border-brand-blue/40 hover:shadow-xl transition-all flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-brand-blue-dark text-brand-lime flex items-center justify-center shrink-0 shadow-sm">
+                <span class="material-symbols-outlined text-[24px]">park</span>
+              </div>
               <div>
-                <h3 class="font-title-md text-title-md font-bold text-slate-900 mb-1 group-hover:text-primary transition-colors">Seno Última Esperanza</h3>
-                <p class="font-body-sm text-body-sm text-slate-500 mb-2">A orillas de Puerto Natales</p>
-                <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed">Fiordos, glaciares y avistamiento de fauna patagónica desde la costanera de Puerto Natales.</p>
+                <h3 class="font-title-md text-title-md font-bold text-slate-900 mb-1">Torres del Paine</h3>
+                <p class="font-label-sm text-label-sm text-slate-500 mb-2">~70 a 110 km desde Natales · Ripio y asfalto</p>
+                <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed">Acceso a Laguna Amarga, Portería Serrano y senderos del Paine a solo 1.5 horas. Flota SUV o 4x4 recomendada.</p>
               </div>
             </div>
-          </div>
 
-          <div class="group p-8 rounded-2xl border border-slate-200 bg-slate-50 hover:border-primary hover:bg-white transition-all shadow-sm hover:shadow-md cursor-default">
-            <div class="flex items-start gap-4">
-              <span class="material-symbols-outlined text-primary text-[36px] shrink-0">flag</span>
+            <div class="bg-surface-white rounded-2xl border border-brand-blue/15 p-6 hover:border-brand-blue/40 hover:shadow-xl transition-all flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-brand-blue-dark text-brand-lime flex items-center justify-center shrink-0 shadow-sm">
+                <span class="material-symbols-outlined text-[24px]">water</span>
+              </div>
               <div>
-                <h3 class="font-title-md text-title-md font-bold text-slate-900 mb-1 group-hover:text-primary transition-colors">El Calafate, Argentina</h3>
-                <p class="font-body-sm text-body-sm text-slate-500 mb-2">Cruce fronterizo coordinado</p>
-                <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed">Acceso al Glaciar Perito Moreno y Los Glaciares. Cruce binacional con documentación gestionada por AGM.</p>
+                <h3 class="font-title-md text-title-md font-bold text-slate-900 mb-1">Seno Última Esperanza</h3>
+                <p class="font-label-sm text-label-sm text-slate-500 mb-2">Costanera y alrededores de Puerto Natales</p>
+                <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed">Vistas a glaciares Balmaceda y Serrano, avistamiento de cisnes de cuello negro y excelente gastronomía local.</p>
               </div>
             </div>
-          </div>
 
-          <div class="group p-8 rounded-2xl border border-slate-200 bg-slate-50 hover:border-primary hover:bg-white transition-all shadow-sm hover:shadow-md cursor-default">
-            <div class="flex items-start gap-4">
-              <span class="material-symbols-outlined text-primary text-[36px] shrink-0">directions_car</span>
+            <div class="bg-surface-white rounded-2xl border border-brand-blue/15 p-6 hover:border-brand-blue/40 hover:shadow-xl transition-all flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-brand-blue-dark text-brand-lime flex items-center justify-center shrink-0 shadow-sm">
+                <span class="material-symbols-outlined text-[24px]">flag</span>
+              </div>
               <div>
-                <h3 class="font-title-md text-title-md font-bold text-slate-900 mb-1 group-hover:text-primary transition-colors">Ruta a Punta Arenas</h3>
-                <p class="font-body-sm text-body-sm text-slate-500 mb-2">~2,5 horas · Ruta 9</p>
-                <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed">La ruta que une ambas ciudades es una de las más bellas de la Patagonia, con paisajes de estepa y avifauna local.</p>
+                <h3 class="font-title-md text-title-md font-bold text-slate-900 mb-1">El Calafate y Glaciar Perito Moreno</h3>
+                <p class="font-label-sm text-label-sm text-slate-500 mb-2">Paso Fronterizo Río Don Guillermo (Cerro Castillo)</p>
+                <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed">A solo 3.5 horas de Puerto Natales. Cruce binacional ágil con autorización notarial y seguro Mercosur gestionados por AGM.</p>
+              </div>
+            </div>
+
+            <div class="bg-surface-white rounded-2xl border border-brand-blue/15 p-6 hover:border-brand-blue/40 hover:shadow-xl transition-all flex items-start gap-4">
+              <div class="w-12 h-12 rounded-xl bg-brand-blue-dark text-brand-lime flex items-center justify-center shrink-0 shadow-sm">
+                <span class="material-symbols-outlined text-[24px]">directions_car</span>
+              </div>
+              <div>
+                <h3 class="font-title-md text-title-md font-bold text-slate-900 mb-1">Ruta 9 a Punta Arenas</h3>
+                <p class="font-label-sm text-label-sm text-slate-500 mb-2">~245 km · Pavimento continuo</p>
+                <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed">Conexión directa entre el Aeropuerto PUQ y Puerto Natales cruzando la estepa patagónica y avistando guanacos en el camino.</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- FAQ -->
-      <section class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg mb-20">
+      <!-- PREGUNTAS FRECUENTES -->
+      <section class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg py-space-xl">
         <div class="text-center max-w-2xl mx-auto mb-12">
           <span class="inline-flex items-center gap-2 text-primary font-mono text-[11px] font-bold uppercase tracking-[0.2em] mb-2">
             <span class="material-symbols-outlined text-[16px]">menu_book</span>
@@ -307,63 +405,67 @@
         </div>
 
         <div class="max-w-3xl mx-auto space-y-4">
-          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-            <h3 class="font-title-sm text-title-sm font-bold text-slate-900 flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+          <div class="p-6 rounded-2xl bg-surface-white border border-brand-blue/15 shadow-sm space-y-2">
+            <h3 class="font-title-sm text-title-sm font-bold text-slate-900 flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-brand-lime text-[22px]">check_circle</span>
               <span>¿Puedo recoger el auto en Puerto Natales?</span>
             </h3>
-            <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed pl-7">
+            <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed pl-8">
               El retiro principal se coordina en Punta Arenas o en el Aeropuerto PUQ. Para entrega en Puerto Natales, consúltalo al momento de cotizar ya que depende de disponibilidad y logística.
             </p>
           </div>
-          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-            <h3 class="font-title-sm text-title-sm font-bold text-slate-900 flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+
+          <div class="p-6 rounded-2xl bg-surface-white border border-brand-blue/15 shadow-sm space-y-2">
+            <h3 class="font-title-sm text-title-sm font-bold text-slate-900 flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-brand-lime text-[22px]">check_circle</span>
               <span>¿Los vehículos son aptos para los caminos hacia Torres del Paine?</span>
             </h3>
-            <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed pl-7">
+            <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed pl-8">
               Sí. Nuestra flota SUV y 4x4 está preparada para los caminos de ripio que rodean el Parque Nacional Torres del Paine, a aproximadamente 70 km de Puerto Natales.
             </p>
           </div>
-          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-            <h3 class="font-title-sm text-title-sm font-bold text-slate-900 flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+
+          <div class="p-6 rounded-2xl bg-surface-white border border-brand-blue/15 shadow-sm space-y-2">
+            <h3 class="font-title-sm text-title-sm font-bold text-slate-900 flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-brand-lime text-[22px]">check_circle</span>
               <span>¿El arriendo incluye kilómetros libres?</span>
             </h3>
-            <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed pl-7">
+            <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed pl-8">
               Sí. Todos los vehículos incluyen kilómetros libres, sin cargos adicionales por distancia. Ideal para recorrer Puerto Natales, Torres del Paine y sus alrededores.
             </p>
           </div>
-          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-            <h3 class="font-title-sm text-title-sm font-bold text-slate-900 flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+
+          <div class="p-6 rounded-2xl bg-surface-white border border-brand-blue/15 shadow-sm space-y-2">
+            <h3 class="font-title-sm text-title-sm font-bold text-slate-900 flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-brand-lime text-[22px]">check_circle</span>
               <span>¿Puedo devolver el vehículo en un lugar distinto al de retiro?</span>
             </h3>
-            <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed pl-7">
+            <p class="font-body-sm text-body-sm text-slate-600 leading-relaxed pl-8">
               La devolución estándar es en el mismo punto de retiro. Las devoluciones en puntos distintos (por ejemplo, Punta Arenas → Puerto Natales) se evalúan caso a caso. Consúltalo al cotizar.
             </p>
           </div>
         </div>
       </section>
 
-      <!-- CTA FINAL -->
-      <section class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg">
-        <div class="rounded-3xl bg-brand-blue-dark text-white p-8 sm:p-14 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 shadow-xl">
-          <div class="max-w-xl">
+      <!-- CTA FINAL CORPORATIVO -->
+      <section class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg pb-space-xl">
+        <div class="rounded-3xl bg-brand-blue-dark text-white p-8 sm:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 shadow-2xl relative overflow-hidden">
+          <div class="absolute -right-10 -bottom-10 w-64 h-64 rounded-full border-[30px] border-white/5 pointer-events-none"></div>
+          <div class="max-w-xl relative z-10">
             <span class="px-2.5 py-1 rounded bg-brand-lime text-slate-950 font-label-sm text-label-sm font-bold uppercase tracking-wider mb-3 inline-block">COTIZA SIN COMPROMISO</span>
             <h2 class="font-headline-sm text-headline-sm sm:font-headline-md sm:text-headline-md font-bold text-white tracking-tight">
               Empieza tu ruta por la Patagonia desde Puerto Natales
             </h2>
             <p class="font-body-sm text-body-sm text-slate-300 mt-2 leading-relaxed">
-              Solicita tu cotización online y recibe una propuesta formal por correo con disponibilidad y precios en pesos chilenos.
+              Solicita tu cotización online y recibe una propuesta formal por correo con disponibilidad, modelos y tarifas en pesos chilenos.
             </p>
           </div>
-          <div class="flex flex-wrap items-center gap-3 shrink-0">
-            <a class="px-6 py-3.5 rounded-xl bg-brand-lime hover:bg-brand-lime-hover text-slate-950 font-label-md text-label-md font-bold transition-all shadow-md flex items-center gap-2" href="https://agmrentacar.cl/#cotizador">
+          <div class="flex flex-wrap items-center gap-3 shrink-0 relative z-10">
+            <a class="px-6 py-3.5 rounded-xl bg-brand-lime hover:bg-brand-lime-hover text-slate-950 font-label-md text-label-md font-bold transition-all shadow-[0_10px_25px_-8px_rgba(138,230,0,0.8)] flex items-center gap-2 cursor-pointer" href="https://agmrentacar.cl/#cotizador">
               <span class="material-symbols-outlined text-[20px]">request_quote</span>
               <span>Solicitar cotización</span>
             </a>
-            <a class="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-label-md text-label-md font-semibold transition-all flex items-center gap-2" href="../vehiculos/">
+            <a class="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-label-md text-label-md font-semibold transition-all flex items-center gap-2 cursor-pointer" href="../vehiculos/">
               <span class="material-symbols-outlined text-[20px]">directions_car</span>
               <span>Ver vehículos</span>
             </a>
