@@ -132,6 +132,8 @@
       }
     </script>
 
+    <!-- Estilos compartidos -->
+    <link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="../dist/assets/index.css" />
   </head>
   <body class="bg-surface-white font-body text-slate-800 antialiased selection:bg-brand-lime selection:text-slate-900">
@@ -154,37 +156,60 @@
         </nav>
       </div>
 
-      <!-- HERO -->
+      <!-- HERO inmersivo fotográfico -->
       <section class="max-w-[1280px] mx-auto px-margin-sm lg:px-margin-lg mb-16">
-        <div class="rounded-3xl bg-slate-950 text-white overflow-hidden border border-slate-800 shadow-2xl relative">
-          <div class="grid grid-cols-1 lg:grid-cols-12 items-center">
-            <div class="p-8 sm:p-12 lg:p-14 lg:col-span-7 z-10">
-              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-lime/10 border border-brand-lime/20 text-brand-lime font-mono text-[11px] font-bold uppercase tracking-[0.2em] mb-4">
-                <span class="material-symbols-outlined text-[16px]">travel_explore</span>
-                <span>PUNTA ARENAS · CHILE</span>
+        <div class="rounded-3xl overflow-hidden relative min-h-[520px] flex items-end shadow-2xl">
+          <!-- Imagen de fondo fotográfica -->
+          <img
+            alt="Paisaje patagónico con vehículo AGM Rent a Car — entrega en Magallanes"
+            class="absolute inset-0 w-full h-full object-cover object-center"
+            src="../assets/images/delivery-magallanes.webp"
+            width="1280"
+            height="720"
+            fetchpriority="high"
+            decoding="async"
+          />
+          <!-- Gradiente azul AGM -->
+          <div class="absolute inset-0 bg-gradient-to-t from-brand-blue-dark/95 via-brand-blue-dark/60 to-transparent"></div>
+          <!-- Contenido superpuesto -->
+          <div class="relative z-10 w-full p-8 sm:p-12 lg:p-14">
+            <div class="max-w-3xl">
+              <!-- Pill animada -->
+              <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white font-mono text-[11px] font-bold uppercase tracking-[0.2em] mb-5 animate-pulse">
+                <span class="w-2 h-2 rounded-full bg-brand-lime"></span>
+                <span>PUNTA ARENAS · PATAGONIA CHILENA</span>
               </div>
-              <h1 class="font-headline-lg text-headline-lg sm:text-[40px] font-bold tracking-tight text-white leading-tight mb-4">
+              <h1 class="font-headline-lg text-headline-lg sm:text-[44px] font-bold tracking-tight text-white leading-tight mb-4">
                 Rent a Car in Patagonia, Chile
               </h1>
-              <p class="font-body-md text-body-md text-slate-300 leading-relaxed max-w-xl mb-8">
+              <p class="font-body-md text-body-md text-slate-200 leading-relaxed max-w-xl mb-8">
                 Explore Chilean Patagonia at your own pace. Airport pickup at PUQ, unlimited mileage, SUV and 4x4 fleet ready for the region's gravel roads and wild landscapes.
               </p>
-              <div class="flex flex-wrap gap-3">
+              <!-- CTAs -->
+              <div class="flex flex-wrap gap-3 mb-8">
                 <a class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-brand-lime hover:bg-brand-lime-hover text-slate-950 font-label-md text-label-md font-bold transition-all shadow-md" href="https://agmrentacar.cl/#cotizador">
                   <span class="material-symbols-outlined text-[20px]">request_quote</span>
                   <span>Request a quote</span>
                 </a>
-                <a class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-label-md text-label-md font-semibold transition-all" href="../vehiculos/">
+                <a class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-label-md text-label-md font-semibold transition-all border border-white/20" href="../vehiculos/">
                   <span class="material-symbols-outlined text-[20px]">directions_car</span>
                   <span>View fleet</span>
                 </a>
               </div>
-            </div>
-            <div class="hidden lg:flex lg:col-span-5 items-center justify-center p-8 relative min-h-[320px]">
-              <div class="absolute inset-0 bg-gradient-to-br from-brand-blue/20 to-brand-lime/10 rounded-r-3xl"></div>
-              <div class="relative z-10 text-center">
-                <span class="material-symbols-outlined text-[80px] text-brand-lime opacity-80">travel_explore</span>
-                <p class="text-slate-400 font-label-sm text-label-sm mt-2">Chilean Patagonia · Magallanes Region</p>
+              <!-- Checklist de confianza -->
+              <div class="flex flex-wrap gap-x-6 gap-y-2">
+                <span class="flex items-center gap-1.5 text-slate-200 font-label-sm text-label-sm">
+                  <span class="material-symbols-outlined text-brand-lime text-[18px]">check_circle</span>Unlimited mileage
+                </span>
+                <span class="flex items-center gap-1.5 text-slate-200 font-label-sm text-label-sm">
+                  <span class="material-symbols-outlined text-brand-lime text-[18px]">check_circle</span>Airport pickup (PUQ)
+                </span>
+                <span class="flex items-center gap-1.5 text-slate-200 font-label-sm text-label-sm">
+                  <span class="material-symbols-outlined text-brand-lime text-[18px]">check_circle</span>Argentina border crossing
+                </span>
+                <span class="flex items-center gap-1.5 text-slate-200 font-label-sm text-label-sm">
+                  <span class="material-symbols-outlined text-brand-lime text-[18px]">check_circle</span>Local Patagonia support
+                </span>
               </div>
             </div>
           </div>
