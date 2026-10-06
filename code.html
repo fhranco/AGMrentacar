@@ -927,10 +927,12 @@
                 </div>
                 <!-- Fecha y Hora Retiro -->
                 <div
-                  class="lg:col-span-4 flex flex-col justify-center px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 transition-colors border border-slate-200 focus-within:border-brand-lime focus-within:bg-surface-white"
+                  id="pickupDateTimeBox"
+                  class="lg:col-span-4 flex flex-col justify-center px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 transition-colors border border-slate-200 focus-within:border-brand-lime focus-within:bg-surface-white cursor-pointer"
                 >
                   <label
-                    class="font-label-sm text-label-sm text-slate-500 uppercase tracking-wider mb-0.5 flex items-center gap-1"
+                    for="pickupDate"
+                    class="font-label-sm text-label-sm text-slate-500 uppercase tracking-wider mb-0.5 flex items-center gap-1 cursor-pointer"
                   >
                     <span
                       class="material-symbols-outlined text-[14px] text-slate-400"
@@ -941,31 +943,53 @@
                   <div class="flex items-center gap-2">
                     <input
                       aria-label="Fecha de retiro"
-                      class="bg-transparent font-title-md text-title-md font-bold text-slate-900 outline-none w-full cursor-pointer"
+                      class="min-w-0 flex-1 bg-transparent font-title-md text-title-md font-bold text-slate-900 outline-none cursor-pointer"
                       id="pickupDate"
                       required
                       type="date"
                       value="2026-09-15"
                     />
-                    <select
-                      aria-label="Hora de retiro"
-                      class="bg-transparent font-body-sm text-body-sm font-semibold text-slate-700 outline-none cursor-pointer border-l border-slate-200 pl-2"
-                      id="pickupTime"
-                    >
-                      <option>09:00</option>
-                      <option selected="">10:30</option>
-                      <option>12:00</option>
-                      <option>16:00</option>
-                      <option>19:30</option>
-                    </select>
+                    <div class="relative shrink-0" id="pickupTimeWrapper">
+                      <button
+                        type="button"
+                        id="pickupTimeBtn"
+                        aria-label="Hora de retiro"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        class="flex items-center gap-1.5 bg-surface-white hover:bg-slate-100 text-slate-800 font-body-sm text-body-sm font-semibold py-1 px-2.5 rounded-lg border border-slate-200 shadow-sm transition-colors cursor-pointer"
+                      >
+                        <span class="material-symbols-outlined text-[16px] text-slate-500">schedule</span>
+                        <span id="pickupTimeDisplay">10:30</span>
+                        <span class="material-symbols-outlined text-[16px] text-slate-400">expand_more</span>
+                      </button>
+                      <select id="pickupTime" class="sr-only" aria-hidden="true" tabindex="-1">
+                        <option value="10:30" selected="">10:30</option>
+                      </select>
+                      <div
+                        id="pickupTimeDropdown"
+                        class="hidden absolute right-0 top-full mt-1.5 w-64 sm:w-72 bg-surface-white rounded-xl shadow-2xl border border-slate-200 p-2.5 z-50"
+                        role="listbox"
+                      >
+                        <div class="flex items-center justify-between pb-2 mb-1.5 border-b border-slate-100 px-1">
+                          <span class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[14px] text-brand-blue">schedule</span>
+                            Hora de retiro
+                          </span>
+                          <span class="text-[11px] text-slate-400 font-medium">Cada 30 min</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-1.5 max-h-52 overflow-y-auto p-0.5" id="pickupTimeGrid"></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <!-- Fecha y Hora Devolución -->
                 <div
-                  class="lg:col-span-4 flex flex-col justify-center px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 transition-colors border border-slate-200 focus-within:border-brand-lime focus-within:bg-surface-white"
+                  id="returnDateTimeBox"
+                  class="lg:col-span-4 flex flex-col justify-center px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 transition-colors border border-slate-200 focus-within:border-brand-lime focus-within:bg-surface-white cursor-pointer"
                 >
                   <label
-                    class="font-label-sm text-label-sm text-slate-500 uppercase tracking-wider mb-0.5 flex items-center gap-1"
+                    for="returnDate"
+                    class="font-label-sm text-label-sm text-slate-500 uppercase tracking-wider mb-0.5 flex items-center gap-1 cursor-pointer"
                   >
                     <span
                       class="material-symbols-outlined text-[14px] text-slate-400"
@@ -976,23 +1000,43 @@
                   <div class="flex items-center gap-2">
                     <input
                       aria-label="Fecha de devolución"
-                      class="bg-transparent font-title-md text-title-md font-bold text-slate-900 outline-none w-full cursor-pointer"
+                      class="min-w-0 flex-1 bg-transparent font-title-md text-title-md font-bold text-slate-900 outline-none cursor-pointer"
                       id="returnDate"
                       required
                       type="date"
                       value="2026-09-18"
                     />
-                    <select
-                      aria-label="Hora de devolución"
-                      class="bg-transparent font-body-sm text-body-sm font-semibold text-slate-700 outline-none cursor-pointer border-l border-slate-200 pl-2"
-                      id="returnTime"
-                    >
-                      <option>09:00</option>
-                      <option selected="">10:30</option>
-                      <option>14:00</option>
-                      <option>18:00</option>
-                      <option>22:00</option>
-                    </select>
+                    <div class="relative shrink-0" id="returnTimeWrapper">
+                      <button
+                        type="button"
+                        id="returnTimeBtn"
+                        aria-label="Hora de devolución"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        class="flex items-center gap-1.5 bg-surface-white hover:bg-slate-100 text-slate-800 font-body-sm text-body-sm font-semibold py-1 px-2.5 rounded-lg border border-slate-200 shadow-sm transition-colors cursor-pointer"
+                      >
+                        <span class="material-symbols-outlined text-[16px] text-slate-500">schedule</span>
+                        <span id="returnTimeDisplay">10:30</span>
+                        <span class="material-symbols-outlined text-[16px] text-slate-400">expand_more</span>
+                      </button>
+                      <select id="returnTime" class="sr-only" aria-hidden="true" tabindex="-1">
+                        <option value="10:30" selected="">10:30</option>
+                      </select>
+                      <div
+                        id="returnTimeDropdown"
+                        class="hidden absolute right-0 top-full mt-1.5 w-64 sm:w-72 bg-surface-white rounded-xl shadow-2xl border border-slate-200 p-2.5 z-50"
+                        role="listbox"
+                      >
+                        <div class="flex items-center justify-between pb-2 mb-1.5 border-b border-slate-100 px-1">
+                          <span class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[14px] text-brand-blue">schedule</span>
+                            Hora de devolución
+                          </span>
+                          <span class="text-[11px] text-slate-400 font-medium">Cada 30 min</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-1.5 max-h-52 overflow-y-auto p-0.5" id="returnTimeGrid"></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div
@@ -1021,6 +1065,40 @@
                     <option value="Toyota 4Runner" data-vehicle-slug="toyota-4runner" data-i18n="opt_veh_4runner">Toyota 4Runner (SUV 4x4 · 7 Pasajeros)</option>
                     <option value="Mazda BT-50" data-vehicle-slug="mazda-bt-50" data-i18n="opt_veh_bt50">Mazda BT-50 (Camioneta 4x4 Faenas)</option>
                   </select>
+                </div>
+                <!-- Sección Destacada: Cruce a Argentina -->
+                <div
+                  class="lg:col-span-12 flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 sm:px-4 sm:py-3 rounded-xl bg-gradient-to-r from-sky-50 via-blue-50/60 to-brand-lime-subtle/30 border border-brand-blue/20 shadow-xs"
+                >
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0"
+                    >
+                      <span class="material-symbols-outlined text-[22px]"
+                        >public</span
+                      >
+                    </div>
+                    <div>
+                      <p
+                        class="font-title-sm text-title-sm font-bold text-slate-900 leading-snug"
+                        data-i18n="lbl_special_quote"
+                      >
+                        ¿Requiere salir a Argentina? Indíquelo aquí
+                      </p>
+                      <p class="text-xs text-slate-500 mt-0.5">
+                        Permiso notarial y seguro internacional Mercosur para El Calafate o Ushuaia.
+                      </p>
+                    </div>
+                  </div>
+                  <a
+                    class="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-primary hover:bg-brand-blue-dark active:scale-[0.98] text-white font-label-md text-xs font-bold transition-all shadow-sm shrink-0"
+                    href="mailto:reservas@agmrentacar.cl?subject=Salida%20a%20Argentina"
+                  >
+                    <span>Solicitar cruce</span>
+                    <span class="material-symbols-outlined text-[16px]"
+                      >arrow_forward</span
+                    >
+                  </a>
                 </div>
                 <div
                   class="lg:col-span-4 flex flex-col justify-center px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus-within:border-brand-lime focus-within:bg-surface-white"
@@ -1080,27 +1158,27 @@
                 </div>
                 <!-- Cláusula de Consentimiento Ley N° 21.719 -->
                 <div
-                  class="lg:col-span-12 rounded-xl bg-slate-50 border border-slate-200 p-3.5 space-y-2 text-slate-600 font-body-sm text-body-sm"
+                  class="lg:col-span-12 rounded-xl bg-slate-50 border border-slate-200 p-3.5 sm:p-4 space-y-2.5 text-slate-700 font-body-sm"
                 >
-                  <label class="flex items-start gap-2.5 cursor-pointer select-none">
+                  <label class="flex items-start gap-3 cursor-pointer select-none">
                     <input
-                      class="mt-1 h-4 w-4 rounded border-slate-300 text-primary focus:ring-brand-blue cursor-pointer"
+                      class="mt-0.5 h-[18px] w-[18px] shrink-0 rounded border-slate-300 text-primary focus:ring-brand-blue cursor-pointer"
                       id="privacyConsent"
                       name="privacyConsent"
                       required
                       type="checkbox"
                     />
-                    <span class="font-medium text-slate-800">
+                    <span class="font-medium text-slate-800 text-[14px] leading-relaxed">
                       <span data-i18n="lbl_consent_p1">He leído y acepto el tratamiento de mis datos personales para la gestión de mi cotización conforme a la</span>
                       <button
-                        class="text-primary hover:text-brand-blue-dark underline font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue rounded"
+                        class="text-primary hover:text-brand-blue-dark underline font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue rounded inline"
                         id="openPrivacyPolicyButton"
                         data-i18n="lbl_privacy_policy"
                         type="button"
                       >Política de Privacidad</button> <span data-i18n="lbl_consent_p2">(Ley N° 21.719).</span>
                     </span>
                   </label>
-                  <p class="text-[11px] leading-relaxed text-slate-500 pl-6" data-i18n="lbl_responsible_note">
+                  <p class="text-[12px] leading-relaxed text-slate-600 pl-[30px] break-words" data-i18n="lbl_responsible_note">
                     <strong>Responsable:</strong> AGM Rent a Car SpA · <strong>Finalidad:</strong> Gestión de cotizaciones y reservas de arriendo · <strong>Canal ARCO-POL:</strong> Puedes ejercer acceso, rectificación o supresión escribiendo a reservas@agmrentacar.cl.
                   </p>
                 </div>
@@ -1148,22 +1226,6 @@
                       >Devolver en una ubicación distinta</span
                     >
                   </label>
-                  <!-- Arriendo Mensual Direct Link -->
-                  <a
-                    class="inline-flex items-center gap-1 text-primary hover:text-on-primary-fixed-variant font-bold transition-colors"
-                    href="mailto:reservas@agmrentacar.cl?subject=Salida%20a%20Argentina"
-                  >
-                    <span class="material-symbols-outlined text-[18px]"
-                      >public</span
-                    >
-                    <span
-                      data-i18n="lbl_special_quote"
-                      >¿Requiere salir a Argentina? Indíquelo aquí</span
-                    >
-                    <span class="material-symbols-outlined text-[16px]"
-                      >arrow_forward</span
-                    >
-                  </a>
                 </div>
                 <!-- Dropdown hidden panel for different return branch -->
                 <div
@@ -2819,6 +2881,154 @@
                 const nextDay = new Date(`${pickupDateInput.value}T12:00:00`);
                 nextDay.setDate(nextDay.getDate() + 1);
                 returnDateInput.value = localDate(nextDay);
+              }
+            });
+
+            // Selector horario cada 30 minutos en 3 columnas (00:00 a 23:30)
+            const TIME_SLOTS = [];
+            for (let h = 0; h < 24; h++) {
+              const hh = String(h).padStart(2, "0");
+              TIME_SLOTS.push(`${hh}:00`);
+              TIME_SLOTS.push(`${hh}:30`);
+            }
+
+            const initTimePicker = (prefix, defaultTime) => {
+              const btn = document.getElementById(`${prefix}TimeBtn`);
+              const display = document.getElementById(`${prefix}TimeDisplay`);
+              const select = document.getElementById(`${prefix}Time`);
+              const dropdown = document.getElementById(`${prefix}TimeDropdown`);
+              const grid = document.getElementById(`${prefix}TimeGrid`);
+
+              if (!btn || !select || !dropdown || !grid) return;
+
+              select.replaceChildren();
+              TIME_SLOTS.forEach((time) => {
+                const opt = document.createElement("option");
+                opt.value = time;
+                opt.textContent = time;
+                if (time === defaultTime) opt.selected = true;
+                select.appendChild(opt);
+              });
+
+              grid.replaceChildren();
+              TIME_SLOTS.forEach((time) => {
+                const b = document.createElement("button");
+                b.type = "button";
+                b.dataset.time = time;
+                b.textContent = time;
+                b.className =
+                  "time-option-btn py-1.5 px-2 text-xs font-semibold rounded-lg text-center transition-colors border cursor-pointer";
+                grid.appendChild(b);
+              });
+
+              const updateActiveUi = (val) => {
+                select.value = val;
+                if (display) display.textContent = val;
+                grid.querySelectorAll(".time-option-btn").forEach((b) => {
+                  const isSelected = b.dataset.time === val;
+                  if (isSelected) {
+                    b.className =
+                      "time-option-btn py-1.5 px-2 text-xs font-bold rounded-lg text-center transition-colors bg-brand-blue text-white border-brand-blue shadow-sm cursor-pointer";
+                  } else {
+                    b.className =
+                      "time-option-btn py-1.5 px-2 text-xs font-semibold rounded-lg text-center transition-colors bg-slate-50 hover:bg-brand-lime-subtle hover:text-brand-blue-dark text-slate-700 border-slate-200 cursor-pointer";
+                  }
+                });
+              };
+
+              btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const isClosed = dropdown.classList.contains("hidden");
+                document
+                  .querySelectorAll('[id$="TimeDropdown"]')
+                  .forEach((d) => d.classList.add("hidden"));
+                document
+                  .querySelectorAll('[id$="TimeBtn"]')
+                  .forEach((b) => b.setAttribute("aria-expanded", "false"));
+
+                if (isClosed) {
+                  dropdown.classList.remove("hidden");
+                  btn.setAttribute("aria-expanded", "true");
+                  const activeBtn = grid.querySelector(
+                    `[data-time="${select.value}"]`,
+                  );
+                  if (activeBtn) {
+                    activeBtn.scrollIntoView({ block: "nearest" });
+                  }
+                }
+              });
+
+              grid.addEventListener("click", (e) => {
+                const target = e.target.closest(".time-option-btn");
+                if (!target) return;
+                const chosen = target.dataset.time;
+                if (chosen) {
+                  updateActiveUi(chosen);
+                  select.dispatchEvent(new Event("change", { bubbles: true }));
+                  dropdown.classList.add("hidden");
+                  btn.setAttribute("aria-expanded", "false");
+                }
+              });
+
+              updateActiveUi(defaultTime);
+            };
+
+            initTimePicker("pickup", "10:30");
+            initTimePicker("return", "10:30");
+
+            document.addEventListener("click", (e) => {
+              if (
+                !e.target.closest("#pickupTimeWrapper") &&
+                !e.target.closest("#returnTimeWrapper")
+              ) {
+                document
+                  .querySelectorAll('[id$="TimeDropdown"]')
+                  .forEach((d) => d.classList.add("hidden"));
+                document
+                  .querySelectorAll('[id$="TimeBtn"]')
+                  .forEach((b) => b.setAttribute("aria-expanded", "false"));
+              }
+            });
+
+            document.addEventListener("keydown", (e) => {
+              if (e.key === "Escape") {
+                document
+                  .querySelectorAll('[id$="TimeDropdown"]')
+                  .forEach((d) => d.classList.add("hidden"));
+                document
+                  .querySelectorAll('[id$="TimeBtn"]')
+                  .forEach((b) => b.setAttribute("aria-expanded", "false"));
+              }
+            });
+
+            // Apertura del calendario al hacer clic en cualquier parte del campo de fecha
+            [
+              { input: pickupDateInput, boxId: "pickupDateTimeBox" },
+              { input: returnDateInput, boxId: "returnDateTimeBox" },
+            ].forEach(({ input, boxId }) => {
+              if (!input) return;
+
+              const openCalendar = () => {
+                try {
+                  if (typeof input.showPicker === "function") {
+                    input.showPicker();
+                  } else {
+                    input.focus();
+                  }
+                } catch (_) {
+                  input.focus();
+                }
+              };
+
+              input.addEventListener("click", openCalendar);
+
+              const box = document.getElementById(boxId);
+              if (box) {
+                box.addEventListener("click", (e) => {
+                  if (e.target === input) return;
+                  if (e.target.closest('[id$="TimeWrapper"]')) return;
+                  openCalendar();
+                });
               }
             });
 

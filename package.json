@@ -4,6 +4,8 @@
   "private": true,
   "description": "Sitio y operación de reservas de AGM Rent a Car",
   "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "start": "node scripts/serve.mjs",
     "build": "node scripts/build.mjs --production",
     "build:preview": "node scripts/build.mjs",
     "audit": "node scripts/audit.mjs",
