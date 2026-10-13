@@ -395,6 +395,47 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       tdDates.appendChild(durationBadge);
       tdDates.appendChild(dateDetail);
+
+      // Badges rápidos de pasajeros y cruce a Argentina
+      const rowNotes = res.customer_notes || "";
+      const rowPassMatch = rowNotes.match(/Pasajeros:\s*([^·|\n]+)/i);
+      const rowHasArg = rowNotes.includes("Cruce a Argentina: Sí");
+
+      if (rowPassMatch || rowHasArg) {
+        const extraBadges = document.createElement("div");
+        extraBadges.style.display = "flex";
+        extraBadges.style.gap = "0.35rem";
+        extraBadges.style.flexWrap = "wrap";
+        extraBadges.style.marginTop = "0.35rem";
+
+        if (rowPassMatch) {
+          const passBadge = document.createElement("span");
+          passBadge.className = "contact-chip";
+          passBadge.style.fontSize = "0.6875rem";
+          passBadge.style.padding = "0.1rem 0.4rem";
+          passBadge.style.backgroundColor = "#f1f5f9";
+          passBadge.style.color = "#334155";
+          passBadge.style.border = "1px solid #cbd5e1";
+          passBadge.textContent = `👥 ${rowPassMatch[1].trim()}`;
+          extraBadges.appendChild(passBadge);
+        }
+
+        if (rowHasArg) {
+          const argBadge = document.createElement("span");
+          argBadge.className = "contact-chip";
+          argBadge.style.fontSize = "0.6875rem";
+          argBadge.style.padding = "0.1rem 0.4rem";
+          argBadge.style.backgroundColor = "#e0f2fe";
+          argBadge.style.color = "#0369a1";
+          argBadge.style.border = "1px solid #bae6fd";
+          argBadge.style.fontWeight = "700";
+          argBadge.textContent = "🇦🇷 Cruce Argentina";
+          extraBadges.appendChild(argBadge);
+        }
+
+        tdDates.appendChild(extraBadges);
+      }
+
       tr.appendChild(tdDates);
 
       // 4. Columna Sucursales
@@ -576,6 +617,24 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const modelName = vehicleModelsMap.get(res.requested_model_id);
     detailVehicleModel.textContent = modelName || "Cualquier modelo disponible / Categoría abierta";
+
+    // Pasajeros y Cruce a Argentina
+    const notesStr = res.customer_notes || "";
+    const passengersMatch = notesStr.match(/Pasajeros:\s*([^·|\n]+)/i);
+    const detailPassengers = document.getElementById("detailPassengers");
+    if (detailPassengers) {
+      detailPassengers.textContent = passengersMatch ? passengersMatch[1].trim() : "2 pasajeros (estimado)";
+    }
+
+    const detailCrossBorder = document.getElementById("detailCrossBorder");
+    if (detailCrossBorder) {
+      const isArgentina = notesStr.includes("Cruce a Argentina: Sí");
+      if (isArgentina) {
+        detailCrossBorder.innerHTML = '<strong style="color: #0369a1; background: #e0f2fe; padding: 2px 8px; border-radius: 4px; font-size: 0.8125rem;">🇦🇷 SÍ &middot; Requiere permiso Mercosur</strong>';
+      } else {
+        detailCrossBorder.textContent = "No (Solo territorio chileno)";
+      }
+    }
 
     // Notas del cliente
     if (res.customer_notes && res.customer_notes.trim()) {

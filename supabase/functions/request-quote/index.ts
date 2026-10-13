@@ -123,6 +123,8 @@ type CustomerEmailInput = {
   returnLocationName: string;
   pickupAt: Date;
   returnAt: Date;
+  passengersCount?: string;
+  crossBorderArgentina?: boolean;
 };
 
 type CustomerEmailContent = {
@@ -137,6 +139,12 @@ const buildCustomerEmail = (input: CustomerEmailInput): CustomerEmailContent => 
   const safeVehicle = escapeHtml(input.vehicleName);
   const safePickupLoc = escapeHtml(input.pickupLocationName);
   const safeReturnLoc = escapeHtml(input.returnLocationName);
+  const safePassengers = input.passengersCount
+    ? escapeHtml(input.passengersCount.includes("pasajero") ? input.passengersCount : `${input.passengersCount} pasajeros`)
+    : "2 pasajeros";
+  const crossBorderText = input.crossBorderArgentina
+    ? "Sí (incluiremos detalles de permiso y seguro Mercosur en la cotización)"
+    : "No (Solo territorio chileno)";
   const pickupTimeStr = escapeHtml(formatPuntaArenasDateTime(input.pickupAt));
   const returnTimeStr = escapeHtml(formatPuntaArenasDateTime(input.returnAt));
 
@@ -189,6 +197,14 @@ const buildCustomerEmail = (input: CustomerEmailInput): CustomerEmailContent => 
                 <tr>
                   <td style="padding: 10px 14px; background-color: #f8fafc; font-weight: 600; color: #475569; width: 40%; border-bottom: 1px solid #e2e8f0;">Vehículo</td>
                   <td style="padding: 10px 14px; color: #0f172a; border-bottom: 1px solid #e2e8f0; font-weight: 600;">${safeVehicle}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px 14px; background-color: #f8fafc; font-weight: 600; color: #475569; border-bottom: 1px solid #e2e8f0;">Pasajeros</td>
+                  <td style="padding: 10px 14px; color: #0f172a; border-bottom: 1px solid #e2e8f0;">${safePassengers}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 10px 14px; background-color: #f8fafc; font-weight: 600; color: #475569; border-bottom: 1px solid #e2e8f0;">Cruce a Argentina</td>
+                  <td style="padding: 10px 14px; color: #0f172a; border-bottom: 1px solid #e2e8f0;">${crossBorderText}</td>
                 </tr>
                 <tr>
                   <td style="padding: 10px 14px; background-color: #f8fafc; font-weight: 600; color: #475569; border-bottom: 1px solid #e2e8f0;">Retiro</td>
@@ -267,6 +283,8 @@ const buildCustomerEmail = (input: CustomerEmailInput): CustomerEmailContent => 
     "RESUMEN DE LA SOLICITUD",
     "--------------------------------------------------",
     `Vehículo: ${input.vehicleName}`,
+    `Pasajeros: ${safePassengers}`,
+    `Cruce a Argentina: ${input.crossBorderArgentina ? "Sí" : "No"}`,
     `Retiro: ${input.pickupLocationName}`,
     `Fecha y hora de retiro: ${pickupTimePlain}`,
     `Devolución: ${input.returnLocationName}`,
@@ -324,6 +342,8 @@ type InternalEmailInput = {
   returnLocationName: string;
   pickupAt: Date;
   returnAt: Date;
+  passengersCount?: string;
+  crossBorderArgentina?: boolean;
 };
 
 const buildInternalEmail = (input: InternalEmailInput): CustomerEmailContent => {
@@ -335,6 +355,12 @@ const buildInternalEmail = (input: InternalEmailInput): CustomerEmailContent => 
   const safeVehicle = escapeHtml(input.vehicleName);
   const safePickupLoc = escapeHtml(input.pickupLocationName);
   const safeReturnLoc = escapeHtml(input.returnLocationName);
+  const safePassengers = input.passengersCount
+    ? escapeHtml(input.passengersCount.includes("pasajero") ? input.passengersCount : `${input.passengersCount} pasajeros`)
+    : "2 pasajeros";
+  const crossBorderBadge = input.crossBorderArgentina
+    ? `<strong style="display: inline-block; background-color: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 4px; font-size: 13px;">SÍ &middot; Requiere permiso Mercosur</strong>`
+    : `<span style="color: #64748b;">No</span>`;
   const customerTypeLabel = escapeHtml(formatCustomerType(input.customerType));
   const isBusiness = input.customerType === "business";
   const safeCompanyName = input.companyName ? escapeHtml(input.companyName) : "";
@@ -438,6 +464,14 @@ const buildInternalEmail = (input: InternalEmailInput): CustomerEmailContent => 
                     <td style="padding: 10px 14px; color: #0f172a; border-bottom: 1px solid #e2e8f0; font-weight: 600;">${safeVehicle}</td>
                   </tr>
                   <tr>
+                    <td style="padding: 10px 14px; background-color: #f8fafc; font-weight: 600; color: #475569; border-bottom: 1px solid #e2e8f0;">Pasajeros</td>
+                    <td style="padding: 10px 14px; color: #0f172a; border-bottom: 1px solid #e2e8f0;">${safePassengers}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 10px 14px; background-color: #f8fafc; font-weight: 600; color: #475569; border-bottom: 1px solid #e2e8f0;">Cruce a Argentina</td>
+                    <td style="padding: 10px 14px; color: #0f172a; border-bottom: 1px solid #e2e8f0;">${crossBorderBadge}</td>
+                  </tr>
+                  <tr>
                     <td style="padding: 10px 14px; background-color: #f8fafc; font-weight: 600; color: #475569; border-bottom: 1px solid #e2e8f0;">Retiro</td>
                     <td style="padding: 10px 14px; color: #0f172a; border-bottom: 1px solid #e2e8f0;">${safePickupLoc}</td>
                   </tr>
@@ -527,6 +561,8 @@ const buildInternalEmail = (input: InternalEmailInput): CustomerEmailContent => 
     "SOLICITUD",
     "--------------------------------------------------",
     `Vehículo: ${input.vehicleName}`,
+    `Pasajeros: ${safePassengers}`,
+    `Cruce a Argentina: ${input.crossBorderArgentina ? "SÍ (Requiere permiso Mercosur)" : "No"}`,
     `Retiro: ${input.pickupLocationName}`,
     `Fecha y hora de retiro: ${pickupTimePlain}`,
     `Devolución: ${input.returnLocationName}`,
@@ -660,7 +696,18 @@ const handler = withSupabase(
     const pickupSlug = textValue(payload.pickup_location_slug, 80);
     const returnSlug = textValue(payload.return_location_slug, 80) || pickupSlug;
     const vehicleSlug = textValue(payload.vehicle_slug, 100);
-    const notes = textValue(payload.customer_notes, 1200) || null;
+    const passengersCount = textValue(payload.passengers_count, 20) || "2";
+    const crossBorderArgentina =
+      payload.cross_border_argentina === true ||
+      textValue(payload.cross_border_argentina, 10).toLowerCase() === "si" ||
+      textValue(payload.cross_border_argentina, 10).toLowerCase() === "true";
+    const rawNotes = textValue(payload.customer_notes, 1200) || null;
+    const formattedNotes = [
+      `Pasajeros: ${passengersCount.includes("pasajero") ? passengersCount : `${passengersCount} pasajeros`}`,
+      `Cruce a Argentina: ${crossBorderArgentina ? "Sí (Requiere permiso Mercosur)" : "No"}`,
+      rawNotes && !rawNotes.includes("Pasajeros:") ? rawNotes : null,
+    ].filter(Boolean).join(" · ");
+    const notes = formattedNotes || rawNotes;
     const pickupAt = new Date(textValue(payload.pickup_at, 40));
     const returnAt = new Date(textValue(payload.return_at, 40));
 
@@ -852,6 +899,8 @@ const handler = withSupabase(
       returnLocationName,
       pickupAt,
       returnAt,
+      passengersCount,
+      crossBorderArgentina,
     });
 
     const internalEmail = buildInternalEmail({
@@ -868,6 +917,8 @@ const handler = withSupabase(
       returnLocationName,
       pickupAt,
       returnAt,
+      passengersCount,
+      crossBorderArgentina,
     });
 
     const summary = [
@@ -876,6 +927,8 @@ const handler = withSupabase(
       `Correo: ${email}`,
       phone ? `Teléfono: ${phone}` : null,
       `Vehículo: ${requestedVehicleName}`,
+      `Pasajeros: ${passengersCount}`,
+      `Cruce a Argentina: ${crossBorderArgentina ? "SÍ" : "No"}`,
       `Retiro: ${pickupAt.toISOString()}`,
       `Devolución: ${returnAt.toISOString()}`,
       notes ? `Notas: ${notes}` : null,
