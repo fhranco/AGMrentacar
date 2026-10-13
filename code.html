@@ -194,7 +194,7 @@
         font-family: 'Inter';
         font-style: normal;
         font-weight: 100 900;
-        font-display: optional;
+        font-display: swap;
         src: url("assets/fonts/inter-latin.woff2") format("woff2");
         unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
       }
@@ -202,7 +202,7 @@
         font-family: 'Plus Jakarta Sans';
         font-style: normal;
         font-weight: 200 800;
-        font-display: optional;
+        font-display: swap;
         src: url("assets/fonts/plus-jakarta-sans-latin.woff2") format("woff2");
         unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
       }
@@ -218,6 +218,14 @@
         body {
           margin: 0;
           padding: 0;
+          font-family: 'Plus Jakarta Sans', 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        button,
+        input,
+        optgroup,
+        select,
+        textarea {
+          font-family: inherit;
         }
         body {
           overscroll-behavior: none;
@@ -365,20 +373,33 @@
               "space-xs": "0.25rem",
             },
             fontFamily: {
-              "label-sm": ["Plus Jakarta Sans"],
-              "body-sm": ["Inter"],
-              "headline-md": ["Plus Jakarta Sans"],
-              "body-lg": ["Inter"],
-              "title-md": ["Plus Jakarta Sans"],
-              "body-md": ["Inter"],
-              "headline-sm": ["Plus Jakarta Sans"],
-              "headline-lg": ["Plus Jakarta Sans"],
-              "headline-lg-mobile": ["Plus Jakarta Sans"],
-              "headline-xl-mobile": ["Plus Jakarta Sans"],
-              "headline-xl": ["Plus Jakarta Sans"],
-              "label-md": ["Plus Jakarta Sans"],
-              "label-lg": ["Plus Jakarta Sans"],
-              "currency-display": ["Plus Jakarta Sans"],
+              sans: [
+                "Plus Jakarta Sans",
+                "Inter",
+                "ui-sans-serif",
+                "system-ui",
+                "-apple-system",
+                "BlinkMacSystemFont",
+                "'Segoe UI'",
+                "Roboto",
+                "Helvetica",
+                "Arial",
+                "sans-serif",
+              ],
+              "label-sm": ["Plus Jakarta Sans", "Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
+              "body-sm": ["Inter", "Plus Jakarta Sans", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
+              "headline-md": ["Plus Jakarta Sans", "Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
+              "body-lg": ["Inter", "Plus Jakarta Sans", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
+              "title-md": ["Plus Jakarta Sans", "Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
+              "body-md": ["Inter", "Plus Jakarta Sans", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
+              "headline-sm": ["Plus Jakarta Sans", "Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
+              "headline-lg": ["Plus Jakarta Sans", "Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
+              "headline-lg-mobile": ["Plus Jakarta Sans", "Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
+              "headline-xl-mobile": ["Plus Jakarta Sans", "Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
+              "headline-xl": ["Plus Jakarta Sans", "Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
+              "label-md": ["Plus Jakarta Sans", "Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
+              "label-lg": ["Plus Jakarta Sans", "Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
+              "currency-display": ["Plus Jakarta Sans", "Inter", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
             },
             fontSize: {
               "label-sm": [
@@ -959,11 +980,11 @@
                         class="flex items-center gap-1.5 bg-surface-white hover:bg-slate-100 text-slate-800 font-body-sm text-body-sm font-semibold py-1 px-2.5 rounded-lg border border-slate-200 shadow-sm transition-colors cursor-pointer"
                       >
                         <span class="material-symbols-outlined text-[16px] text-slate-500">schedule</span>
-                        <span id="pickupTimeDisplay">10:30</span>
+                        <span id="pickupTimeDisplay">10:00</span>
                         <span class="material-symbols-outlined text-[16px] text-slate-400">expand_more</span>
                       </button>
                       <select id="pickupTime" class="sr-only" aria-hidden="true" tabindex="-1">
-                        <option value="10:30" selected="">10:30</option>
+                        <option value="10:00" selected="">10:00</option>
                       </select>
                       <div
                         id="pickupTimeDropdown"
@@ -975,9 +996,9 @@
                             <span class="material-symbols-outlined text-[14px] text-brand-blue">schedule</span>
                             Hora de retiro
                           </span>
-                          <span class="text-[11px] text-slate-400 font-medium">Cada 30 min</span>
+                          <span class="text-[11px] text-slate-400 font-medium">Cada 60 min</span>
                         </div>
-                        <div class="grid grid-cols-3 gap-1.5 max-h-52 overflow-y-auto p-0.5" id="pickupTimeGrid"></div>
+                        <div class="grid grid-cols-4 gap-1.5 max-h-56 overflow-y-auto p-0.5" id="pickupTimeGrid"></div>
                       </div>
                     </div>
                   </div>
@@ -1016,11 +1037,11 @@
                         class="flex items-center gap-1.5 bg-surface-white hover:bg-slate-100 text-slate-800 font-body-sm text-body-sm font-semibold py-1 px-2.5 rounded-lg border border-slate-200 shadow-sm transition-colors cursor-pointer"
                       >
                         <span class="material-symbols-outlined text-[16px] text-slate-500">schedule</span>
-                        <span id="returnTimeDisplay">10:30</span>
+                        <span id="returnTimeDisplay">10:00</span>
                         <span class="material-symbols-outlined text-[16px] text-slate-400">expand_more</span>
                       </button>
                       <select id="returnTime" class="sr-only" aria-hidden="true" tabindex="-1">
-                        <option value="10:30" selected="">10:30</option>
+                        <option value="10:00" selected="">10:00</option>
                       </select>
                       <div
                         id="returnTimeDropdown"
@@ -1032,15 +1053,15 @@
                             <span class="material-symbols-outlined text-[14px] text-brand-blue">schedule</span>
                             Hora de devolución
                           </span>
-                          <span class="text-[11px] text-slate-400 font-medium">Cada 30 min</span>
+                          <span class="text-[11px] text-slate-400 font-medium">Cada 60 min</span>
                         </div>
-                        <div class="grid grid-cols-3 gap-1.5 max-h-52 overflow-y-auto p-0.5" id="returnTimeGrid"></div>
+                        <div class="grid grid-cols-4 gap-1.5 max-h-56 overflow-y-auto p-0.5" id="returnTimeGrid"></div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div
-                  class="lg:col-span-12 flex flex-col justify-center px-4 py-2.5 rounded-xl bg-brand-lime-subtle border border-brand-blue/20 focus-within:border-brand-lime focus-within:bg-surface-white"
+                  class="lg:col-span-8 flex flex-col justify-center px-4 py-2.5 rounded-xl bg-brand-lime-subtle border border-brand-blue/20 focus-within:border-brand-lime focus-within:bg-surface-white"
                 >
                   <label
                     class="font-label-sm text-label-sm text-slate-600 uppercase tracking-wider mb-0.5 flex items-center gap-1"
@@ -1066,7 +1087,36 @@
                     <option value="Mazda BT-50" data-vehicle-slug="mazda-bt-50" data-i18n="opt_veh_bt50">Mazda BT-50 (Camioneta 4x4 Faenas)</option>
                   </select>
                 </div>
-                <!-- Sección Destacada: Cruce a Argentina -->
+                <div
+                  class="lg:col-span-4 flex flex-col justify-center px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-slate-100/80 transition-colors border border-slate-200 focus-within:border-brand-lime focus-within:bg-surface-white"
+                >
+                  <label
+                    class="font-label-sm text-label-sm text-slate-500 uppercase tracking-wider mb-0.5 flex items-center gap-1"
+                    for="passengerCount"
+                  >
+                    <span
+                      class="material-symbols-outlined text-[15px] text-slate-400"
+                      >group</span
+                    >
+                    <span data-i18n="lbl_passengers">Cantidad de pasajeros</span>
+                  </label>
+                  <select
+                    class="w-full bg-transparent font-title-md text-title-md font-bold text-slate-900 outline-none cursor-pointer py-0.5"
+                    id="passengerCount"
+                    name="passengerCount"
+                    required
+                  >
+                    <option value="1">1 pasajero</option>
+                    <option value="2" selected="">2 pasajeros</option>
+                    <option value="3">3 pasajeros</option>
+                    <option value="4">4 pasajeros</option>
+                    <option value="5">5 pasajeros</option>
+                    <option value="6">6 pasajeros</option>
+                    <option value="7">7 pasajeros</option>
+                    <option value="8+">8 o más pasajeros</option>
+                  </select>
+                </div>
+                <!-- Casilla: Cruce a Argentina (Sí / No) -->
                 <div
                   class="lg:col-span-12 flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 sm:px-4 sm:py-3 rounded-xl bg-gradient-to-r from-sky-50 via-blue-50/60 to-brand-lime-subtle/30 border border-brand-blue/20 shadow-xs"
                 >
@@ -1083,22 +1133,49 @@
                         class="font-title-sm text-title-sm font-bold text-slate-900 leading-snug"
                         data-i18n="lbl_special_quote"
                       >
-                        ¿Requiere salir a Argentina? Indíquelo aquí
+                        ¿Necesitas salir a Argentina? (El Calafate / Ushuaia)
                       </p>
-                      <p class="text-xs text-slate-500 mt-0.5">
-                        Permiso notarial y seguro internacional Mercosur para El Calafate o Ushuaia.
+                      <p class="text-xs text-slate-500 mt-0.5" data-i18n="lbl_argentina_sub">
+                        Incluye gestión de permiso notarial y seguro internacional Mercosur.
                       </p>
                     </div>
                   </div>
-                  <a
-                    class="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-primary hover:bg-brand-blue-dark active:scale-[0.98] text-white font-label-md text-xs font-bold transition-all shadow-sm shrink-0"
-                    href="mailto:reservas@agmrentacar.cl?subject=Salida%20a%20Argentina"
+                  <div
+                    class="flex items-center gap-1.5 bg-surface-white p-1 rounded-xl border border-slate-200 shrink-0 self-start sm:self-auto shadow-2xs"
+                    role="radiogroup"
+                    aria-label="Cruce a Argentina"
                   >
-                    <span>Solicitar cruce</span>
-                    <span class="material-symbols-outlined text-[16px]"
-                      >arrow_forward</span
+                    <label
+                      class="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-bold cursor-pointer transition-all bg-slate-900 text-white shadow-xs"
+                      id="crossBorderNoLabel"
                     >
-                  </a>
+                      <input
+                        type="radio"
+                        name="crossBorderArgentina"
+                        value="no"
+                        checked=""
+                        class="sr-only"
+                        id="crossBorderNo"
+                      />
+                      <span>No</span>
+                    </label>
+                    <label
+                      class="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-bold cursor-pointer transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                      id="crossBorderYesLabel"
+                    >
+                      <input
+                        type="radio"
+                        name="crossBorderArgentina"
+                        value="si"
+                        class="sr-only"
+                        id="crossBorderYes"
+                      />
+                      <span class="material-symbols-outlined text-[15px]"
+                        >check</span
+                      >
+                      <span>Sí</span>
+                    </label>
+                  </div>
                 </div>
                 <div
                   class="lg:col-span-4 flex flex-col justify-center px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus-within:border-brand-lime focus-within:bg-surface-white"
@@ -2884,12 +2961,11 @@
               }
             });
 
-            // Selector horario cada 30 minutos en 3 columnas (00:00 a 23:30)
+            // Selector horario cada 60 minutos en 4 columnas (00:00 a 23:00)
             const TIME_SLOTS = [];
             for (let h = 0; h < 24; h++) {
               const hh = String(h).padStart(2, "0");
               TIME_SLOTS.push(`${hh}:00`);
-              TIME_SLOTS.push(`${hh}:30`);
             }
 
             const initTimePicker = (prefix, defaultTime) => {
@@ -2917,7 +2993,7 @@
                 b.dataset.time = time;
                 b.textContent = time;
                 b.className =
-                  "time-option-btn py-1.5 px-2 text-xs font-semibold rounded-lg text-center transition-colors border cursor-pointer";
+                  "time-option-btn py-1.5 px-1 text-xs font-semibold rounded-lg text-center transition-colors border cursor-pointer";
                 grid.appendChild(b);
               });
 
@@ -2928,10 +3004,10 @@
                   const isSelected = b.dataset.time === val;
                   if (isSelected) {
                     b.className =
-                      "time-option-btn py-1.5 px-2 text-xs font-bold rounded-lg text-center transition-colors bg-brand-blue text-white border-brand-blue shadow-sm cursor-pointer";
+                      "time-option-btn py-1.5 px-1 text-xs font-bold rounded-lg text-center transition-colors bg-brand-blue text-white border-brand-blue shadow-sm cursor-pointer";
                   } else {
                     b.className =
-                      "time-option-btn py-1.5 px-2 text-xs font-semibold rounded-lg text-center transition-colors bg-slate-50 hover:bg-brand-lime-subtle hover:text-brand-blue-dark text-slate-700 border-slate-200 cursor-pointer";
+                      "time-option-btn py-1.5 px-1 text-xs font-semibold rounded-lg text-center transition-colors bg-slate-50 hover:bg-brand-lime-subtle hover:text-brand-blue-dark text-slate-700 border-slate-200 cursor-pointer";
                   }
                 });
               };
@@ -2973,8 +3049,8 @@
               updateActiveUi(defaultTime);
             };
 
-            initTimePicker("pickup", "10:30");
-            initTimePicker("return", "10:30");
+            initTimePicker("pickup", "10:00");
+            initTimePicker("return", "10:00");
 
             document.addEventListener("click", (e) => {
               if (
@@ -3031,6 +3107,29 @@
                 });
               }
             });
+
+            // Toggle Cruce a Argentina (Sí / No)
+            const crossBorderNo = document.getElementById("crossBorderNo");
+            const crossBorderYes = document.getElementById("crossBorderYes");
+            const crossBorderNoLabel = document.getElementById("crossBorderNoLabel");
+            const crossBorderYesLabel = document.getElementById("crossBorderYesLabel");
+
+            const updateCrossBorderUi = () => {
+              if (crossBorderYes?.checked) {
+                crossBorderYesLabel?.classList.remove("text-slate-600", "hover:text-slate-900", "hover:bg-slate-100");
+                crossBorderYesLabel?.classList.add("bg-brand-blue", "text-white", "shadow-xs");
+                crossBorderNoLabel?.classList.remove("bg-slate-900", "text-white", "shadow-xs");
+                crossBorderNoLabel?.classList.add("text-slate-600", "hover:text-slate-900", "hover:bg-slate-100");
+              } else {
+                crossBorderNoLabel?.classList.remove("text-slate-600", "hover:text-slate-900", "hover:bg-slate-100");
+                crossBorderNoLabel?.classList.add("bg-slate-900", "text-white", "shadow-xs");
+                crossBorderYesLabel?.classList.remove("bg-brand-blue", "text-white", "shadow-xs");
+                crossBorderYesLabel?.classList.add("text-slate-600", "hover:text-slate-900", "hover:bg-slate-100");
+              }
+            };
+
+            crossBorderNo?.addEventListener("change", updateCrossBorderUi);
+            crossBorderYes?.addEventListener("change", updateCrossBorderUi);
 
             const renderQuoteSuccess = (referenceCode) => {
               if (!formStatus) return;
@@ -3183,6 +3282,11 @@
                     return_location_slug: returnLocation,
                     vehicle_slug:
                       selectedVehicleOption?.dataset.vehicleSlug || "",
+                    passengers_count:
+                      document.getElementById("passengerCount")?.value || "2",
+                    cross_border_argentina:
+                      document.getElementById("crossBorderYes")?.checked === true,
+                    customer_notes: `Pasajeros: ${document.getElementById("passengerCount")?.value || "2"} · Cruce a Argentina: ${document.getElementById("crossBorderYes")?.checked === true ? "Sí (Requiere permiso y seguro Mercosur)" : "No"}`,
                     pickup_at: `${pickupDate}T${pickupTime}:00-03:00`,
                     return_at: `${returnDate}T${returnTime}:00-03:00`,
                     privacy_consent: true,
@@ -3702,7 +3806,9 @@
               lbl_dropoff_branch: "Sucursal de Devolución",
               lbl_dropoff_note: "Devolución en aeropuerto, hoteles o departamentos de Punta Arenas sin costo adicional. Para otras ciudades, coordinamos en la confirmación.",
               lbl_responsible_note: "Los datos ingresados son tratados exclusivamente para la elaboración y envío de su cotización formal.",
-              lbl_special_quote: "¿Requiere salir a Argentina? Indíquelo aquí",
+              lbl_passengers: "Cantidad de pasajeros",
+              lbl_special_quote: "¿Necesitas salir a Argentina? (El Calafate / Ushuaia)",
+              lbl_argentina_sub: "Incluye gestión de permiso notarial y seguro internacional Mercosur.",
 
               services_tag: "Ruta 01 / Servicios AGM",
               services_h2_1: "Del aterrizaje al camino,",
@@ -3947,7 +4053,9 @@
               lbl_dropoff_branch: "Drop-off Location",
               lbl_dropoff_note: "Free drop-off at Punta Arenas Airport, hotels, or apartments. For other destinations, coordinated upon confirmation.",
               lbl_responsible_note: "Submitted details are handled strictly for preparing your formal quotation.",
-              lbl_special_quote: "Require crossing to Argentina? Specify here",
+              lbl_passengers: "Number of passengers",
+              lbl_special_quote: "Need to drive into Argentina? (El Calafate / Ushuaia)",
+              lbl_argentina_sub: "Includes notarized cross-border permit and Mercosur international insurance.",
 
               services_tag: "Route 01 / AGM Services",
               services_h2_1: "From landing to the open road,",
@@ -4192,7 +4300,9 @@
               lbl_dropoff_branch: "Local de Devolução",
               lbl_dropoff_note: "Devolução gratuita no Aeroporto de Punta Arenas, hotéis ou apartamentos. Para outras cidades, combinamos na confirmação.",
               lbl_responsible_note: "Os dados informados são tratados exclusivamente para a elaboração e envio da sua cotação formal.",
-              lbl_special_quote: "Precisa sair para a Argentina? Indique aqui",
+              lbl_passengers: "Quantidade de passageiros",
+              lbl_special_quote: "Precisa viajar para a Argentina? (El Calafate / Ushuaia)",
+              lbl_argentina_sub: "Inclui autorização notarial de travessia e seguro internacional Mercosul.",
 
               services_tag: "Rota 01 / Serviços AGM",
               services_h2_1: "Do pouso à estrada,",
